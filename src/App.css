@@ -1,0 +1,100 @@
+
+
+:root {
+  --background-color: #F8F4ED;
+  --text-color: #493518;
+  --primary-color: #515761;
+  --secondary-color: #f1972f;
+  --border-color: #493518;
+}
+
+
+
+body{
+  margin: 0;
+  padding: 0;
+    font-family: "Syne", sans-serif;
+   background-color: var(--background-color);
+
+}
+.DefaultBackground{
+display: flex; 
+flex-direction: column; 
+ margin: 0; 
+ 
+}
+
+
+.DefaultFontColor {
+ color: var(--text-color)
+ 
+}
+span:hover{
+  color: var(--secondary-color)
+}
+.DefaultButton {
+  background-color: #F8F4ED;
+  border-radius: 19px;
+  color: var(--text-color);
+
+  border: 1px solid #493518;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.DefaultButton:hover {
+  background-color: var(--secondary-color)
+  
+}
+
+
+.dropdown-item:hover {
+  background-color: transparent !important;
+  color: var(--text-color) !important; 
+}
+
+.no-focus:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: var(--border-color)
+}
+
+.form-floating .form-control {
+  border-radius: 0.25rem;
+ 
+}
+
+.form-floating label {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  color:var(--text-color);
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.form-floating .form-control:focus + label,
+.form-floating .form-control:not(:placeholder-shown) + label {
+  top: -0.75rem;
+  color:var(--text-color)
+}
+
+.form-floating .form-control:focus {
+  border-color:var(--border-color)
+}
+
+/* Button styling */
+.DefaultButton {
+  background-color:var(--background-color);
+  color: #fff;
+  border-radius: 0.25rem;
+}
+
+.DefaultButton:hover {
+  background-color:var(--secondary-color)
+}
+
+.animate__fadeInLeft{
+  --animate-duration: 2s;
+}
