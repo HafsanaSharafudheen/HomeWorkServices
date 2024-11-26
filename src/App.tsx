@@ -5,9 +5,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login/Login';
 import Signup from './pages/signup/Signup';
-import ServiceProvider from './components/ServiceProvider/ServiceProvider';
-import serviceProviderSignup from './pages/serviceProviderSignup/ServiceProviderSignup';
 import ServiceProviderSignup from './pages/serviceProviderSignup/ServiceProviderSignup';
+import Testimonials from './pages/Testimonials/testimonials';
 
 
 const App = () => {
@@ -19,6 +18,8 @@ const App = () => {
              <Route path="/signup" element={<Signup />} />
 
              <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
+             
+             <Route path="/testimonials" element={<Testimonials />} />
 
       </Routes>
     </Router>

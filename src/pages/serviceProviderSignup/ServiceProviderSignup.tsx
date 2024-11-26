@@ -79,7 +79,7 @@ function ServiceProviderSignup() {
         <h2 className="mb-4 text-center">Signup</h2>
         <div className="row">
           {/* Left Column */}
-          <div className="col-md-6 col-12" onSubmit={submitSignup}>
+          <div className="col-md-6 col-12">
             <div className="form-floating mb-3">
               <Form.Control
                 type="text"

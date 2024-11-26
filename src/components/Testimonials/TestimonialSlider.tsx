@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Testimonial {
   id: number;
@@ -46,7 +45,7 @@ const TestimonialSlider: React.FC = () => {
   const { quote, author } = testimonials[currentIndex];
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-5">
       <div className="row">
         {/* Heading */}
         <div className="col-12 text-center">
@@ -67,7 +66,7 @@ const TestimonialSlider: React.FC = () => {
         </div>
 
         {/* Quote and Author */}
-        <div className="col-md-8 col-12 text-center">
+        <div className="col-md-8 col-12 text-center mt-5">
   <div className="mb-3">
     {/* Quote Symbol with Circular Background */}
     <div
