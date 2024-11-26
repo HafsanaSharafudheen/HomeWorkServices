@@ -1,0 +1,73 @@
+
+
+
+.service-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: var(--background-color);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    cursor: pointer;
+    text-decoration: none;
+    transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .service-card:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+  
+  .service-card:hover .service-icon {
+    transform: scale(1.7);
+    transition: transform 0.35s ease;
+  }
+  
+  .service-icon {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    transition: transform 0.35s ease;
+  }
+  
+  .service-card p {
+    margin: 0.625rem 0 0;
+    color:var(--primary-color);
+    text-align: center;
+  }
+  
+  .DefaultButton {
+  
+    padding: 0.625rem 1.875rem;
+    border: 1px solid #515761;
+    border-radius: 6.25rem;
+    font-size: 0.875rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.35s ease;
+  }
+  
+  .DefaultButton:hover {
+    background: #515761;
+    color: #fff;
+  }
+  .HeadingStyle{
+    
+       
+       
+        color:var(--text-color);
+        text-align: center; /* Center align */
+        margin-bottom: 5rem; 
+        margin-top: 4rem;
+       
+        position: relative;
+      }
+      
+    
+      
+  
