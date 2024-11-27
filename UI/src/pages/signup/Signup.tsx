@@ -6,6 +6,7 @@ import image from "../../assets/blackTools.jpeg";
 import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../Redux/store";
+import { useNavigate } from "react-router-dom";
 
 // Define form data interface
 interface SignupFormData {
@@ -19,7 +20,7 @@ interface SignupFormData {
 
 const Signup: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+const navigate=useNavigate()
   // Extracting state from Redux
   const { loading, error } = useSelector((state: RootState) => state.user);
 
@@ -32,11 +33,13 @@ const Signup: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+  const [formError, setFormError] = useState<string>("");
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormError("");
   };
 
   // Handle form submission
@@ -45,10 +48,13 @@ const Signup: React.FC = () => {
 
     // Dispatch signup start action
     dispatch(signupStart());
-
+    if (!formData.fullName || !formData.email || !formData.phone || !formData.address || !formData.password) {
+      setFormError("All fields are required.");
+      return;
+    }
     // Validate passwords
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      setFormError("Passwords do not match.");
       return;
     }
 
@@ -57,15 +63,13 @@ const Signup: React.FC = () => {
       const response = await axios.post("/signup", formData);
 
       if (response.status === 201) {
-        // Dispatch success action with user data
         dispatch(signupSuccess(response.data));
-        alert("Sign up successful!");
+        navigate('/login')
       }
     } catch (error: any) {
       // Dispatch failure action with error message
-      const errorMessage = error.response?.data?.message || "Sign up failed. Please try again.";
-      dispatch(signupFailure(errorMessage));
-      alert(errorMessage);
+      setFormError(error.response?.data?.message || "Sign up failed. Please try again.");
+      dispatch(signupFailure(error.response?.data?.message || "Sign up failed."));
     }
   };
 
@@ -83,6 +87,7 @@ const Signup: React.FC = () => {
       <div className="form-container">
         <h2 className="mb-4 text-center">Sign Up</h2>
         <Form onSubmit={handleSubmit}>
+        {formError && <p className="text-danger text-center">{formError}</p>}
           <div className="form-floating mb-3">
             <Form.Control
               type="text"
