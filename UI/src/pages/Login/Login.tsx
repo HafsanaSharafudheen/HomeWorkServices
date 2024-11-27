@@ -1,9 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
-import image from "../../assets/blackTools.jpeg"; 
+import image from "../../assets/blackTools.jpeg";
+import axios from "../../axios/axios";
 
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setError(""); 
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(signupStart());
+
+    if (!formData.email || !formData.password) {
+      setError("Both fields are required.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("/login", formData);
+
+      if (response.status === 200) {
+        dispatch(signupSuccess(response.data)); 
+        navigate("/");
+      }
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
+      setError(errorMessage);
+      dispatch(signupFailure(errorMessage));
+    }
+  };
+
   return (
     <div
       className="login-page"
@@ -16,24 +59,29 @@ function Login() {
       <div className="blur-overlay"></div>
       <div className="form-container">
         <h2 className="mb-4 text-center">Login</h2>
-        <Form>
+        <Form onSubmit={handleSubmit}>
+          {error && <p className="text-danger text-center">{error}</p>}
           <div className="form-floating mb-3">
             <Form.Control
               type="text"
-              id="floatingUsername"
-              placeholder="Username"
+              name="email"
+              placeholder="email"
               className="DefaultInput no-focus"
+              value={formData.email}
+              onChange={handleChange}
             />
-            <Form.Label htmlFor="floatingUsername">Username</Form.Label>
+            <Form.Label>Email</Form.Label>
           </div>
           <div className="form-floating mb-3">
             <Form.Control
               type="password"
-              id="floatingPassword"
+              name="password"
               placeholder="Password"
               className="DefaultInput no-focus"
+              value={formData.password}
+              onChange={handleChange}
             />
-            <Form.Label htmlFor="floatingPassword">Password</Form.Label>
+            <Form.Label>Password</Form.Label>
           </div>
           <Button
             className="DefaultButton w-100"

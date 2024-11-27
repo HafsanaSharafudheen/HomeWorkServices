@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtService } from "../../Adapters/Security/jwtService";
 
-const jwtService = new JwtService(process.env.JWT_SECRET!, "1h"); // Use env variables
+const jwtService = new JwtService(process.env.JWT_SECRET!, "1h"); 
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
+ 
   const authHeader = req.headers.authorization;
+  console.log(req.headers,"requestheaders...")
+console.log(authHeader,'authHeader')
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ message: "Unauthorized: No token provided" });
