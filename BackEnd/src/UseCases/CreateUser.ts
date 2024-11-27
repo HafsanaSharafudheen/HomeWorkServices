@@ -1,21 +1,28 @@
+import userRepository from "../adapters/repositories/userRepository";
+import serviceProvider from "../entities/serviceProvider";
 
-export const CreateUser = {
-  execute: async ({ name, email, password }: { name: string; email: string; password: string }) => {
-    // Validate input
-    if (!name || !email || !password) {
-      throw new Error('All fields are required');
-    }
+const execute = async (userData: {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  password: string;
+}): Promise<any> => {
+  const { fullName, email, phone, address, password } = userData;
 
-    // Create User Entity
-    const user = new User(name, email, password);
+  if (!fullName || !email || !password) {
+    throw new Error("Missing required fields");
+  }
 
-    // Check if user exists
-    const existingUser = await userRepository.findByEmail(email);
-    if (existingUser) {
-      throw new Error('User already exists');
-    }
+  const hashedPassword = await serviceProvider.hashPassword(password);
 
-    // Save user in the database
-    return await userRepository.save(user);
-  },
+  return userRepository.saveUser({
+    fullName,
+    email,
+    phone,
+    address,
+    password: hashedPassword,
+  });
 };
+
+export default { execute };

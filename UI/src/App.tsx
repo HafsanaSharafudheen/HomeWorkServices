@@ -8,6 +8,7 @@ import Signup from './pages/signup/Signup';
 import ServiceProviderSignup from './pages/serviceProviderSignup/ServiceProviderSignup';
 import Testimonials from './pages/TestimonialsPage/Testimonials';
 import About from './components/About/About';
+import ServicesCards from './components/servicesCards/servicesCards';
 
 
 const App = () => {
@@ -19,7 +20,6 @@ const App = () => {
              <Route path="/signup" element={<Signup />} />
              <Route path="/aboutUs" element={<About />} />
 
-             
              <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
              
              <Route path="/testimonials" element={<Testimonials />} />

@@ -1,19 +1,15 @@
-import { MongoClient } from 'mongodb';
+import mongoose, { ConnectOptions } from 'mongoose';
 
-const url = 'mongodb://localhost:27017';
-const client = new MongoClient(url);
-const dbName = 'your-database-name';
+const connectDB = async (): Promise<void> => {
+    console.log("connectDB started");
+    try {
+        const uri = "mongodb+srv://hafsanasharafudheen:p40JNtEcUWgtbhbX@cluster0.aii1ptx.mongodb.net/homework?retryWrites=true&w=majority";        const options: ConnectOptions = {}; 
 
-let db: any;
-
-export const connectToDatabase = async () => {
-  try {
-    await client.connect();
-    console.log('Connected to MongoDB');
-    db = client.db(dbName);
-  } catch (error) {
-    console.error('Failed to connect to MongoDB', error);
-  }
+        await mongoose.connect(uri, options);
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('MongoDB connection error:', error);
+    }
 };
 
-export { db };
+export default connectDB;
