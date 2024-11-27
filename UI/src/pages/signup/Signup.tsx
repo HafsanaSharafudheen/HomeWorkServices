@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import axios from "axios";
+import axios from '../../axios/axios'
 import "../Login/Login.css";
 import image from "../../assets/blackTools.jpeg";
 import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
