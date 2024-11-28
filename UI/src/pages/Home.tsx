@@ -7,6 +7,7 @@ import ServicesCards from "../components/servicesCards/servicesCards";
 import ServiceProvider from "../components/ServiceProvider/ServiceProvider";
 import TestimonialSlider from "../components/TestimonialSlider";
 const Home: React.FC = () => {
+
     return (
        <>
 <Header/>

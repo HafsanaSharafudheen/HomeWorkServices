@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from '../../axios/axios'
 import "../Login/Login.css";
@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "../../../Redux/store";
 import { useNavigate } from "react-router-dom";
 
-// Define form data interface
 interface SignupFormData {
   fullName: string;
   email: string;
@@ -21,10 +20,8 @@ interface SignupFormData {
 const Signup: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 const navigate=useNavigate()
-  // Extracting state from Redux
   const { loading, error } = useSelector((state: RootState) => state.user);
 
-  // Local state for form data
   const [formData, setFormData] = useState<SignupFormData>({
     fullName: "",
     email: "",
@@ -35,31 +32,26 @@ const navigate=useNavigate()
   });
   const [formError, setFormError] = useState<string>("");
 
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setFormError("");
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Dispatch signup start action
     dispatch(signupStart());
     if (!formData.fullName || !formData.email || !formData.phone || !formData.address || !formData.password) {
       setFormError("All fields are required.");
       return;
     }
-    // Validate passwords
     if (formData.password !== formData.confirmPassword) {
       setFormError("Passwords do not match.");
       return;
     }
 
     try {
-      // Send signup request
       const response = await axios.post("/signup", formData);
 
       if (response.status === 201) {
@@ -67,7 +59,6 @@ const navigate=useNavigate()
         navigate('/login')
       }
     } catch (error: any) {
-      // Dispatch failure action with error message
       setFormError(error.response?.data?.message || "Sign up failed. Please try again.");
       dispatch(signupFailure(error.response?.data?.message || "Sign up failed."));
     }

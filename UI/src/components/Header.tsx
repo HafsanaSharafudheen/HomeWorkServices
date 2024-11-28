@@ -2,8 +2,12 @@
 import { Link } from "react-router-dom";
 import { Navbar, Container, Nav, NavDropdown, Offcanvas, Form, Button } from "react-bootstrap";
 import "../App.css"
+import { useSelector } from "react-redux";
+import { RootState } from '../../Redux/store';
 
 const Header: React.FC = () => {
+    const user = useSelector((state: RootState) => state.user.user);
+
     return (
         <header>
             {["sm"].map((expand) => (
@@ -38,17 +42,22 @@ const Header: React.FC = () => {
                                     <Nav.Link as={Link} to="/services">
                                         <span className="DefaultFontColor">Services</span>                  </Nav.Link>
 
-                                    {/* Profile Dropdown */}
-                                    <NavDropdown title="Profile" id={`offcanvasNavbarDropdown-profile-${expand}`}>
-                                        <NavDropdown.Item as={Link} to="/profile">
-                                            <span className="DefaultFontColor">Your Profile</span>                    </NavDropdown.Item>
-                                        <NavDropdown.Item as={Link} to="/bookings">
-                                            <span className="DefaultFontColor">Your Bookings</span>                    </NavDropdown.Item>
-                                        <NavDropdown.Item as={Link} to="/messages">
-                                            <span className="DefaultFontColor">
-                                                Messages</span>                    </NavDropdown.Item>
-                                    </NavDropdown>
-
+                                        {user ? (
+                    <NavDropdown
+                      title="Profile"
+                      id={`offcanvasNavbarDropdown-profile-${expand}`}
+                    >
+                      <NavDropdown.Item as={Link} to="/profile">
+                        <span className="DefaultFontColor">Your Profile</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/bookings">
+                        <span className="DefaultFontColor">Your Bookings</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Item as={Link} to="/messages">
+                        <span className="DefaultFontColor">Messages</span>
+                      </NavDropdown.Item>
+                    </NavDropdown>
+                  ) : null}
                                     {/* About Dropdown */}
                                     <NavDropdown title="About" id={`offcanvasNavbarDropdown-about-${expand}`}>
                                         <NavDropdown.Item as={Link} to="/aboutUs">

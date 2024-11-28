@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 // import "../Login/Login.css";
 import image from "../../assets/blackTools.jpeg";
+import axios from "../../axios/axios";
+import { signupFailure, signupStart, signupSuccess } from "../../../Redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from '../../../Redux/store';
 
 
 interface FormData {
@@ -33,7 +38,11 @@ function ServiceProviderSignup() {
     password: "",
     confirmPassword: "",
   });
+  const [formError, setFormError] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.user);
 
+const navigate=useNavigate()
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -63,6 +72,44 @@ function ServiceProviderSignup() {
       }
     });
   };
+ // Handle form submission
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  dispatch(signupStart())
+
+  if (
+    !formData.fullName ||
+    !formData.contactNumber ||
+    !formData.serviceCategory ||
+    !formData.yearsOfExperience ||
+    !formData.workingHours ||
+    !formData.password
+  ) {
+    setFormError("All fields are required.");
+    return;
+  }
+  if (formData.password !== formData.confirmPassword) {
+    setFormError("Passwords do not match.");
+    return;
+  }
+ 
+ 
+  try {
+    // Send signup data to the backend
+    const response = await axios.post("/signup", formData);
+    if (response.status === 201) {
+      dispatch(signupSuccess(response.data));
+
+      navigate("/login", { state: { isProvider: true } });
+    }
+  } catch (error: any) {
+
+    setFormError(error.response?.data?.message || "Sign up failed. Please try again.");
+    dispatch(signupFailure(error.response?.data?.message || "Sign up failed."));
+
+  }
+};
+
 
   return (
     <div
@@ -78,9 +125,12 @@ function ServiceProviderSignup() {
       <div className="blur-overlay"></div>
       <div className="form-SignupContainer container">
         <h2 className="mb-4 text-center">Signup</h2>
+        <Form onSubmit={handleSubmit}>
         <div className="row">
           {/* Left Column */}
           <div className="col-md-6 col-12">
+         
+          {formError && <p className="text-danger text-center">{formError}</p>}
             <div className="form-floating mb-3">
               <Form.Control
                 type="text"
@@ -211,10 +261,16 @@ function ServiceProviderSignup() {
           </div>
         </div>
         <div className="text-center mt-4">
-          <Button className="DefaultButton w-50" variant="primary" type="submit">
-            Sign Up
+        <Button
+            className="DefaultButton w-100"
+            variant="primary"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Signing Up..." : "Sign Up"}
           </Button>
         </div>
+        </Form>
       </div>
     </div>
   );

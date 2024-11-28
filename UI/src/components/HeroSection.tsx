@@ -1,8 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import HeroImage from '../assets/HeroImage.jpg';
+import { RootState } from '../../Redux/store';
+import { useSelector } from "react-redux";
 
 const HeroSection: React.FC = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+
 const navigate=useNavigate()
 ;  return (
     <div className="container mt-5">
@@ -16,10 +20,14 @@ const navigate=useNavigate()
           <p className="mt-3 text-muted animate__animated animate__fadeInRight">
             Convenient, trusted services at your doorstep—exactly when you need them. We make home services easy for you. Whether it's a repair, installation, or maintenance task, we bring expert help directly to your door. You can book trusted professionals anytime, wherever you need work done quickly and at your convenience, all with just a few clicks.
           </p>
-          <button className="DefaultButton mt-3" onClick={()=>navigate('/login')}>
-           
-              Book Your Service 
-          </button>
+          {!user && ( 
+        <button
+          className="DefaultButton mt-3"
+          onClick={() => navigate("/login")}
+        >
+          Book Your Service
+        </button>
+      )}
         </div>
 
         {/* Right Column */}

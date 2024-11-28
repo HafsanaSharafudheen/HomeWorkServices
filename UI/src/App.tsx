@@ -9,6 +9,7 @@ import ServiceProviderSignup from './pages/serviceProviderSignup/ServiceProvider
 import Testimonials from './pages/TestimonialsPage/Testimonials';
 import About from './components/About/About';
 import ServicesCards from './components/servicesCards/servicesCards';
+import ServiceProviderDashboard from './pages/ServiceProviderDashboard/ServiceProviderDashboard';
 
 
 const App = () => {
@@ -23,6 +24,8 @@ const App = () => {
              <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
              
              <Route path="/testimonials" element={<Testimonials />} />
+             <Route path="/service-provider-dashboard" element={<ServiceProviderDashboard />} />
+
 
       </Routes>
     </Router>

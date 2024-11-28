@@ -10,7 +10,8 @@ import axios from "../../axios/axios";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const isProvider = location.state?.isProvider;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,8 +37,9 @@ function Login() {
     try {
       const response = await axios.post("/login", formData);
 
-      if (response.status === 200) {
-        dispatch(signupSuccess(response.data)); 
+      if (isProvider) {
+        navigate("/service-provider-dashboard");
+      } else {
         navigate("/");
       }
     } catch (err: any) {
