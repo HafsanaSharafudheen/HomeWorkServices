@@ -38,6 +38,9 @@ function Login() {
       const response = await axios.post("/login", formData);
       if (response.data.user.isProvider) {
         navigate("/serviceProviderDashboard");
+      }
+      else if (response.data.user.isAdmin) {
+        navigate("/adminDashboard");
       } else {
         navigate("/");
       }

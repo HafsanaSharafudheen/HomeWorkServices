@@ -11,6 +11,7 @@ export interface IProvider extends Document {
   yearsOfExperience?: number;
   workingHours?: string;
   certifications?: string;
+  isAdmin: boolean;
   languages?: string[];
   education?: {
     institute: string;
@@ -36,6 +37,8 @@ const providerSchema: Schema = new Schema({
     year: { type: Number },
   },
   confirmPassword: { type: String },
+  isAdmin: { type: Boolean, default: false },
+
 });
 
 export default mongoose.model<IProvider>("Provider", providerSchema);

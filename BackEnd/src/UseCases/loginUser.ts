@@ -32,6 +32,7 @@ export const loginUser = async (email: string, password: string) => {
   if (!secret) {
     throw new Error("JWT_SECRET is not defined in the environment variables");
   }
+  const isAdmin = user.isAdmin || false;
 
   // Generate the token
   const token = jwt.sign(
@@ -39,6 +40,7 @@ export const loginUser = async (email: string, password: string) => {
       id: user._id,
       email: user.email,
       isProvider,
+      isAdmin,
     },
     secret,
     { expiresIn: "1h" }
@@ -54,6 +56,7 @@ export const loginUser = async (email: string, password: string) => {
       email: user.email,
       fullName: user.fullName,
       isProvider,
+      isAdmin
     },
   };
 };

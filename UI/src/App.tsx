@@ -10,6 +10,8 @@ import Testimonials from './pages/TestimonialsPage/Testimonials';
 import About from './components/About/About';
 import ServicesCards from './components/servicesCards/servicesCards';
 import ServiceProviderDashboard from './pages/ServiceProviderDashboard/ServiceProviderDashboard';
+import Category from './pages/admin/adminCategory/Category';
+import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard'
 
 
 const App = () => {
@@ -18,6 +20,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />   
              <Route path="/login" element={<Login />} />
+             <Route path="/admin" element={<Login />} />
+<Route path='/adminDashboard' element={<AdminDashboard/>} />
+<Route path="/adminCategories" element={<Category />} />
+
              <Route path="/signup" element={<Signup />} />
              <Route path="/aboutUs" element={<About />} />
 

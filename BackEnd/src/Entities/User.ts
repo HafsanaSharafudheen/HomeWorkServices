@@ -6,6 +6,8 @@ export interface IUser extends Document {
   phone?: string;
   address?: string;
   password: string;
+  isAdmin: Boolean;
+
 }
 
 const userSchema: Schema = new Schema({
@@ -14,6 +16,8 @@ const userSchema: Schema = new Schema({
   phone: { type: String },
   address: { type: String },
   password: { type: String, required: true },
+  isAdmin: { type: Boolean, default: false },
+
 });
 
 export default mongoose.model<IUser>("User", userSchema);
