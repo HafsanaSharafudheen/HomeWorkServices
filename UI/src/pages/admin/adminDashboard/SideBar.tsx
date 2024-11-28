@@ -31,11 +31,11 @@ const SideBar: React.FC = () => {
             <FaCalendarAlt className="nav-icon" />
             {!isCollapsed && <span className="nav-text">Bookings</span>}
           </li>
-          <li onClick={() => navigate("/admin/users")} className="nav-item">
+          <li onClick={() => navigate("/adminUsers")} className="nav-item">
             <FaUsers className="nav-icon" />
             {!isCollapsed && <span className="nav-text">Users</span>}
           </li>
-          <li onClick={() => navigate("/admin/service-providers")} className="nav-item">
+          <li onClick={() => navigate("/adminServiceProviders")} className="nav-item">
             <FaCogs className="nav-icon" />
             {!isCollapsed && <span className="nav-text">Service Providers</span>}
           </li>

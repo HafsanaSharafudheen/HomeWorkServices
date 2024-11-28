@@ -12,6 +12,8 @@ import ServicesCards from './components/servicesCards/servicesCards';
 import ServiceProviderDashboard from './pages/ServiceProviderDashboard/ServiceProviderDashboard';
 import Category from './pages/admin/adminCategory/Category';
 import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard'
+import AdminUsers from './pages/admin/adminUsers/AdminUsers';
+import AdminServiceProviders from './pages/admin/adminServices/AdminServiceProviders';
 
 
 const App = () => {
@@ -23,6 +25,9 @@ const App = () => {
              <Route path="/admin" element={<Login />} />
 <Route path='/adminDashboard' element={<AdminDashboard/>} />
 <Route path="/adminCategories" element={<Category />} />
+<Route path="/adminUsers" element={<AdminUsers />} />
+<Route path="/adminServiceProviders" element={<AdminServiceProviders />} />
+
 
              <Route path="/signup" element={<Signup />} />
              <Route path="/aboutUs" element={<About />} />
