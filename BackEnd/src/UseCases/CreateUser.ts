@@ -1,5 +1,5 @@
-import userRepository from "../adapters/repositories/userRepository";
-import serviceProvider from "../entities/serviceProvider";
+import bcrypt from "bcryptjs";
+import userRepository from "../Adapters/Repositories/userRepository";
 
 const execute = async (userData: {
   fullName: string;
@@ -13,8 +13,10 @@ const execute = async (userData: {
   if (!fullName || !email || !password) {
     throw new Error("Missing required fields");
   }
-
-  const hashedPassword = await serviceProvider.hashPassword(password);
+  const hashPassword = async (password: string): Promise<string> => {
+    return bcrypt.hash(password, 10);
+  };
+  const hashedPassword = await hashPassword(password);
 
   return userRepository.saveUser({
     fullName,

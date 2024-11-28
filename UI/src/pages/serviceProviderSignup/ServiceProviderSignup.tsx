@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from '../../../Redux/store';
 
 
 interface FormData {
+  email:string,
   fullName: string;
   contactNumber: string;
   serviceCategory: string;
@@ -27,6 +28,7 @@ interface FormData {
 
 function ServiceProviderSignup() {
   const [formData, setFormData] = useState<FormData>({
+    email:'',
     fullName: "",
     contactNumber: "",
     serviceCategory: "",
@@ -78,7 +80,7 @@ const navigate=useNavigate()
   dispatch(signupStart())
 
   if (
-    !formData.fullName ||
+    !formData.fullName ||  !formData.email ||
     !formData.contactNumber ||
     !formData.serviceCategory ||
     !formData.yearsOfExperience ||
@@ -95,13 +97,13 @@ const navigate=useNavigate()
  
  
   try {
-    // Send signup data to the backend
-    const response = await axios.post("/signup", formData);
+    const response = await axios.post("/providerSignup", formData);
     if (response.status === 201) {
       dispatch(signupSuccess(response.data));
 
-      navigate("/login", { state: { isProvider: true } });
+      navigate("/login");
     }
+    
   } catch (error: any) {
 
     setFormError(error.response?.data?.message || "Sign up failed. Please try again.");
@@ -141,6 +143,17 @@ const navigate=useNavigate()
                 onChange={handleChange}
               />
               <Form.Label>Full Name</Form.Label>
+            </div>
+            <div className="form-floating mb-3">
+              <Form.Control
+                type="text"
+                name="email"
+                placeholder="Email"
+                className="DefaultInput no-focus"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <Form.Label>Email</Form.Label>
             </div>
             <div className="form-floating mb-3">
               <Form.Control

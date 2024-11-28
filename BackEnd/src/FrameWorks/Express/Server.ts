@@ -6,6 +6,7 @@ import cors from 'cors'
 import loginController from "../../Adapters/Controllers/loginController";
 import errorMiddleware from "../Middleware/errorMiddleware";
 import dotenv from "dotenv";
+import providerSignupController from "../../Adapters/Controllers/providerSignupController";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -22,6 +23,8 @@ app.use(bodyParser.json());
 app.post("/signup", signupController.handleSignup);
 
 app.post("/login", loginController.handleLogin);
+app.post("/providerSignup", providerSignupController.handleSignup);
+
 app.use(authMiddleware);
 
 

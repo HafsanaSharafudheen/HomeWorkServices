@@ -1,8 +1,9 @@
-import React from 'react'
 
 function ServiceProviderDashboard() {
   return (
-    <div>ServiceProviderDashboard</div>
+    <div>
+        <h1>service dashboard</h1>
+    </div>
   )
 }
 

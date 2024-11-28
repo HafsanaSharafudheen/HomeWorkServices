@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import image from "../../assets/blackTools.jpeg";
 import axios from "../../axios/axios";
+import { RootState } from '../../../Redux/store';
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const isProvider = location.state?.isProvider;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [error, setError] = useState<string>("");
+  const user = useSelector((state: RootState) => state.user.user);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,9 +36,8 @@ function Login() {
 
     try {
       const response = await axios.post("/login", formData);
-
-      if (isProvider) {
-        navigate("/service-provider-dashboard");
+      if (response.data.user.isProvider) {
+        navigate("/serviceProviderDashboard");
       } else {
         navigate("/");
       }

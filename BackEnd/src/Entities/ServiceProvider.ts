@@ -1,7 +1,41 @@
-import bcrypt from "bcryptjs";
+import mongoose, { Schema, Document } from "mongoose";
 
-const hashPassword = async (password: string): Promise<string> => {
-  return bcrypt.hash(password, 10);
-};
+export interface IProvider extends Document {
+  fullName: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  password: string;
+  contactNumber?: string;
+  serviceCategory?: string;
+  yearsOfExperience?: number;
+  workingHours?: string;
+  certifications?: string;
+  languages?: string[];
+  education?: {
+    institute: string;
+    year: number;
+  };
+  confirmPassword?: string;
+}
 
-export default { hashPassword };
+const providerSchema: Schema = new Schema({
+  fullName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  phone: { type: String },
+  address: { type: String },
+  password: { type: String, required: true },
+  contactNumber: { type: String },
+  serviceCategory: { type: String },
+  yearsOfExperience: { type: Number },
+  workingHours: { type: String },
+  certifications: { type: String },
+  languages: { type: [String] },
+  education: {
+    institute: { type: String },
+    year: { type: Number },
+  },
+  confirmPassword: { type: String },
+});
+
+export default mongoose.model<IProvider>("Provider", providerSchema);
