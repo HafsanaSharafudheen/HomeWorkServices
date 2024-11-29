@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 // import "../Login/Login.css";
-import image from "../../assets/blackTools.jpeg";
-import axios from "../../axios/axios";
-import { signupFailure, signupStart, signupSuccess } from "../../../Redux/user/userSlice";
+import image from "../../../assets/blackTools.jpeg";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from '../../../Redux/store';
+import { AppDispatch, RootState } from '../../../../Redux/store';
+import axios from "../../../axios/axios";
+import { signupFailure, signupStart, signupSuccess } from "../../../../Redux/user/userSlice";
 
 
 interface FormData {

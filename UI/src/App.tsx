@@ -5,15 +5,15 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login/Login';
 import Signup from './pages/signup/Signup';
-import ServiceProviderSignup from './pages/serviceProviderSignup/ServiceProviderSignup';
 import Testimonials from './pages/TestimonialsPage/Testimonials';
 import About from './components/About/About';
-import ServicesCards from './components/servicesCards/servicesCards';
-import ServiceProviderDashboard from './pages/ServiceProviderDashboard/ServiceProviderDashboard';
 import Category from './pages/admin/adminCategory/Category';
 import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard'
 import AdminUsers from './pages/admin/adminUsers/AdminUsers';
 import AdminServiceProviders from './pages/admin/adminServices/AdminServiceProviders';
+import ServiceProviderDashboard from './pages/ServiceProvider/ServiceProviderDashboard/ServiceProviderDashboard';
+import ServiceProviderSignup from './pages/ServiceProvider/serviceProviderSignup/ServiceProviderSignup';
+import ServiceProfile from './pages/ServiceProvider/ServiceProfile/ServiceProfile';
 
 
 const App = () => {
@@ -37,7 +37,7 @@ const App = () => {
              <Route path="/testimonials" element={<Testimonials />} />
              <Route path="/serviceProviderDashboard" element={<ServiceProviderDashboard />} />
 
-
+<Route path='/ServiceProfile' element={<ServiceProfile/>}/>
       </Routes>
     </Router>
   );

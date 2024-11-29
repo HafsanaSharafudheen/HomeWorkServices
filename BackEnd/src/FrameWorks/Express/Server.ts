@@ -1,17 +1,22 @@
 import express from "express";
 import bodyParser from "body-parser";
 import signupController from "../../Adapters/Controllers/signupController";
-import { authMiddleware } from "../Middleware/authMiddleware";
 import cors from 'cors'
 import loginController from "../../Adapters/Controllers/loginController";
 import errorMiddleware from "../Middleware/errorMiddleware";
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser';
+
 import providerSignupController from "../../Adapters/Controllers/providerSignupController";
 import fetchUsers from '../../Adapters/Controllers/admin/fetchUsers';
 import fetchServiceProviders from "../../Adapters/Controllers/admin/fetchServiceProviders";
+import fetchProfileDetails from "../../Adapters/Controllers/providers/fetchProfileDetails";
+import { verifyToken } from '../../Adapters/Security/jwtService';
 dotenv.config();
 const app = express();
 app.use(express.json());
+
+app.use(cookieParser());
 
 
 app.use(cors({
@@ -28,8 +33,9 @@ app.post("/login", loginController.handleLogin);
 app.post("/providerSignup", providerSignupController.handleSignup);
 app.get('/fetchUsers',fetchUsers);
 app.get('/fetchProviders',fetchServiceProviders);
+app.use(verifyToken);
+app.get('/serviceProviderProfile',fetchProfileDetails)
 
-app.use(authMiddleware);
 
 
 

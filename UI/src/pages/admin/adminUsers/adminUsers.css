@@ -24,18 +24,18 @@
     border-radius: 50%;
   }
   
-  thead {
+.user-details-container thead {
     background-color: #343a40;
     color: #fff;
   }
   
-  td, th {
+  .user-details-container td, th {
     padding: 12px;
     text-align: center;
     vertical-align: middle;
   }
   
-  .btn {
+  .user-details-container.btn {
     font-size: 14px;
     padding: 5px 10px;
   }

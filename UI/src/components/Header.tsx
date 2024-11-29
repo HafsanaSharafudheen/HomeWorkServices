@@ -9,9 +9,9 @@ const Header: React.FC = () => {
     const user = useSelector((state: RootState) => state.user.user);
 
     return (
-        <header>
+        <header className="HeaderContainer">
             {["sm"].map((expand) => (
-                <Navbar key={expand} expand={expand} className="mb-3 DefaultBackground">
+                <Navbar key={expand} expand={expand} className="mb-3">
                     <Container fluid>
                         {/* Logo Section */}
                         <Navbar.Brand href="/">

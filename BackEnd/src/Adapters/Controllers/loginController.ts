@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { loginUser } from "../../UseCases/loginUser";
+import { setJwtCookie } from "../Security/jwtCookie";
 
 const handleLogin = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -12,6 +13,8 @@ const handleLogin = async (req: Request, res: Response): Promise<void> => {
 
     const userData = await loginUser(email, password);
     console.log(userData,"userdata form the logincontroller")
+    setJwtCookie(userData.user.id, res);
+    
     res.status(200).json(userData);
   } catch (error: any) {
     res.status(401).json({ error: error.message });

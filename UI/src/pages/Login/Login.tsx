@@ -36,6 +36,8 @@ function Login() {
 
     try {
       const response = await axios.post("/login", formData);
+      dispatch(signupStart());
+
       if (response.data.user.isProvider) {
         navigate("/serviceProviderDashboard");
       }

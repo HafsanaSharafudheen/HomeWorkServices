@@ -52,7 +52,7 @@ export const loginUser = async (email: string, password: string) => {
   return {
     token,
     user: {
-      id: user._id,
+      id: user._id.toString(),
       email: user.email,
       fullName: user.fullName,
       isProvider,
