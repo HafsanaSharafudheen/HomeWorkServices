@@ -17,9 +17,9 @@ export interface IProvider extends Document {
     institute: string;
     year: number;
   };
+  serviceCharges?: { type: string; amount: number | string }[]; 
   confirmPassword?: string;
 }
-
 const providerSchema: Schema = new Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -38,7 +38,12 @@ const providerSchema: Schema = new Schema({
   },
   confirmPassword: { type: String },
   isAdmin: { type: Boolean, default: false },
-
+  serviceCharges: [
+    {
+      type: { type: String, required: true }, 
+      amount: { type: Number, required: true }, 
+    },
+  ],
 });
 
 export default mongoose.model<IProvider>("Provider", providerSchema);
