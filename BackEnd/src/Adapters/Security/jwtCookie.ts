@@ -15,7 +15,7 @@ export const setJwtCookie = (userId: string, res: Response): void => {
     throw new Error('JWT_SECRET is not defined in environment variables');
   }
 
-  const token = jwt.sign({ id: userId }, jwtSecret, { expiresIn: '1h' }); 
+  const token = jwt.sign({ id: userId }, jwtSecret, { expiresIn: '10h' }); 
 
   const cookieOptions: CookieOptions = {
     httpOnly: true,

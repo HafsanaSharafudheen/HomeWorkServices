@@ -160,13 +160,16 @@ function ServiceProfile() {
           <div className="service-profile-charges">
   <h4>Service Charges</h4>
   {Array.isArray(profile?.serviceCharges) && profile.serviceCharges.length > 0 ? (
-    <div>
-      {profile.serviceCharges.map((charge, index) => (
-        <div key={index}>
-          <strong>{charge.type}:</strong> {charge.amount}
-        </div>
-      ))}
-    </div>
+   <div className="service-charges-container">
+   {profile.serviceCharges.map((charge, index) => (
+     <div className="coin" key={index}>
+       <div className="coin-amount">{charge.amount}</div>
+       <div className="coin-type">{charge.type}</div>
+       </div>
+   ))}
+ </div>
+ 
+    
   ) : (
     isChargesFormVisible && (
       <form
