@@ -1,5 +1,5 @@
 // import { Request, Response, NextFunction } from "express";
-// import { verifyToken } from "../../Adapters/Security/jwtService";
+// import { verifyToken } from "../../presentation/Security/jwtService";
 
 // export const authMiddleware = (req: any, res: Response, next: NextFunction): void => {
 //   const authHeader = req.headers.authorization;

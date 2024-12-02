@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginUser } from "../../UseCases/loginUser";
+import { loginUser } from "../../application/businesslogics/loginUser";
 import { setJwtCookie } from "../Security/jwtCookie";
 
 const handleLogin = async (req: Request, res: Response): Promise<void> => {

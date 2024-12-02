@@ -1,8 +1,15 @@
 import Provider from "../../../infrastructure/dbModels/serviceProvider";
-import updateProviderServiceCharges from '../../../application/businesslogics/provider'
+import provide from '../../../application/businesslogics/provider'
 const SaveServiceCharges = async (req: any, res: any): Promise<void> => {
   try {
-    const provider = await updateProviderServiceCharges(req.user.id, charges);
+    const charges = [
+      { type: "Basic Payment", amount: Number(req.body.basicPayment) },
+      { type: "Emergency Payment", amount: Number(req.body.emergencyPayment) },
+      { type: "Onsite Charge", amount: Number(req.body.onsiteCharge) },
+      { type: "Advanced Charge", amount: Number(req.body.advancedCharge) },
+    ];
+
+    const provider = await provide.updateProviderServiceCharges(req.user.id,charges);
 
   
     console.log(provider, "provider", req.body, "requestbody");

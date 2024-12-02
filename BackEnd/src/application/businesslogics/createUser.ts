@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import userRepository from "../Adapters/Repositories/userRepository";
+import userRepository from "../../application/repositories/userRepository";
 
 const execute = async (userData: {
   fullName: string;

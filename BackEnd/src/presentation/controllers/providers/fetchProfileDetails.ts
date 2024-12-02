@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { findProviderById } from "../../../application/businesslogics/provider";
+import  Provide  from "../../../application/businesslogics/provider";
 
 const fetchProfileDetails = async (req: any, res: any): Promise<void> => {
   try {
 
-    const provider = await findProviderById(req.user.id);
+    const provider = await Provide.findProviderById(req.user.id);
 
 
     return res.status(200).json({ message: "Details of provider found", profile: provider });

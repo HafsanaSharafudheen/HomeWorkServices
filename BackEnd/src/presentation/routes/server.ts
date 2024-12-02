@@ -1,19 +1,19 @@
 import express from "express";
 import bodyParser from "body-parser";
-import signupController from "../../Adapters/Controllers/signupController";
+import signupController from "../../presentation/controllers/signupController";
 import cors from 'cors'
-import loginController from "../../Adapters/Controllers/loginController";
+import loginController from "../../presentation/controllers/loginController";
 import errorMiddleware from "../middleware/errorMiddleware";
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 
-import providerSignupController from "../../Adapters/Controllers/providerSignupController";
-import fetchUsers from '../../Adapters/Controllers/admin/fetchUsers';
-import fetchServiceProviders from "../../Adapters/Controllers/admin/fetchServiceProviders";
-import fetchProfileDetails from "../../Adapters/Controllers/providers/fetchProfileDetails";
-import { verifyToken } from '../../Adapters/Security/jwtService';
-import SaveServiceCharges from "../../Adapters/Controllers/providers/SaveServiceCharges";
-import ServiceProfileUpdate from "../../Adapters/Controllers/providers/profileUpdate";
+import providerSignupController from "../../presentation/controllers/providerSignupController";
+import fetchUsers from '../../presentation/controllers/admin/fetchUsers';
+import fetchServiceProviders from "../../presentation/controllers/admin/fetchServiceProviders";
+import fetchProfileDetails from "../../presentation/controllers/providers/fetchProfileDetails";
+import { verifyToken } from '../../presentation/Security/jwtService';
+import SaveServiceCharges from "../../presentation/controllers/providers/saveServiceCharges";
+import ServiceProfileUpdate from "../../presentation/controllers/providers/profileUpdate";
 dotenv.config();
 const app = express();
 app.use(express.json());

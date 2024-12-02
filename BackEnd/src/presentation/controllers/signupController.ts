@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import createUserUseCase from "../../UseCases/createUser";
+import createUserUseCase from "../../application/businesslogics/createUser";
 
 const handleSignup = async (req: Request, res: Response): Promise<void> => {
   try {

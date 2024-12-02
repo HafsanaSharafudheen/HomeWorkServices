@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Provider from "../../../infrastructure/dbModels/serviceProvider"; // Assuming this is the Mongoose model for Provider
-import { updateProviderProfile } from "../../../application/businesslogics/provider";
+import profile  from "../../../application/businesslogics/provider";
 
 const ServiceProfileUpdate = async (req: any, res: any): Promise<void> => {
   try {
@@ -37,7 +37,7 @@ const ServiceProfileUpdate = async (req: any, res: any): Promise<void> => {
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ message: "No valid fields to update" });
     }
-    const result = await updateProviderProfile(userId, updateData);
+    const result = await profile.updateProviderProfile(userId, updateData);
 
     if (!result) {
       return res.status(404).json({ message: "No service provider found or no changes made" });

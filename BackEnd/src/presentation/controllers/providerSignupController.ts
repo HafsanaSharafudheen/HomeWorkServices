@@ -1,6 +1,6 @@
  import { Request, Response } from "express";
-import createProvider from "../../UseCases/createProvider";
-
+// import createProvider from "../../../application/businesslogics/createProvider";
+import createProvider from '../../application/businesslogics/createProvider'
 const handleSignup = async (req: Request, res: Response): Promise<void> => {
   try {
     const result = await createProvider.execute(req.body);
