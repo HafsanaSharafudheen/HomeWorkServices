@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import signupController from "../../Adapters/Controllers/signupController";
 import cors from 'cors'
 import loginController from "../../Adapters/Controllers/loginController";
-import errorMiddleware from "../Middleware/errorMiddleware";
+import errorMiddleware from "../middleware/errorMiddleware";
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 
@@ -36,7 +36,7 @@ app.post("/providerSignup", providerSignupController.handleSignup);
 app.get('/fetchUsers',fetchUsers);
 app.get('/fetchProviders',fetchServiceProviders);
 app.use(verifyToken);
-app.get('/serviceProviderProfile',fetchProfileDetails)
+app.get('/serviceProviderProfile',fetchProfileDetails);
 
 app.post('/service-charges',SaveServiceCharges)
 app.post('/updateProfile',ServiceProfileUpdate)

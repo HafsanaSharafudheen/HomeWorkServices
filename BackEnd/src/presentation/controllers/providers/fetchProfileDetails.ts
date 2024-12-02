@@ -1,13 +1,11 @@
 import { Request, Response } from "express";
-import Provider from "../../../Entities/serviceProvider";
+import { findProviderById } from "../../../application/businesslogics/provider";
 
 const fetchProfileDetails = async (req: any, res: any): Promise<void> => {
   try {
-    const provider = await Provider.findOne({ _id: req.user.id });
 
-    if (!provider) {
-      return res.status(404).json({ message: "No service provider found" });
-    }
+    const provider = await findProviderById(req.user.id);
+
 
     return res.status(200).json({ message: "Details of provider found", profile: provider });
   } catch (error) {

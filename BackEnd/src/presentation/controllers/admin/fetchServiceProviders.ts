@@ -1,14 +1,10 @@
 import { Request, Response } from "express";
-import Provider from '../../../Entities/serviceProvider';
+import Admin from '../../../application/businesslogics/admin';
 
 
 const fetchProviders = async (req: Request, res: Response): Promise<void> => {
   try {
-    const providers = await Provider.find(); 
-    if (!providers || providers.length === 0) {
-      console.warn("No providers found in the database.");
-    }
-    console.log(providers,"providers array???")
+    var providers = await Admin.findAllProviders();
     res.status(200).json({providers:providers});
   } catch (e) {
     console.error("Error fetching providers:", e);

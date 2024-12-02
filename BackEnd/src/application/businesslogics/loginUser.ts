@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import User from "../Entities/user";
-import Provider from "../Entities/serviceProvider";
+import User from "../infrastructure/dbModels/user";
+import Provider from "../infrastructure/dbModels/serviceProvider";
 
 export const loginUser = async (email: string, password: string) => {
   // Attempt to find the user in the User collection

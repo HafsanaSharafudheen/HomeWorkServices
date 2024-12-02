@@ -1,5 +1,5 @@
-import connectToDatabase from "./frameWorks/Database/mongoDb";
-import app from "./frameWorks/Express/server";
+import connectToDatabase from "./infrastructure/database/mongoDb";
+import app from "./presentation/routes/server";
 const PORT = 3000;
 
 
