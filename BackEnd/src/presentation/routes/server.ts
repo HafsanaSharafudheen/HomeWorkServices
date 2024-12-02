@@ -14,6 +14,8 @@ import fetchProfileDetails from "../../presentation/controllers/providers/fetchP
 import { verifyToken } from '../../presentation/Security/jwtService';
 import SaveServiceCharges from "../../presentation/controllers/providers/saveServiceCharges";
 import ServiceProfileUpdate from "../../presentation/controllers/providers/profileUpdate";
+import fetchAllProvidersByCategory from "../controllers/providers/fetchAllProvidersByCategory";
+import updateAvailability from "../controllers/providers/avilableUpdate";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -40,9 +42,10 @@ app.get('/serviceProviderProfile',fetchProfileDetails);
 
 app.post('/service-charges',SaveServiceCharges)
 app.post('/updateProfile',ServiceProfileUpdate)
+app.get('/providers',fetchAllProvidersByCategory);
 
 
-
+app.post('/updateAvailability', updateAvailability);
 
 
 

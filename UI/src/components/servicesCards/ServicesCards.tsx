@@ -12,6 +12,7 @@ import HomeRenovation from '../../assets/homeRenovatin.jpg'
 import homeNurse from '../../assets/nursing.avif'
 import appliancesService from '../../assets/appliances.avif'
 import Gardner from "../../assets/gardner.avif"
+import { useNavigate } from "react-router-dom";
 
 const servicesData = [
   { id: 1, name: "Plumber", icon: plumber },
@@ -33,9 +34,12 @@ const servicesData = [
 
 const ServicesCards: React.FC = () => {
   const [visibleServices, setVisibleServices] = useState(6);
-
+const navigate=useNavigate()
   const handleLoadMore = () => {
     setVisibleServices((prev) => prev + 6);
+  };
+  const handleServiceClick = (serviceName: string) => {
+    navigate('/providers' ,{ state: { serviceName }});
   };
 
   return (
@@ -43,7 +47,7 @@ const ServicesCards: React.FC = () => {
       <div className="row mt-5">
         <h1 className="HeadingStyle">OUR SERVICES</h1>
         {servicesData.slice(0, visibleServices).map((service) => (
-          <div key={service.id} className="col-lg-2 col-md-3 col-sm-6 mb-4" >
+          <div key={service.id} className="col-lg-2 col-md-3 col-sm-6 mb-4"  onClick={() => handleServiceClick(service.name)} >
             <div className="service-card">
               <img
                 src={service.icon}

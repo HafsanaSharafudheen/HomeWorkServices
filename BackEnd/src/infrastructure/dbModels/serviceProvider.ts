@@ -19,6 +19,7 @@ export interface IProvider extends Document {
   };
   serviceCharges?: { type: string; amount: number | string }[]; 
   confirmPassword?: string;
+  isAvailable:Boolean
 }
 const providerSchema: Schema = new Schema({
   fullName: { type: String, required: true },
@@ -30,6 +31,8 @@ const providerSchema: Schema = new Schema({
   serviceCategory: { type: String },
   yearsOfExperience: { type: Number },
   workingHours: { type: String },
+  isAvailable:{type: Boolean, default: false},
+
   certifications: { type: String },
   languages: { type: [String] },
   education: {
