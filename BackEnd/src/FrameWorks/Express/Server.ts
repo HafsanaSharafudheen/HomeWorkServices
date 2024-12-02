@@ -13,6 +13,7 @@ import fetchServiceProviders from "../../Adapters/Controllers/admin/fetchService
 import fetchProfileDetails from "../../Adapters/Controllers/providers/fetchProfileDetails";
 import { verifyToken } from '../../Adapters/Security/jwtService';
 import SaveServiceCharges from "../../Adapters/Controllers/providers/SaveServiceCharges";
+import ServiceProfileUpdate from "../../Adapters/Controllers/providers/profileUpdate";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -38,7 +39,7 @@ app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails)
 
 app.post('/service-charges',SaveServiceCharges)
-
+app.post('/updateProfile',ServiceProfileUpdate)
 
 
 

@@ -104,7 +104,7 @@ function ServiceProfile() {
                         >
                           {isAvailable ? 'Available' : 'Not Available'}
                         </button>
-                        <a href="#" className="edit-profile-link">Edit Profile</a>
+                        <a href="/editProfile" className="edit-profile-link">Edit Profile</a>
                       </div>
                     </div>
                   </div>

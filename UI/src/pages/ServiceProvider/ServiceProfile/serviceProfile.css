@@ -145,7 +145,6 @@
     justify-content: center;
     width: 100px;
     height: 100px;
-    border-radius: 50%;
     background: linear-gradient(145deg, #ffffff, #dcdcdc); /* 3D coin effect */
     box-shadow: 3px 3px 5px #d1d1d1, -3px -3px 5px #ffffff; /* Inner shadow for 3D */
     text-align: center;
