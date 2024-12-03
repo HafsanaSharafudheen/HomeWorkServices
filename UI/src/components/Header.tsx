@@ -2,80 +2,79 @@ import { Link } from "react-router-dom";
 import { Navbar, Container, Nav, NavDropdown, Offcanvas, Form, Button } from "react-bootstrap";
 import "../App.css";
 import { useSelector } from "react-redux";
-import { RootState } from '../../Redux/store';
-import logo from '../assets/logo.png';
+import { RootState } from "../../Redux/store";
+import logo from "../assets/logo.png";
 
 const Header: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
   return (
     <header className="HeaderContainer">
-        <div className="row col-12 align-items-center">
+      <Navbar expand="sm" className="p-0">
           {/* Logo Section */}
-          <div className="col-6 col-md-2 text-center text-md-start">
-            <Navbar.Brand href="/">
-              <img src={logo} alt="Logo" style={{ height: "80px" }} />
-            </Navbar.Brand>
-          </div>
+          <Navbar.Brand href="/" className="d-flex align-items-center">
+            <img src={logo} alt="Logo" style={{ height: "150px" }} />
+          </Navbar.Brand>
 
-          {/* Navigation Links */}
-          <div className="col-12 col-md-6">
-            {["sm"].map((expand) => (
-              <Navbar key={expand} expand={expand} className="p-0">
-                <Container fluid>
-                  <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-                  <Navbar.Offcanvas
-                    id={`offcanvasNavbar-expand-${expand}`}
-                    aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-                    placement="end"
-                  >
-                    <Offcanvas.Header closeButton>
-                      <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                        Navigation
-                      </Offcanvas.Title>
-                    </Offcanvas.Header>
-                    <Offcanvas.Body>
-                      <Nav className="justify-content-center justify-content-md-start flex-grow-1 pe-3">
-                        <Nav.Link as={Link} to="/">
-                          <span className="DefaultFontColor">Home</span>
-                        </Nav.Link>
-                        <Nav.Link as={Link} to="/services">
-                          <span className="DefaultFontColor">Services</span>
-                        </Nav.Link>
-                        {user && (
-                          <NavDropdown title="Profile" id={`offcanvasNavbarDropdown-profile-${expand}`}>
-                            <NavDropdown.Item as={Link} to="/profile">
-                              <span className="DefaultFontColor">Your Profile</span>
-                            </NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/bookings">
-                              <span className="DefaultFontColor">Your Bookings</span>
-                            </NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/messages">
-                              <span className="DefaultFontColor">Messages</span>
-                            </NavDropdown.Item>
-                          </NavDropdown>
-                        )}
-                        <NavDropdown title="About" id={`offcanvasNavbarDropdown-about-${expand}`}>
-                          <NavDropdown.Item as={Link} to="/aboutUs">
-                            <span className="DefaultFontColor">About Us</span>
-                          </NavDropdown.Item>
-                          <NavDropdown.Item as={Link} to="/testimonials">
-                            <span className="DefaultFontColor">Testimonials</span>
-                          </NavDropdown.Item>
-                          <NavDropdown.Item as={Link} to="/faq">
-                            <span className="DefaultFontColor">FAQ</span>
-                          </NavDropdown.Item>
-                        </NavDropdown>
-                      </Nav>
-                    </Offcanvas.Body>
-                  </Navbar.Offcanvas>
-                </Container>
-              </Navbar>
-            ))}
-          </div>
+          {/* Toggle Icon */}
+          <Navbar.Toggle
+            aria-controls="offcanvasNavbar-expand-sm"
+            className="ms-auto"
+          />
 
-          {/* Search Bar */}
-          <div className="col-6 col-md-4 mt-3 mt-md-0 text-center text-md-end">
+        {/* Offcanvas Menu */}
+        <Navbar.Offcanvas
+          id="offcanvasNavbar-expand-sm"
+          aria-labelledby="offcanvasNavbarLabel-expand-sm"
+          placement="start"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id="offcanvasNavbarLabel-expand-sm">
+              Navigation
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            {/* Navigation Links */}
+            <Nav className="justify-content-end flex-grow-1 pe-3">
+              <Nav.Link as={Link} to="/">
+                <span className="DefaultFontColor">Home</span>
+              </Nav.Link>
+              <Nav.Link as={Link} to="/services">
+                <span className="DefaultFontColor">Services</span>
+              </Nav.Link>
+              {user && (
+                <NavDropdown
+                  title="Profile"
+                  id="offcanvasNavbarDropdown-profile-expand-sm"
+                >
+                  <NavDropdown.Item as={Link} to="/profile">
+                    <span className="DefaultFontColor">Your Profile</span>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/bookings">
+                    <span className="DefaultFontColor">Your Bookings</span>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/messages">
+                    <span className="DefaultFontColor">Messages</span>
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
+              <NavDropdown
+                title="About"
+                id="offcanvasNavbarDropdown-about-expand-sm"
+              >
+                <NavDropdown.Item as={Link} to="/aboutUs">
+                  <span className="DefaultFontColor">About Us</span>
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/testimonials">
+                  <span className="DefaultFontColor">Testimonials</span>
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/faq">
+                  <span className="DefaultFontColor">FAQ</span>
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+
+            {/* Search Bar */}
             <Form className="d-flex search-container">
               <div className="form-floating w-100">
                 <Form.Control
@@ -87,14 +86,14 @@ const Header: React.FC = () => {
                 />
                 <label htmlFor="floatingInput">Search</label>
               </div>
-              <Button className="DefaultButton ml-2" type="submit">
-                <span className="DefaultFontColor">
+              <Button className="serachButton ml-2" type="submit">
+                
                   <i className="fas fa-search"></i>
-                </span>
               </Button>
             </Form>
-          </div>
-        </div>
+          </Offcanvas.Body>
+        </Navbar.Offcanvas>
+      </Navbar>
     </header>
   );
 };

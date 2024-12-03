@@ -61,34 +61,47 @@ span:hover{
 }
 
 .form-floating .form-control {
-  border-radius: 0.25rem; 
+  border-radius: 0.25rem;
   height: 1.7rem;
+  min-height: 1.7rem;
+  padding-top: 1.25rem; 
 }
 
 .form-floating label {
   position: absolute;
   top: 0.5rem;
   left: 0.75rem;
-  color:var(--text-color);
+  color: var(--text-color);
   transition: all 0.2s ease-in-out;
-  pointer-events: none;
+   pointer-events: none;
+  font-size: 0.85rem; 
 }
 
 .form-floating .form-control:focus + label,
 .form-floating .form-control:not(:placeholder-shown) + label {
   top: -0.75rem;
-  color:var(--text-color)
+  left: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-color);
 }
 
 .form-floating .form-control:focus {
-  border-color:var(--border-color)
+  border-color: var(--border-color);
 }
 
-/* .form-floating .form-control:not(:focus) + label {
-  display: none; /* Hide label when not focused */
-} */
+.form-floating .form-control::placeholder {
+  opacity: 1;
+  color: #aaa; 
+}
 
-/* Button styling */
+.form-floating .form-control:focus::placeholder {
+  opacity: 0; /
+}
+
+.form-floating .form-control:not(:focus) + label {
+  display: none; 
+}
+
 .DefaultButton {
   background-color:var(--background-color);
   color: #fff;
@@ -101,4 +114,10 @@ span:hover{
 
 .animate__fadeInLeft{
   --animate-duration: 2s;
+}
+.serachButton{
+  background-color: var(--primary-color);
+}
+.serachButton:hover{
+  background-color: var(--border-color);
 }

@@ -20,7 +20,7 @@ const AdminUsers = () => {
       try {
         const response = await axios.get("/fetchUsers");
         console.log(response.data, "response data");
-        setUsers(response.data);
+        setUsers(response.data.users);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -45,7 +45,6 @@ const AdminUsers = () => {
   };
 
   return (
-    <div className="container-fluid">
       <div className="row">
         {/* Sidebar */}
         <div className="col-md-2">
@@ -107,7 +106,6 @@ const AdminUsers = () => {
             </table>
           </div>
         </div>
-      </div>
     </div>
   );
 };

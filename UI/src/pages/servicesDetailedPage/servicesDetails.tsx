@@ -41,7 +41,7 @@ const ServicesDetails: React.FC = () => {
     <>
     <Header/>
     <div className="container mt-5">
-      <h2>{serviceName}s</h2>
+      <h2 className="HeadingStyle">{serviceName}s</h2>
 
       {loading ? (
         <p>Loading...</p>

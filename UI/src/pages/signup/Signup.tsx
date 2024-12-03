@@ -153,7 +153,7 @@ const navigate=useNavigate()
           </div>
 
           <Button
-            className="DefaultButton w-100"
+            className="DefaultButton"
             variant="primary"
             type="submit"
             disabled={loading}

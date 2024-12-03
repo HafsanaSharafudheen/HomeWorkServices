@@ -1,3 +1,4 @@
+
 .provider-details p {
   margin: 10px 0;
   display: flex;
@@ -13,7 +14,6 @@
 }
 
 .availability-label {
-  font-weight: bold;
   padding: 5px 10px;
   border-radius: 5px;
 }
@@ -26,4 +26,7 @@
 .not-available {
   background-color: red;
   color: white;
+}
+.service-charges span{
+  color: red;
 }

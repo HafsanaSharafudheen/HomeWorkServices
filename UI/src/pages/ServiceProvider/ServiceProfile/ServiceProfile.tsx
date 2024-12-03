@@ -48,7 +48,6 @@ function ServiceProfile() {
           ...prevState,
           isAvailable: updatedAvailability,
         }));
-        alert(response.data.message || "Availability status updated successfully");
         fetchProfileDetails();
 
       } else {

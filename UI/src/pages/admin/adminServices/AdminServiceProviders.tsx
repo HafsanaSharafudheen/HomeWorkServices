@@ -23,8 +23,8 @@ const AdminServiceProviders = () => {
     const fetchProviders = async () => {
       try {
         const response = await axios.get("/fetchProviders");
-        console.log(response.data, "response data");
-        setProviders(response.data);
+        console.log(response.data.providers, "response data");
+        setProviders(response.data.providers);
       } catch (error) {
         console.error("Error fetching providers:", error);
       }
@@ -52,14 +52,11 @@ const AdminServiceProviders = () => {
   };
 
   return (
-    <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
         <div className="col-md-2">
           <SideBar />
         </div>
 
-        {/* Providers Table */}
         <div className="col-md-10 user-details-container">
           <h2 className="table-title">Service Providers</h2>
           <div className="responsive-table">
@@ -70,6 +67,7 @@ const AdminServiceProviders = () => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Service Category</th>
+                  
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -79,7 +77,7 @@ const AdminServiceProviders = () => {
                     <tr key={provider._id}>
                       <td>{provider.fullName}</td>
                       <td>{provider.email}</td>
-                      <td>{provider.phone || "N/A"}</td>
+                      <td>{provider.contactNumber || "N/A"}</td>
                       <td>{provider.serviceCategory || "N/A"}</td>
                       <td>
                         <button
@@ -109,7 +107,6 @@ const AdminServiceProviders = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

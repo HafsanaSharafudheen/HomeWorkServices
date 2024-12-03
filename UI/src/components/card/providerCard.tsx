@@ -52,15 +52,20 @@ const ProviderCard: React.FC<{ provider: any }> = ({ provider }) => {
         {provider.serviceCharges.map((charge: any) => (
           <p key={charge._id}>
             <FaMoneyBillWave className="icon" /> {charge.type}: ₹
-            {charge.amount}
+            <span>{charge.amount}</span>
           </p>
         ))}
       </div>
+      <button className="DefaultButton" >Pick a Slot</button>
+
     </div>
+
   </div>
+
 </div>
 
       </div>
+      <hr></hr>
     </div>
   );
 };

@@ -68,10 +68,10 @@ const Category = () => {
 
   return (
     <div className="category-container row">
-      <div className="col-md-4">
+      <div className="col-md-2">
         <SideBar />
       </div>
-      <div className="col-md-8 content-container">
+      <div className="col-md-10 content-container">
         <div className="header">
           <button
             className="add-category-button"
