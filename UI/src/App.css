@@ -61,8 +61,8 @@ span:hover{
 }
 
 .form-floating .form-control {
-  border-radius: 0.25rem;
- 
+  border-radius: 0.25rem; 
+  height: 1.7rem;
 }
 
 .form-floating label {
@@ -83,6 +83,10 @@ span:hover{
 .form-floating .form-control:focus {
   border-color:var(--border-color)
 }
+
+/* .form-floating .form-control:not(:focus) + label {
+  display: none; /* Hide label when not focused */
+} */
 
 /* Button styling */
 .DefaultButton {

@@ -10,8 +10,7 @@ const Header: React.FC = () => {
 
   return (
     <header className="HeaderContainer">
-      <div className="container-fluid">
-        <div className="row align-items-center">
+        <div className="row col-12 align-items-center">
           {/* Logo Section */}
           <div className="col-6 col-md-2 text-center text-md-start">
             <Navbar.Brand href="/">
@@ -88,7 +87,7 @@ const Header: React.FC = () => {
                 />
                 <label htmlFor="floatingInput">Search</label>
               </div>
-              <Button className="DefaultButton" type="submit">
+              <Button className="DefaultButton ml-2" type="submit">
                 <span className="DefaultFontColor">
                   <i className="fas fa-search"></i>
                 </span>
@@ -96,7 +95,6 @@ const Header: React.FC = () => {
             </Form>
           </div>
         </div>
-      </div>
     </header>
   );
 };
