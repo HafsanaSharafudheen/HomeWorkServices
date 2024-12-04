@@ -3,17 +3,10 @@ import axios from "axios";
 import "./Category.css";
 import SideBar from '../adminDashboard/SideBar';
 import CategoryCard from "../../../components/CategoryCard/CategoryCard";
-
-interface ICategory {
-  _id: string;
-  categoryName: string;
-  categoryImage: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import {CategoryModel} from '../../../types/category'
 
 const Category = () => {
-  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [newCategory, setNewCategory] = useState<{ categoryName: string; categoryImage: File | null }>({
     categoryName: "",

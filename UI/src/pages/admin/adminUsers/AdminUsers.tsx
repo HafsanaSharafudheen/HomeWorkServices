@@ -2,18 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./adminUsers.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
+import { User } from "../../../types/user";
 
-interface IUser {
-  _id: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  image: string; 
-  createdAt: string;
-}
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {

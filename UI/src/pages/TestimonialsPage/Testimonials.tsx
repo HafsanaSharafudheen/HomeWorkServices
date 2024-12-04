@@ -5,13 +5,12 @@ import Footer from '../../components/Footer'
 
 function Testimonials() {
   return (
-   <>
-   <Header/>
-        <TestimonialSlider/>
-   <TestimonialsCard/>
-   <Footer/>
-   </>
+    <>
+      <Header />
+      <TestimonialSlider />
+      <TestimonialsCard />
+      <Footer />
+    </>
   )
 }
-
 export default Testimonials

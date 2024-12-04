@@ -2,22 +2,11 @@ import React, { useState, useEffect } from "react";
 import "../adminUsers/adminUsers.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
+import { Provider } from "../../../types/provider";
 
-interface IProvider {
-  _id: string;
-  fullName: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  serviceCategory?: string;
-  yearsOfExperience?: number;
-  workingHours?: string;
-  certifications?: string;
-  languages?: string[];
-}
 
 const AdminServiceProviders = () => {
-  const [providers, setProviders] = useState<IProvider[]>([]);
+  const [providers, setProviders] = useState<Provider[]>([]);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -33,13 +22,10 @@ const AdminServiceProviders = () => {
     fetchProviders();
   }, []);
 
-  // Handle editing a provider
   const handleEditProvider = (id: string) => {
     alert(`Edit functionality for provider with ID: ${id}`);
-    // Implement edit logic here
   };
 
-  // Handle deleting a provider
   const handleDeleteProvider = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this provider?")) {
       try {

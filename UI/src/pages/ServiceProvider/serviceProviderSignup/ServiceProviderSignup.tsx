@@ -7,42 +7,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from '../../../../Redux/store';
 import axios from "../../../axios/axios";
 import { signupFailure, signupStart, signupSuccess } from "../../../../Redux/user/userSlice";
+import {Provider} from '../../../types/provider'
 
-
-interface FormData {
-  email:string,
-  fullName: string;
-  contactNumber: string;
-  serviceCategory: string;
-  yearsOfExperience: string;
-  workingHours: string;
-  certifications: string;
-  languages: string[];
-  education: {
-    institute: string;
-    year: string;
-  };
-  password: string;
-  confirmPassword: string;
-}
+// interface FormData {
+//   email:string,
+//   fullName: string;
+//   contactNumber: string;
+//   serviceCategory: string;
+//   yearsOfExperience: string;
+//   workingHours: string;
+//   certifications: string;
+//   languages: string[];
+//   education: {
+//     institute: string;
+//     year: string;
+//   };
+//   password: string;
+//   confirmPassword: string;
+// }
 
 function ServiceProviderSignup() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<Provider>({
     email:'',
     fullName: "",
     contactNumber: "",
     serviceCategory: "",
-    yearsOfExperience: "",
+    yearsOfExperience: 0,
     workingHours: "",
     certifications: "",
     languages: [],
-    education: { institute: "", year: "" },
+    education: { institute: "", year: 0 },
     password: "",
     confirmPassword: "",
+    serviceCharge:0
   });
   const [formError, setFormError] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error } = useSelector((state: RootState) => state.user);
+  const { loading } = useSelector((state: RootState) => state.user);
 
 const navigate=useNavigate()
   const handleChange = (
@@ -74,7 +75,6 @@ const navigate=useNavigate()
       }
     });
   };
- // Handle form submission
  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   dispatch(signupStart())
@@ -248,14 +248,24 @@ const navigate=useNavigate()
                 onChange={handleChange}
               />
               <Form.Label>Year of Completion</Form.Label>
+            </div> <div className="form-floating mb-3">
+              <Form.Control
+                type="number"
+                name="year"
+                placeholder="Year of Completion"
+                className="DefaultInput no-focus"
+                value={formData.education.year}
+                onChange={handleChange}
+              />
+              <Form.Label>ServiceCharge</Form.Label>
             </div>
             <div className="form-floating mb-3">
               <Form.Control
-                type="password"
-                name="password"
-                placeholder="Password"
+                type="serviceCharge"
+                name="serviceCharge"
+                placeholder="serviceCharge"
                 className="DefaultInput no-focus"
-                value={formData.password}
+                value={formData.serviceCharge}
                 onChange={handleChange}
               />
               <Form.Label>Password</Form.Label>

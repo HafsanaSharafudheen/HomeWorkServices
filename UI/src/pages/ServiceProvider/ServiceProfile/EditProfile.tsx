@@ -1,30 +1,26 @@
-import React, { useState, useEffect } from "react";
+
+import  { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import axios from "../../../axios/axios";
 import { useNavigate } from 'react-router-dom';
+import { Provider } from "../../../types/provider"; // Importing the Provider interface
 
 function EditProfile() {
-    const navigate = useNavigate(); 
-  const [formData, setFormData] = useState({
-    name: "",
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<Provider>({
+    fullName: "",
     email: "",
-    phone: "",
+    contactNumber: "",
     address: "",
-    languages: {
-      hindi: false,
-      malayalam: false,
-      english: false,
-      tamil: false,
-    },
+    languages: [],
     serviceCategory: "",
-    experience: "",
-    education: "",
-    availability: "",
+    yearsOfExperience: 0,
+    education: { institute: "", year: 0 },
+    workingHours: "",
     certifications: "",
-    basicPayment: "",
-    emergencyPayment: "",
-    onsiteCharge: "",
-    advancedCharge: "",
+    serviceCharge: 0,
+    isAdmin: false,
+    isAvailable: true,
   });
 
   useEffect(() => {
@@ -34,33 +30,19 @@ function EditProfile() {
         const data = response.data.profile;
 
         setFormData({
-          name: data.fullName || "",
+          fullName: data.fullName || "",
           email: data.email || "",
-          phone: data.contactNumber || "",
-          address:data.address||"",
-          languages: {
-            hindi: data.languages?.includes("Hindi") || false,
-            malayalam: data.languages?.includes("Malayalam") || false,
-            english: data.languages?.includes("English") || false,
-            tamil: data.languages?.includes("Tamil") || false,
-          },
+          contactNumber: data.contactNumber || "",
+          address: data.address || "",
+          languages: data.languages || [],
           serviceCategory: data.serviceCategory || "",
-          experience: data.yearsOfExperience || "",
-          education: data.education?.institute || "",
-          availability: data.workingHours || "",
+          yearsOfExperience: data.yearsOfExperience || 0,
+          education: data.education || { institute: "", year: 0 },
+          workingHours: data.workingHours || "",
           certifications: data.certifications || "",
-          basicPayment:
-            data.serviceCharges?.find((charge:{type:string,amount:number}) => charge.type === "Basic Payment")
-              ?.amount || "",
-          emergencyPayment:
-            data.serviceCharges?.find((charge:{type:string,amount:number}) => charge.type === "Emergency Payment")
-              ?.amount || "",
-          onsiteCharge:
-            data.serviceCharges?.find((charge:{type:string,amount:number}) => charge.type === "Onsite Charge")
-              ?.amount || "",
-          advancedCharge:
-            data.serviceCharges?.find((charge:{type:string,amount:number}) => charge.type === "Advanced Charge")
-              ?.amount || "",
+          serviceCharge: data.serviceCharge || 0,
+          isAdmin: data.isAdmin || false,
+          isAvailable: data.isAvailable || true,
         });
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -71,68 +53,62 @@ function EditProfile() {
     fetchProfileData();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type, checked } = e.target;
 
-    if (name.startsWith("languages.")) {
-      const languageKey = name.split(".")[1];
+    if (type === "checkbox") {
+      const lang = value;
       setFormData((prev) => ({
         ...prev,
-        languages: { ...prev.languages, [languageKey]: checked },
+        languages: checked
+          ? [...prev.languages, lang]
+          : prev.languages.filter((language) => language !== lang),
       }));
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const updateData = {
-        fullName: formData.name,
+        fullName: formData.fullName,
         email: formData.email,
-        contactNumber: formData.phone,
-        languages: Object.keys(formData.languages).filter(
-          (lang) => formData.languages[lang]
-        ),
+        contactNumber: formData.contactNumber,
+        address: formData.address,
+        languages: formData.languages,
         serviceCategory: formData.serviceCategory,
-        yearsOfExperience: formData.experience,
-        education: {
-          institute: formData.education,
-          year: "", // Optional year field, adjust as needed
-        },
-        workingHours: formData.availability,
+        yearsOfExperience: formData.yearsOfExperience,
+        education: formData.education,
+        workingHours: formData.workingHours,
         certifications: formData.certifications,
-        serviceCharges: [
-          { type: "Basic Payment", amount: formData.basicPayment },
-          { type: "Emergency Payment", amount: formData.emergencyPayment },
-          { type: "Onsite Charge", amount: formData.onsiteCharge },
-          { type: "Advanced Charge", amount: formData.advancedCharge },
-        ],
+        serviceCharge: formData.serviceCharge,
       };
 
-      const response = await axios.post("/updateProfile", updateData);
-     navigate('/ServiceProfile')
+      await axios.post("/updateProfile", updateData);
+      navigate("/ServiceProfile");
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile. Please try again.");
     }
   };
+
   const handleCancel = () => {
-    navigate(-1); 
+    navigate(-1);
   };
+
   return (
     <div className="container p-4">
-      <h2 className="text-center">Edit Profile</h2>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Full Name</Form.Label>
               <Form.Control
                 type="text"
-                name="name"
-                value={formData.name}
+                name="fullName"
+                value={formData.fullName}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -146,31 +122,30 @@ function EditProfile() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Phone</Form.Label>
+              <Form.Label>Contact Number</Form.Label>
               <Form.Control
                 type="text"
-                name="phone"
-                value={formData.phone}
+                name="contactNumber"
+                value={formData.contactNumber}
                 onChange={handleChange}
               />
             </Form.Group>
             <Form.Group className="mb-3">
-  <Form.Label>Address</Form.Label>
-  <Form.Control
-    as="textarea"
-    rows={3} 
-    name="address"
-    value={formData.address}
-    onChange={handleChange}
-  />
-</Form.Group>
-
-<Form.Group className="mb-3">
-              <Form.Label>Experience (years)</Form.Label>
+              <Form.Label>Address</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Years of Experience</Form.Label>
               <Form.Control
                 type="number"
-                name="experience"
-                value={formData.experience}
+                name="yearsOfExperience"
+                value={formData.yearsOfExperience}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -179,26 +154,14 @@ function EditProfile() {
               <Form.Control
                 type="text"
                 name="education"
-                value={formData.education}
-                onChange={handleChange}
+                value={formData.education.institute}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    education: { ...prev.education, institute: e.target.value },
+                  }))
+                }
               />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Languages Known</Form.Label>
-              <div>
-                {["hindi", "malayalam", "english", "tamil"].map((lang) => (
-                  <Form.Check
-                    inline
-                    key={lang}
-                    type="checkbox"
-                    label={lang.charAt(0).toUpperCase() + lang.slice(1)}
-                    name={`languages.${lang}`}
-                    checked={formData.languages[lang]}
-                    onChange={handleChange}
-                  />
-                ))}
-              </div>
             </Form.Group>
           </Col>
           <Col md={6}>
@@ -215,13 +178,12 @@ function EditProfile() {
                 <option value="cleaning">Cleaning</option>
               </Form.Select>
             </Form.Group>
-           
             <Form.Group className="mb-3">
-              <Form.Label>Availability</Form.Label>
+              <Form.Label>Working Hours</Form.Label>
               <Form.Control
                 type="text"
-                name="availability"
-                value={formData.availability}
+                name="workingHours"
+                value={formData.workingHours}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -235,38 +197,27 @@ function EditProfile() {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Basic Payment</Form.Label>
-              <Form.Control
-                type="number"
-                name="basicPayment"
-                value={formData.basicPayment}
-                onChange={handleChange}
-              />
+              <Form.Label>Languages Known</Form.Label>
+              <div>
+                {["Hindi", "Malayalam", "English", "Tamil"].map((lang) => (
+                  <Form.Check
+                    inline
+                    key={lang}
+                    type="checkbox"
+                    label={lang}
+                    value={lang}
+                    checked={formData.languages.includes(lang)}
+                    onChange={handleChange}
+                  />
+                ))}
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Emergency Payment</Form.Label>
+              <Form.Label>Service Charge</Form.Label>
               <Form.Control
                 type="number"
-                name="emergencyPayment"
-                value={formData.emergencyPayment}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Onsite Visit Charge</Form.Label>
-              <Form.Control
-                type="number"
-                name="onsiteCharge"
-                value={formData.onsiteCharge}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Advanced Service Charge</Form.Label>
-              <Form.Control
-                type="number"
-                name="advancedCharge"
-                value={formData.advancedCharge}
+                name="serviceCharge"
+                value={formData.serviceCharge}
                 onChange={handleChange}
               />
             </Form.Group>
@@ -276,8 +227,8 @@ function EditProfile() {
           Save Changes
         </Button>
         <Button variant="secondary" className="mt-3" onClick={handleCancel}>
-              Cancel
-            </Button>
+          Cancel
+        </Button>
       </Form>
     </div>
   );
