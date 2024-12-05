@@ -1,46 +1,36 @@
-
+/* Main Container */
 .service-profile-container {
-  margin-top: 20px;
   padding: 20px;
   border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Left Section */
-.service-profile-left {
-  border-radius: 10px;
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.service-profile-header {
-  display: flex;
-  justify-content: space-between;
+
+.profile-details p {
+  font-size: 14px;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 10px 0;
 }
 
-.profile-info h2 {
-  margin: 0 0 10px;
-  font-size: 24px;
-  text-align: center;
-  color: #333;
-}
-
-.profile-details div {
-  margin-bottom: 10px;
+.profile-details .icon {
   font-size: 16px;
-  color: #555;
+  color:var(--border-color);
 }
 
-/* Profile Image */
+h6 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 15px 0 5px;
+}
+
+/* Right Section */
 .profile-image {
   text-align: center;
-  margin-right: 180px;
-}
-
-.profile-img-container {
-  margin-bottom: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-img {
@@ -48,43 +38,43 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  border: 2px solid;
 }
 
 .btn-availability {
   margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid;
   border-radius: 5px;
   cursor: pointer;
-  display: block;
-  color: #fff;
   text-transform: uppercase;
+  display: inline-block;
 }
 
 .btn-availability.available {
-  background-color: #28a745;
+  background-color: #eafbee;
+  color: #28a745;
+  border-color: #28a745;
 }
 
 .btn-availability.not-available {
-  background-color: #dc3545;
+  background-color: #fdecea;
+  font-size: 10px;
+  color: #dc3545;
+  border-color: #dc3545;
 }
 
 .edit-profile-link {
   margin-top: 10px;
-  display: block; 
+  display: block;
   font-size: 14px;
   color: #007bff;
   text-decoration: none;
-  text-align: center;
 }
 
 .edit-profile-link:hover {
   text-decoration: underline;
 }
-
-
-
-
-

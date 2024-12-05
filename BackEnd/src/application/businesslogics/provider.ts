@@ -21,21 +21,7 @@ const updateProviderProfile = async (
   return result;
 };
 
-const updateProviderServiceCharges = async (
-  userId: string,
-  charges: any
-): Promise<any> => {
-  const provider = await Provider.findById(userId);
 
-  if (!provider) {
-    throw new Error("No service provider found");
-  }
-
-  provider.serviceCharges = charges;
-  await provider.save();
-
-  return provider;
-};
 
 const findAllProvidersByCategory = async ( serviceCategory: string ): Promise<any> => {
   const providers = await Provider.find({
@@ -78,6 +64,5 @@ export const updateProviderAvailable = async (
 export default {
   findProviderById,
   updateProviderProfile,
-  updateProviderServiceCharges,
   findAllProvidersByCategory,updateProviderAvailable
 };

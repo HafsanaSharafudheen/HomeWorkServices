@@ -1,4 +1,3 @@
-import React from 'react';
 import './ServiceProvider.css';
 import increaseEarnings from '../../assets/Earnings.jpg';
 import productivity from '../../assets/worker-walking-along-gears-different-sizes_1156-608.avif';
@@ -7,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ServiceProvider = () => {
   const navigate = useNavigate();
+ 
 
   return (
     <div className="container service-provider-container">
@@ -21,8 +21,8 @@ const ServiceProvider = () => {
         <div className="col-md-6 text-center text-md-end">
           <button
             className="DefaultButton w-md-auto"
-            onClick={() => navigate('/serviceProviderSignup')}
-          >
+            onClick={() => navigate('/serviceProviderSignup', { state: { mode: "create" } })}
+            >
             Join With Us
           </button>
         </div>

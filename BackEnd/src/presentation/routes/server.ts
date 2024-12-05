@@ -12,7 +12,6 @@ import fetchUsers from '../../presentation/controllers/admin/fetchUsers';
 import fetchServiceProviders from "../../presentation/controllers/admin/fetchServiceProviders";
 import fetchProfileDetails from "../../presentation/controllers/providers/fetchProfileDetails";
 import { verifyToken } from '../../presentation/Security/jwtService';
-import SaveServiceCharges from "../../presentation/controllers/providers/saveServiceCharges";
 import ServiceProfileUpdate from "../../presentation/controllers/providers/profileUpdate";
 import fetchAllProvidersByCategory from "../controllers/providers/fetchAllProvidersByCategory";
 import updateAvailability from "../controllers/providers/avilableUpdate";
@@ -40,7 +39,6 @@ app.get('/fetchProviders',fetchServiceProviders);
 app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
-app.post('/service-charges',SaveServiceCharges)
 app.post('/updateProfile',ServiceProfileUpdate)
 app.get('/providers',fetchAllProvidersByCategory);
 

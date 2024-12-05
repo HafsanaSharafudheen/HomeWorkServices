@@ -14,7 +14,6 @@ import AdminServiceProviders from './pages/admin/adminServices/AdminServiceProvi
 import ServiceProviderDashboard from './pages/ServiceProvider/ServiceProviderDashboard/ServiceProviderDashboard';
 import ServiceProviderSignup from './pages/ServiceProvider/serviceProviderSignup/ServiceProviderSignup';
 import ServiceProfile from './pages/ServiceProvider/ServiceProfile/ServiceProfile';
-import EditProfile from './pages/ServiceProvider/ServiceProfile/EditProfile';
 import ServicesDetails from './pages/servicesDetailedPage/servicesDetails';
 
 
@@ -38,7 +37,6 @@ const App = () => {
              
              <Route path="/testimonials" element={<Testimonials />} />
              <Route path="/serviceProviderDashboard" element={<ServiceProviderDashboard />} />
-             <Route path="/editProfile" element={<EditProfile />} />
              <Route path="/providers" element={<ServicesDetails/>} />
 
              

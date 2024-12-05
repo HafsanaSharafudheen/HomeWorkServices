@@ -4,12 +4,17 @@ export interface IProvider extends Document {
   fullName: string;
   email: string;
   phone?: string;
-  address?: string;
+  address?: {
+    city: string;
+    district: string;
+    pin: string;
+  };
+  whatsappNumber?: string;
   password: string;
   contactNumber?: string;
   serviceCategory?: string;
   yearsOfExperience?: number;
-  workingHours?: string;
+  workingHours?: {start: string, end:string}
   certifications?: string;
   isAdmin: boolean;
   languages?: string[];
@@ -17,20 +22,31 @@ export interface IProvider extends Document {
     institute: string;
     year: number;
   };
-  serviceCharges?: { type: string; amount: number | string }[]; 
+  serviceCharge?:number ; 
   confirmPassword?: string;
-  isAvailable:Boolean
+  isAvailable:Boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  updatedBy?: string;
 }
 const providerSchema: Schema = new Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  address: {
+    city: { type: String, required: true },
+    district: { type: String, required: true },
+    pin: { type: String, required: true },
+  },
   phone: { type: String },
-  address: { type: String },
+  whatsappNumber: { type: String },
   password: { type: String, required: true },
   contactNumber: { type: String },
   serviceCategory: { type: String },
   yearsOfExperience: { type: Number },
-  workingHours: { type: String },
+  workingHours: {
+    start:{type:String},
+    end:{type:String} 
+  },
   isAvailable:{type: Boolean, default: false},
 
   certifications: { type: String },
@@ -41,12 +57,10 @@ const providerSchema: Schema = new Schema({
   },
   confirmPassword: { type: String },
   isAdmin: { type: Boolean, default: false },
-  serviceCharges: [
-    {
-      type: { type: String, required: true }, 
-      amount: { type: Number, required: true }, 
-    },
-  ],
+  updatedBy: { type: String },
+ serviceCharge: { type: Number },
+}, {
+  timestamps: true, 
 });
 
 export default mongoose.model<IProvider>("Provider", providerSchema);

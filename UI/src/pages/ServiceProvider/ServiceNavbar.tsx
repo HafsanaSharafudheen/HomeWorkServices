@@ -1,15 +1,18 @@
 import './serviceProvider.css'
+import logo from '../../assets/logo.png'
+
 const ServiceNavbar = () => {
   return (
     <div className="row  Servicenavbar align-items-center p-3">
-        <div className="col-md-4">
+        <div className="col-md-6">
         <div className="logo">
-        <h4>HomeWork</h4>
-      </div>
+        <img src={logo} alt="Logo" style={{ height: "100px" }} />
+
+    </div>
         </div>
-        <div className="col-md-8">
+        <div className="col-md-6">
         <div className="user-details">
-        <p>Welcome, Mr. Pradeep</p>
+        <p>Welcome, TO HOMEWORK</p>
         <small>Your journey to excellence begins here.</small>
       </div>
         </div>
