@@ -1,9 +1,9 @@
 
   .Servicenavbar
    {
-    background-color: var(--text-color);
+    background-color: var(--primary-color);
     color: white;
-    padding: 15px 20px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,7 +62,7 @@
   }
   
   .sidebar .nav-link.active {
-    background-color: var(--text-color);
+    background-color: var(--primary-color);
     color: white;
   }
   

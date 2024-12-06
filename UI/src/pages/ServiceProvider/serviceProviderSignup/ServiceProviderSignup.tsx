@@ -33,6 +33,7 @@ function ServiceProviderSignup() {
   });
 
   const [formError, setFormError] = useState<string>("");
+
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.user);
 
@@ -44,7 +45,8 @@ function ServiceProviderSignup() {
         try {
           const response = await axios.get(`/serviceProviderProfile?profileId=${profileId}`);
           if (response.status === 200) {
-            setFormData(response.data);
+            const profileData = response.data.profile;
+            setFormData(profileData);
           }
         } catch (error) {
           console.error("Failed to fetch profile data:", error);
@@ -153,6 +155,34 @@ function ServiceProviderSignup() {
     });
   };
   
+  const handleEditProfile = async () => {
+    dispatch(signupStart()); // Start loading
+    if (
+      !formData.fullName || !formData.serviceCharge ||
+      !formData.email ||
+      !formData.contactNumber || !formData.whatsappNumber ||
+      !formData.serviceCategory || 
+      !formData.yearsOfExperience || 
+      !formData.workingHours.start || !formData.workingHours.end
+    ) {
+      setFormError("All fields are required.");
+      return;
+    }
+  
+  
+    try {
+      const response = await axios.post(`/updateProfile`, formData);
+      if (response.status === 200) {
+        dispatch(signupSuccess(response.data.profile));
+        navigate("/ServiceProfile");
+      }
+    } catch (error) {
+      setFormError(error.response?.data?.message || "Operation failed. Please try again.");
+      dispatch(signupFailure(error.response?.data?.message || "Operation failed."));
+    }
+  };
+  
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -177,20 +207,15 @@ function ServiceProviderSignup() {
     }
 
     try {
-      if (mode === "create") {
+    
         const response = await axios.post("/providerSignup", formData);
         if (response.status === 201) {
           console.log(response.data)
           dispatch(signupSuccess(response.data));
           navigate("/login");
         }
-      } else if (mode === "edit" && profileId) {
-        const response = await axios.post(`/updateProfile`, formData);
-        if (response.status === 200) {
-          dispatch(signupSuccess(response.data));
-          navigate("/ServiceProfile");
-        }
-      }
+      
+      
     } catch (error: any) {
       setFormError(error.response?.data?.message || "Operation failed. Please try again.");
       dispatch(signupFailure(error.response?.data?.message || "Operation failed."));
@@ -210,8 +235,9 @@ function ServiceProviderSignup() {
     >
       <div className="blur-overlay"></div>
       <div className="form-SignupContainer container">
-        <h2 className="mb-4 text-center">Signup</h2>
-
+      <h2 className="mb-4 text-center">
+      {mode === "edit" ? "Edit Profile" : "Signup"}
+    </h2>
         <Form onSubmit={handleSubmit}>
           <div className="row">
             {/* Left Column */}
@@ -392,7 +418,7 @@ function ServiceProviderSignup() {
                   name="password"
                   placeholder="Password"
                   value={formData.password}
-                  onChange={handleChange}
+                  onChange={handleChange} disabled={mode === "edit"}
                 />
                 <Form.Label>Password</Form.Label>
               </div>
@@ -402,22 +428,36 @@ function ServiceProviderSignup() {
                   name="confirmPassword"
                   placeholder="Confirm Password"
                   value={formData.confirmPassword}
-                  onChange={handleChange}
+                  onChange={handleChange} disabled={mode === "edit"}
                 />
                 <Form.Label>Confirm Password</Form.Label>
               </div>
             </div>
           </div>
           <div className="text-center mt-4">
-            <Button
-              className="DefaultButton w-100"
-              variant="primary"
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? "Signing Up..." : "Sign Up"}
-            </Button>
-          </div>
+  {mode === "edit" ? (
+    <Button
+      className="DefaultButton w-100"
+      variant="primary"
+      type="button"
+      disabled={loading}
+      onClick={handleEditProfile}
+    >
+      {loading ? "Saving..." : "Edit Profile"}
+    </Button>
+  ) : (
+    <Button
+      className="DefaultButton w-100"
+      variant="primary"
+      type="submit"
+      disabled={loading}
+
+    >
+      {loading ? "Signing Up..." : "Sign Up"}
+    </Button>
+  )}
+</div>
+
         </Form>
       </div>
     </div>

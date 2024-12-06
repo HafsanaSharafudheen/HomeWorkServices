@@ -16,6 +16,8 @@
 .availability-label {
   padding: 5px 10px;
   border-radius: 5px;
+  width: fit-content;
+  margin-left: 80px;
 }
 
 .available {
@@ -24,8 +26,7 @@
 }
 
 .not-available {
-  background-color: red;
-  color: white;
+border: 1px solid red;  color: red;
 }
 .service-charges span{
   color: red;

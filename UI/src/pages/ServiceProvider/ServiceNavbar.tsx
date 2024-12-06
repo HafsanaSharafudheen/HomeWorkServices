@@ -6,7 +6,7 @@ const ServiceNavbar = () => {
     <div className="row  Servicenavbar align-items-center p-3">
         <div className="col-md-6">
         <div className="logo">
-        <img src={logo} alt="Logo" style={{ height: "100px" }} />
+        <img src={logo} alt="Logo" style={{ height: "50px" }} />
 
     </div>
         </div>

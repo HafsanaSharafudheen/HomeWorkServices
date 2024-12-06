@@ -18,13 +18,12 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
           />
           <h5 className="mt-3">{provider.fullName}</h5>
           <p>{provider.contactNumber}</p>
-          <p>
-            <span
+          <p
+           
               className={`availability-label ${provider.isAvailable ? "available" : "not-available"
                 }`}
             >
               {provider.isAvailable ? "Available" : "Not Available"}
-            </span>
           </p>
 
         </div>
@@ -33,7 +32,7 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
           <div className="row provider-details">
             <div className="col-md-6 col-12">
               <p>
-                <FaClock className="icon" /> {provider.workingHours}
+                <FaClock className="icon" />{provider.workingHours.start} - {provider.workingHours.end}
               </p>
               <p>
                 <FaLanguage className="icon" /> {provider.languages.join(", ")}
@@ -46,7 +45,7 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
                 <FaWrench className="icon" /> {provider.certifications}
               </p>
               <p>
-                <FaMoneyBillWave className="icon" /> {provider.serviceCharge}
+                <FaMoneyBillWave className="icon" />Rs {provider.serviceCharge} 
               </p>
             </div>
 

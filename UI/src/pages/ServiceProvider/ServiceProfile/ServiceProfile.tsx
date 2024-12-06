@@ -64,9 +64,8 @@ function ServiceProfile() {
     <div>
       <ServiceNavbar />
       <div className="row">
-        <div className="col-md-4">
+       
           <ServiceSidebar />
-        </div>
 
         <div className="col-md-8">
   <div className="service-profile-container row">
