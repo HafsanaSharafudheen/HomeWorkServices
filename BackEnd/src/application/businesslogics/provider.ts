@@ -1,7 +1,8 @@
-import Provider from '../../infrastructure/dbModels/serviceProvider';
+import Provider, { IProvider } from '../../infrastructure/dbModels/serviceProvider';
 
-const findProviderById = async (id: string): Promise<any> => {
+const findProviderById = async (id: string): Promise<IProvider> => {
   const provider = await Provider.findOne({ _id: id });
+  console.log("provider from the finproviderby id", provider);
   if (!provider) {
     throw new Error("No service provider found");
   }

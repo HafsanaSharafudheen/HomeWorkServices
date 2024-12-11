@@ -4,7 +4,6 @@ import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
 import { User } from "../../../types/user";
 
-
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
 
@@ -40,14 +39,14 @@ const AdminUsers = () => {
   return (
       <div className="row">
         {/* Sidebar */}
-        <div className="col-md-2">
+        <div className="col-lg-3 col-md-4 col-sm-12">
           <SideBar />
         </div>
 
-        {/* User Table */}
-        <div className="col-md-10 user-details-container">
-          <h2 className="table-title">User Details</h2>
-          <div className="responsive-table">
+        {/* Table */}
+        <div className="col-lg-9 col-md-8 col-sm-12">
+          <h2 className="table-title my-4">User Details</h2>
+          <div className="table-responsive">
             <table className="table table-bordered table-striped">
               <thead className="thead-dark">
                 <tr>
@@ -66,7 +65,7 @@ const AdminUsers = () => {
                         <img
                           src={user.image}
                           alt={user.fullName}
-                          className="user-image"
+                          className="user-image img-fluid"
                         />
                       </td>
                       <td>{user.fullName}</td>
@@ -74,13 +73,13 @@ const AdminUsers = () => {
                       <td>{user.phone}</td>
                       <td>
                         <button
-                          className="btn btn-warning btn-sm"
+                          className="btn btn-warning btn-sm me-2"
                           onClick={() => handleEditUser(user._id)}
                         >
                           Edit
                         </button>
                         <button
-                          className="btn btn-danger btn-sm ml-2"
+                          className="btn btn-danger btn-sm"
                           onClick={() => handleDeleteUser(user._id)}
                         >
                           Delete
@@ -99,7 +98,7 @@ const AdminUsers = () => {
             </table>
           </div>
         </div>
-    </div>
+      </div>
   );
 };
 

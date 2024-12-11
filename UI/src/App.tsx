@@ -21,26 +21,21 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />   
-             <Route path="/login" element={<Login />} />
-             <Route path="/admin" element={<Login />} />
-<Route path='/adminDashboard' element={<AdminDashboard/>} />
-<Route path="/adminCategories" element={<Category />} />
-<Route path="/adminUsers" element={<AdminUsers />} />
-<Route path="/adminServiceProviders" element={<AdminServiceProviders />} />
-
-
-             <Route path="/signup" element={<Signup />} />
-             <Route path="/aboutUs" element={<About />} />
-
-             <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
-             
-             <Route path="/testimonials" element={<Testimonials />} />
-             <Route path="/serviceProviderDashboard" element={<ServiceProviderDashboard />} />
-             <Route path="/providers" element={<ServicesDetails/>} />
-
-             
-<Route path='/ServiceProfile' element={<ServiceProfile/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<Login />} />
+        <Route path='/adminDashboard' element={<AdminDashboard />} />
+        <Route path="/adminCategories" element={<Category />} />
+        <Route path="/adminUsers" element={<AdminUsers />} />
+        <Route path="/adminServiceProviders" element={<AdminServiceProviders />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/aboutUs" element={<About />} />
+        <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
+        <Route path="/testimonials" element={<Testimonials />} />
+        <Route path="/serviceProviderDashboard" element={<ServiceProviderDashboard />} />
+        <Route path="/providers" element={<ServicesDetails />} />
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
+        <Route path='/ServiceProfile' element={<ServiceProfile />} />
       </Routes>
     </Router>
   );

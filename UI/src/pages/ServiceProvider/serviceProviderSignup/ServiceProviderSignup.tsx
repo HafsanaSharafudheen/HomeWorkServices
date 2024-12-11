@@ -157,17 +157,17 @@ function ServiceProviderSignup() {
   
   const handleEditProfile = async () => {
     dispatch(signupStart()); // Start loading
-    if (
-      !formData.fullName || !formData.serviceCharge ||
-      !formData.email ||
-      !formData.contactNumber || !formData.whatsappNumber ||
-      !formData.serviceCategory || 
-      !formData.yearsOfExperience || 
-      !formData.workingHours.start || !formData.workingHours.end
-    ) {
-      setFormError("All fields are required.");
-      return;
-    }
+    // if (
+    //   !formData.fullName || !formData.serviceCharge ||
+    //   !formData.email ||
+    //   !formData.contactNumber || !formData.whatsappNumber ||
+    //   !formData.serviceCategory || 
+    //   !formData.yearsOfExperience || 
+    //   !formData.workingHours.start || !formData.workingHours.end
+    // ) {
+    //   setFormError("All fields are required.");
+    //   return;
+    // }
   
   
     try {

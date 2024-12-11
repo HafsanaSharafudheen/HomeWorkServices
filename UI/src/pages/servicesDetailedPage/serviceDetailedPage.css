@@ -1,0 +1,49 @@
+.filter-button {
+    background-color:var(--text-color);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size:14px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .filter-button:hover {
+    background-color: var(--secondary-color); /* Darker shade for hover effect */
+    transform: scale(1.05); /* Slight zoom-in effect */
+  }
+  
+
+  .filter-dropdown {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background-color:var(--background-color);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    width: 200px;
+  }
+ 
+  .filter-dropdown.show {
+    display: block; /* Make visible when active */
+  }
+  
+ 
+  .dropdown-item {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .dropdown-item:hover{
+    background-color: var(--secondary-color);
+  }
+ 
+  
+

@@ -7,7 +7,7 @@ export interface Provider {
   whatsappNumber: string; 
   serviceCategory: string;
   yearsOfExperience: number; 
-  workingHours:{start:String,end:String}
+  workingHours:{start:string,end:string}
   certifications: string; 
   languages: string[]; 
   education: {

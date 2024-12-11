@@ -37,13 +37,17 @@ function Login() {
     try {
       const response = await axios.post("/login", formData);
       dispatch(signupStart());
-
-      if (response.data.user.isProvider) {
+    
+      const user = response.data.user;
+    
+      if (user.isProvider) {
+        dispatch(signupSuccess(user));
         navigate("/serviceProviderDashboard");
-      }
-      else if (response.data.user.isAdmin) {
+      } else if (user.isAdmin) {
+        dispatch(signupSuccess(user));
         navigate("/adminDashboard");
       } else {
+        dispatch(signupSuccess(user));
         navigate("/");
       }
     } catch (err: any) {
@@ -51,6 +55,7 @@ function Login() {
       setError(errorMessage);
       dispatch(signupFailure(errorMessage));
     }
+    
   };
 
   return (

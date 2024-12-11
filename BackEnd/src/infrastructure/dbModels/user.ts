@@ -1,24 +1,29 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
-  _id:string;
+  _id: string;
   fullName: string;
   email: string;
   phone?: string;
-  address?: string;
+  address?: { city: string; pin: number; district: string };
   password: string;
-  isAdmin: Boolean;
-
+  whatsappNumber: number;
+  isAdmin: boolean;
 }
 
 const userSchema: Schema = new Schema({
   fullName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phone: { type: String },
-  address: { type: String },
+  address: {
+    city: { type: String },
+    pin: { type: Number },
+    district: { type: String },
+  },
   password: { type: String, required: true },
+  whatsappNumber: { type: Number, required: true },
   isAdmin: { type: Boolean, default: false },
-
 });
 
+// Export the User model
 export default mongoose.model<IUser>("User", userSchema);

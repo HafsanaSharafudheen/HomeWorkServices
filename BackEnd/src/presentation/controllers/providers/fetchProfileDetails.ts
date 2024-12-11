@@ -5,7 +5,7 @@ const fetchProfileDetails = async (req: any, res: any): Promise<void> => {
   try {
 
     const provider = await Provide.findProviderById(req.user.id);
-
+console.log("provider from frtch porilr details",provider);
 
     return res.status(200).json({ message: "Details of provider found", profile: provider });
   } catch (error) {

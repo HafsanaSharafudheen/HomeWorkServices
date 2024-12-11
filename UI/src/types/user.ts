@@ -1,9 +1,13 @@
  export interface User {
-    _id: string;
+    _id?: string;
     fullName: string;
     email: string;
     phone: string;
-    image: string; 
-    createdAt: string;
+    image?: string; 
+    password:string;
+    whatsappNumber:string;
+    address:{district:string,city:string,pin?:number|string}
+    createdAt?: string;
+    confirmPassword: string;
   }
   

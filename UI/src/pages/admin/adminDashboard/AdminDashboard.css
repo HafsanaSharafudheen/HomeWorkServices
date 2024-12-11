@@ -63,8 +63,35 @@
     display: none;
   }
   
+  .admin-dashboard .sidebar.collapsed .nav-icon {
+    font-size: 24px; /* Increase size for better visibility */
+    margin-right: 0; /* Remove margin */
+    text-align: center;
+    flex: 1;
+  }
   .admin-dashboard .main-content {
     flex: 1;
     padding: 20px;
+  }
+  .nav-item .tooltip {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 10px;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .nav-item:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
   }
   
