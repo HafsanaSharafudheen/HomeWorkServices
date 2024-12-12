@@ -15,6 +15,7 @@ import { verifyToken } from '../../presentation/Security/jwtService';
 import ServiceProfileUpdate from "../../presentation/controllers/providers/profileUpdate";
 import fetchAllProvidersByCategory from "../controllers/providers/fetchAllProvidersByCategory";
 import updateAvailability from "../controllers/providers/avilableUpdate";
+import { createBooking } from "../controllers/booking/createBooking";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -44,7 +45,7 @@ app.get('/providers',fetchAllProvidersByCategory);
 
 
 app.post('/updateAvailability', updateAvailability);
-
+app.post('/booking', createBooking);
 
 
 

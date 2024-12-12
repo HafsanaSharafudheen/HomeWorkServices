@@ -5,6 +5,8 @@ import { Provider } from "../../types/provider";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "../../axios/axios";
+import Swal from "sweetalert2"; 
 
 const timeSlots = [
   { start: "9:00 AM", end: "11:00 AM" },
@@ -26,9 +28,27 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
     setSelectedTimeSlot(timeSlot);
   };
 
-  const handleRequest = () => {
-    console.log("Service requested for:", selectedDate, selectedTimeSlot);
-  };
+  const handleRequest = async() => {
+    if (!selectedDate || !selectedTimeSlot) {
+        Swal.fire("Error", "Please select a date and time slot before booking.", "error");
+        return;
+      }
+      try {
+        const response = await axios.post("/booking", {   providerId: provider._id,
+            selectedDate: selectedDate.toISOString(),
+          selectedTimeSlot: selectedTimeSlot,
+        });
+  
+        if (response.status === 201) {
+          Swal.fire("Booking Confirmed", "Your booking is confirmed. We will reach out to you soon.", "success");
+        } else {
+          throw new Error("Failed to confirm booking");
+        }
+      } catch (error) {
+        Swal.fire("Error", "An error occurred while booking. Please try again later.", "error");
+      }
+    };
+
 
   return (
     <div className="serviceDetailsSidebar">
