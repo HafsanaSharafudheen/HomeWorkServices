@@ -50,7 +50,7 @@ const Header: React.FC = () => {
                   <NavDropdown.Item as={Link} to="/profile">
                     <span className="DefaultFontColor">Your Profile</span>
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/bookings">
+                  <NavDropdown.Item as={Link} to="/YourBookings">
                     <span className="DefaultFontColor">Your Bookings</span>
                   </NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/messages">

@@ -63,14 +63,14 @@
   
  
   
-  .nav-tabs {
+  .serviceDetailsSidebar .nav-tabs {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #ddd;
   }
   
-  .nav-item {
+  .serviceDetailsSidebar .nav-item {
     flex: 1;
     text-align: center;
   }

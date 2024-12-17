@@ -26,4 +26,11 @@ const execute = async (bookingData: {
   return newBooking;
 };
 
-export default { execute };
+
+export const getUserBookings = async (userId: string) => {
+  if (!userId) throw new Error("User ID is required");
+  return await bookingRepository.getBookingsByUserId(userId);
+};
+
+
+export default { execute ,getUserBookings};

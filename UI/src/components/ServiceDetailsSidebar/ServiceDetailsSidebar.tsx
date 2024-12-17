@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2"; 
+import { useNavigate } from "react-router-dom";
 
 const timeSlots = [
   { start: "9:00 AM", end: "11:00 AM" },
@@ -19,7 +20,7 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
   const [selectedTab, setSelectedTab] = useState<string>("slots");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
-
+const navigate=useNavigate()
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
   };
@@ -34,12 +35,15 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
         return;
       }
       try {
-        const response = await axios.post("/booking", {   providerId: provider._id,
+        const response = await axios.post("/booking",
+        {   providerId: provider._id,
             selectedDate: selectedDate.toISOString(),
-          selectedTimeSlot: selectedTimeSlot,
+            selectedTimeSlot: selectedTimeSlot,
         });
   
         if (response.status === 201) {
+         
+         navigate('/')
           Swal.fire("Booking Confirmed", "Your booking is confirmed. We will reach out to you soon.", "success");
         } else {
           throw new Error("Failed to confirm booking");
