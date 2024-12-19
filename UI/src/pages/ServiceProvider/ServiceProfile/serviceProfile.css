@@ -1,6 +1,6 @@
 /* Main Container */
-.service-profile-container {
-  padding: 20px;
+.service-profile {
+  padding: 10px;
   border-radius: 10px;
   background-color: #f9f9f9;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -19,17 +19,10 @@
   color:var(--border-color);
 }
 
-h6 {
-  font-size: 14px;
-  font-weight: bold;
-  margin: 15px 0 5px;
-}
 
-/* Right Section */
 .profile-image {
-  text-align: center;
-  background-color: #fff;
   border-radius: 10px;
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -37,7 +30,6 @@ h6 {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  object-fit: cover;
   margin-bottom: 15px;
   border: 2px solid;
 }
@@ -64,6 +56,7 @@ h6 {
   background-color: #fdecea;
   font-size: 10px;
   color: #dc3545;
+
   border-color: #dc3545;
 }
 

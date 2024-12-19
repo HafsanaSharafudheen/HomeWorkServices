@@ -39,7 +39,7 @@ const SideBar: React.FC = () => {
             {!isCollapsed && <span className="nav-text">Dashboard</span>}
           </li>
           <li
-            onClick={() => navigate("/admin/bookings")}
+            onClick={() => navigate("/adminBookings")}
             className="nav-item"
             {...(isCollapsed && {
               "data-tooltip-id": "sidebar-tooltip",

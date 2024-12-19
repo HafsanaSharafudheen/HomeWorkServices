@@ -20,6 +20,7 @@ import { getUserBookings } from "../controllers/booking/getBookingDetails";
 import { getUserDetails } from "../controllers/user/fetchUserDetails";
 import { SaveReview } from "../controllers/user/saveReviewFromUser";
 import { getReview } from "../controllers/user/reviewDetails";
+import fetchBookings from "../controllers/admin/fetchBookings";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -53,6 +54,7 @@ app.post('/booking', createBooking);
 app.get('/bookingDetails',getUserBookings)
 app.get('/fetchUserDetails',getUserDetails)
 app.post('/reviews',SaveReview)
+app.get('/fetchAllBookings',fetchBookings)
 app.get('/getReviewDetails',getReview)
 app.use(errorMiddleware);
 

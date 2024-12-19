@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../adminUsers/adminUsers.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
 import { Provider } from "../../../types/provider";
-
-
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import './AdminServiceProvider.css'
 const AdminServiceProviders = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
 
@@ -39,11 +38,11 @@ const AdminServiceProviders = () => {
 
   return (
       <div className="row">
-        <div className="col-md-2">
-          <SideBar />
-        </div>
+         <div className="col-lg-3 col-md-4 col-sm-12">
+        <SideBar />
+      </div>
 
-        <div className="col-md-10 user-details-container">
+        <div className="col-md-10 providerContainer">
           <h2 className="table-title">Service Providers</h2>
           <div className="responsive-table">
             <table className="table table-bordered table-striped">
@@ -66,19 +65,19 @@ const AdminServiceProviders = () => {
                       <td>{provider.contactNumber || "N/A"}</td>
                       <td>{provider.serviceCategory || "N/A"}</td>
                       <td>
-                        <button
-                          className="btn btn-warning btn-sm"
-                          onClick={() => handleEditProvider(provider._id)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="btn btn-danger btn-sm ml-2"
-                          onClick={() => handleDeleteProvider(provider._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
+                                           <button
+                                             className="btn btn-edit"
+                                             onClick={() => handleEditUser(user._id)}
+                                           >
+                                             <FaEdit />
+                                           </button>
+                                           <button
+                                             className="btn btn-delete"
+                                             onClick={() => handleDeleteUser(user._id)}
+                                           >
+                                             <FaTrash />
+                                           </button>
+                                         </td>
                     </tr>
                   ))
                 ) : (

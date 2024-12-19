@@ -40,7 +40,7 @@
     text-align: center;
   }
   
-  .DefaultButton {
+  /* .DefaultButton {
   
     padding: 0.625rem 1.875rem;
     border: 1px solid #515761;
@@ -55,7 +55,7 @@
   .DefaultButton:hover {
     background: #515761;
     color: #fff;
-  }
+  } */
   .HeadingStyle{
     
        

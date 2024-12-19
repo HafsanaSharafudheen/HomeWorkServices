@@ -62,15 +62,20 @@ function ServiceProfile() {
 
   return (
     <div>
+
       <ServiceNavbar />
       <div className="row">
-       
-          <ServiceSidebar />
+
+     
+       <div className="col-md-4">
+       <ServiceSidebar />
+
+       </div>
 
         <div className="col-md-8">
-  <div className="service-profile-container row">
-    {/* Left Section: Profile Details */}
-    <div className="col-md-8 service-profile-left">
+  <div className="service-profile row">
+
+    <div className="col-md-6 service-profile-left">
       {profile ? (
         <div className="profile-details">
           <p>
@@ -118,8 +123,7 @@ function ServiceProfile() {
       )}
     </div>
 
-    {/* Right Section: Profile Image and Buttons */}
-    <div className="col-md-4">
+    <div className="col-md-6">
       <h2>Hi {profile?.fullName}</h2>
       <img
         src={profile?.profileImage || defaultImage}
@@ -149,7 +153,7 @@ function ServiceProfile() {
   </div>
 </div>
 
-      </div>
+</div>
     </div>
   );
 }

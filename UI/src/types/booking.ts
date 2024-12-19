@@ -1,4 +1,5 @@
 import { Provider } from "./provider";
+import { User } from "./user";
 
 export interface Booking {
     _id?: string;
@@ -12,6 +13,7 @@ export interface Booking {
       amount: number;
       status: string;
     };
-    providerDetails?: Provider[];
+    providerDetails?: Provider[]
+    userDetails?:User[];
   }
   

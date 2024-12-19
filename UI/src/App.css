@@ -111,7 +111,7 @@ span:hover{
   display: none; 
 }
 
-.DefaultButton {
+/* .DefaultButton {
   background-color:var(--background-color);
   color: #fff;
   border-radius: 0.25rem;
@@ -119,7 +119,7 @@ span:hover{
 
 .DefaultButton:hover {
   background-color:var(--secondary-color)
-}
+} */
 
 .animate__fadeInLeft{
   --animate-duration: 2s;

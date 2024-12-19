@@ -17,6 +17,7 @@ import ServiceProfile from './pages/ServiceProvider/ServiceProfile/ServiceProfil
 import ServicesDetails from './pages/servicesDetailedPage/servicesDetails';
 import Bookings from './pages/UserBookings/Bookings';
 import Profile from './pages/Profile/Profile';
+import AdminBookings from './pages/admin/adminBookings/adminBookings';
 
 
 const App = () => {
@@ -29,6 +30,8 @@ const App = () => {
         <Route path='/adminDashboard' element={<AdminDashboard />} />
         <Route path="/adminCategories" element={<Category />} />
         <Route path="/adminUsers" element={<AdminUsers />} />
+        <Route path="/adminBookings" element={<AdminBookings />} />
+
         <Route path="/adminServiceProviders" element={<AdminServiceProviders />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/aboutUs" element={<About />} />
