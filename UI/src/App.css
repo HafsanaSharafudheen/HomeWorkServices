@@ -130,3 +130,11 @@ span:hover{
 .serachButton:hover{
   background-color: var(--border-color);
 }
+.headingStyle {
+  font-weight: 500; 
+  color: var(--text-color); 
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center; 
+  line-height: 1; 
+}

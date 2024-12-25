@@ -1,16 +1,37 @@
-.bookings-page {
+.bookingsPage {
     display: flex;
     gap: 20px;
-    padding: 20px;
+    padding: 10px;
   }
   
-  .bookings-container {
+  .bookingsContainer {
     flex: 1;
+
   }
   
-  .bookings-grid {
+  .bookingsGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
   }
+  .no-bookings {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 53vh; 
+
+  }
   
+  .no-bookings h2 {
+    font-size: 2rem;
+    color: #555;
+  }
+  
+  .no-bookings p {
+    font-size: 1.2rem;
+    color: #777;
+    margin-top: 0.5rem;
+  }

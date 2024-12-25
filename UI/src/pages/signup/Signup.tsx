@@ -1,33 +1,68 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../axios/axios";
-import "../Login/Login.css";
-import image from "../../assets/blackTools.jpeg";
-import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../../../Redux/store";
-import { useNavigate } from "react-router-dom";
 import { User } from "../../types/user";
+import image from "../../assets/blackTools.jpeg";
 
 const Signup: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const location = useLocation();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state: RootState) => state.user);
+
+  const user: User | null = location.state?.user || null;
 
   const [formData, setFormData] = useState<User>({
     fullName: "",
     email: "",
     phone: "",
-    address: { city: "", district: "", pin: '' },
+    address: { city: "", district: "", pin: "" },
     password: "",
     confirmPassword: "",
     whatsappNumber: "",
   });
 
-  const [formError, setFormError] = useState<string>("");
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+  const [passwordConditions, setPasswordConditions] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    specialChar: false,
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        ...formData,
+        fullName: user.fullName || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        whatsappNumber: user.whatsappNumber || "",
+        address: {
+          city: user.address?.city || "",
+          district: user.address?.district || "",
+          pin: user.address?.pin || "",
+        },
+      });
+    }
+  }, [user]);
+
+  const validatePassword = (password: string) => {
+    setPasswordConditions({
+      length: password.length >= 6,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /\d/.test(password),
+      specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+
+    if (name === "password") {
+      validatePassword(value);
+    }
 
     if (name.startsWith("address.")) {
       const addressField = name.split(".")[1];
@@ -42,41 +77,47 @@ const Signup: React.FC = () => {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
 
-    setFormError("");
+    setFormErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(signupStart());
-    if (
-      !formData.fullName ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.whatsappNumber ||
-      !formData.address.city ||
-      !formData.address.district ||
-      !formData.address.pin ||
-      !formData.password
-    ) {
-      setFormError("All fields are required.");
-      return;
+    const errors: { [key: string]: string } = {};
+    if (!formData.fullName) errors.fullName = "Full Name is required.";
+    if (!formData.email) errors.email = "Email is required.";
+    if (!formData.phone) errors.phone = "Phone Number is required.";
+    if (!formData.whatsappNumber) errors.whatsappNumber = "WhatsApp Number is required.";
+    if (!formData.address.city) errors["address.city"] = "City is required.";
+    if (!formData.address.district) errors["address.district"] = "District is required.";
+    if (!formData.address.pin) errors["address.pin"] = "Pin Code is required.";
+
+    if (!user) {
+      if (!formData.password) errors.password = "Password is required.";
+      if (formData.password !== formData.confirmPassword) {
+        errors.confirmPassword = "Passwords do not match.";
+      }
     }
-    if (formData.password !== formData.confirmPassword) {
-      setFormError("Passwords do not match.");
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
       return;
     }
 
     try {
-      const response = await axios.post("/signup", formData);
-
-      if (response.status === 201) {
-        dispatch(signupSuccess(response.data));
-        navigate("/login");
+      if (user) {
+        const response = await axios.post("/updateUserProfile", formData);
+        if (response.status === 200) {
+          navigate("/profile");
+        }
+      } else {
+        const response = await axios.post("/signup", formData);
+        if (response.status === 201) {
+          navigate("/login");
+        }
       }
     } catch (error: any) {
-      setFormError(error.response?.data?.message || "Sign up failed. Please try again.");
-      dispatch(signupFailure(error.response?.data?.message || "Sign up failed."));
+      setFormErrors({ general: error.response?.data?.message || "Operation failed. Please try again." });
     }
   };
 
@@ -90,157 +131,188 @@ const Signup: React.FC = () => {
       }}
     >
       <div className="blur-overlay"></div>
-      <div className="form-container">
-        <h2 className="text-center">Sign Up</h2>
-        <Form className="signup-form" onSubmit={handleSubmit}>
-          {formError && <p className="text-danger text-center">{formError}</p>}
+      <div className="form-container p-2">
+        <h2 className="text-center">{user ? "Edit Profile" : "Sign Up"}</h2>
+        <Form className="signup-form p-3" onSubmit={handleSubmit}>
+          {formErrors.general && <p className="errorMessageText text-center">{formErrors.general}</p>}
 
-          <div className="row">
+          {/* Full Name and Email */}
+          <div className="row p-2">
             <div className="col-md-6">
-              <div className="form-floating mb-3">
+              <Form.Group className="form-floating">
                 <Form.Control
                   type="text"
                   name="fullName"
+                  id="fullName"
                   placeholder="Full Name"
-                  className="DefaultInput no-focus"
                   value={formData.fullName}
                   onChange={handleChange}
                 />
-                <Form.Label>Full Name</Form.Label>
-              </div>
+                <Form.Label htmlFor="fullName">Full Name</Form.Label>
+                {formErrors.fullName && <p className="errorMessageText">{formErrors.fullName}</p>}
+              </Form.Group>
             </div>
             <div className="col-md-6">
-              <div className="form-floating mb-3">
+              <Form.Group className="form-floating">
                 <Form.Control
                   type="email"
                   name="email"
+                  id="email"
                   placeholder="Email"
-                  className="DefaultInput no-focus"
                   value={formData.email}
                   onChange={handleChange}
                 />
-                <Form.Label>Email</Form.Label>
-              </div>
+                <Form.Label htmlFor="email">Email</Form.Label>
+                {formErrors.email && <p className="errorMessageText">{formErrors.email}</p>}
+              </Form.Group>
             </div>
           </div>
 
-          <div className="row">
+          {/* Phone Number and WhatsApp Number */}
+          <div className="row p-2">
             <div className="col-md-6">
-              <div className="form-floating mb-3">
+              <Form.Group className="form-floating">
                 <Form.Control
                   type="tel"
                   name="phone"
+                  id="phone"
                   placeholder="Phone Number"
-                  className="DefaultInput no-focus"
                   value={formData.phone}
                   onChange={handleChange}
                 />
-                <Form.Label>Phone Number</Form.Label>
-              </div>
+                <Form.Label htmlFor="phone">Phone Number</Form.Label>
+                {formErrors.phone && <p className="errorMessageText">{formErrors.phone}</p>}
+              </Form.Group>
             </div>
             <div className="col-md-6">
-              <div className="form-floating mb-3">
+              <Form.Group className="form-floating">
                 <Form.Control
                   type="tel"
                   name="whatsappNumber"
+                  id="whatsappNumber"
                   placeholder="WhatsApp Number"
-                  className="DefaultInput no-focus"
                   value={formData.whatsappNumber}
                   onChange={handleChange}
                 />
-                <Form.Label>WhatsApp Number</Form.Label>
-              </div>
+                <Form.Label htmlFor="whatsappNumber">WhatsApp Number</Form.Label>
+                {formErrors.whatsappNumber && (
+                  <p className="errorMessageText">{formErrors.whatsappNumber}</p>
+                )}
+              </Form.Group>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-floating mb-3">
-                <Form.Control
-                  type="text"
-                  name="address.district"
-                  placeholder="District"
-                  className="DefaultInput no-focus"
-                  value={formData.address.district}
-                  onChange={handleChange}
-                />
-                <Form.Label>District</Form.Label>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="form-floating mb-3">
-                <Form.Control
-                  type="number"
-                  name="address.pin"
-                  placeholder="Pin Code"
-                  className="DefaultInput no-focus"
-                  value={formData.address.pin}
-                  onChange={handleChange}
-                />
-                <Form.Label>Pin Code</Form.Label>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-floating mb-3">
+          {/* City, District, and Pin Code */}
+          <div className="row p-2">
+            <div className="col-md-4">
+              <Form.Group className="form-floating">
                 <Form.Control
                   type="text"
                   name="address.city"
+                  id="city"
                   placeholder="City"
-                  className="DefaultInput no-focus"
                   value={formData.address.city}
                   onChange={handleChange}
                 />
-                <Form.Label>City</Form.Label>
-              </div>
+                <Form.Label htmlFor="city">City</Form.Label>
+                {formErrors["address.city"] && (
+                  <p className="errorMessageText">{formErrors["address.city"]}</p>
+                )}
+              </Form.Group>
             </div>
-            <div className="col-md-6">
-              <div className="form-floating mb-3">
+            <div className="col-md-4">
+              <Form.Group className="form-floating">
                 <Form.Control
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  className="DefaultInput no-focus"
-                  value={formData.password}
+                  type="text"
+                  name="address.district"
+                  id="district"
+                  placeholder="District"
+                  value={formData.address.district}
                   onChange={handleChange}
                 />
-                <Form.Label>Password</Form.Label>
-              </div>
+                <Form.Label htmlFor="district">District</Form.Label>
+                {formErrors["address.district"] && (
+                  <p className="errorMessageText">{formErrors["address.district"]}</p>
+                )}
+              </Form.Group>
+            </div>
+            <div className="col-md-4">
+              <Form.Group className="form-floating">
+                <Form.Control
+                  type="number"
+                  name="address.pin"
+                  id="pinCode"
+                  placeholder="Pin Code"
+                  value={formData.address.pin}
+                  onChange={handleChange}
+                />
+                <Form.Label htmlFor="pinCode">Pin Code</Form.Label>
+                {formErrors["address.pin"] && (
+                  <p className="errorMessageText">{formErrors["address.pin"]}</p>
+                )}
+              </Form.Group>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-floating mb-3">
-                <Form.Control
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm Password"
-                  className="DefaultInput no-focus"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-                <Form.Label>Confirm Password</Form.Label>
+          {/* Password and Confirm Password */}
+          {!user && (
+            <div className="row p-2">
+              <div className="col-md-6">
+                <Form.Group className="form-floating">
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleChange}
+                  />
+                  <Form.Label htmlFor="password">Password</Form.Label>
+                  {formErrors.password && <p className="errorMessageText">{formErrors.password}</p>}
+                  <div className="passwordCriteria">
+                    <ul>
+                      <li style={{ color: passwordConditions.length ? "green" : "black" }}>
+                        At least 6 characters
+                      </li>
+                      <li style={{ color: passwordConditions.uppercase ? "green" : "black" }}>
+                        At least one uppercase letter
+                      </li>
+                      <li style={{ color: passwordConditions.lowercase ? "green" : "black" }}>
+                        At least one lowercase letter
+                      </li>
+                      <li style={{ color: passwordConditions.number ? "green" : "black" }}>
+                        At least one number
+                      </li>
+                      <li style={{ color: passwordConditions.specialChar ? "green" : "black" }}>
+                        At least one special character
+                      </li>
+                    </ul>
+                  </div>
+                </Form.Group>
+              </div>
+
+              <div className="col-md-6">
+                <Form.Group className="form-floating">
+                  <Form.Control
+                    type="password"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="Confirm Password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                  />
+                  <Form.Label htmlFor="confirmPassword">Confirm Password</Form.Label>
+                  {formErrors.confirmPassword && (
+                    <p className="errorMessageText">{formErrors.confirmPassword}</p>
+                  )}
+                </Form.Group>
               </div>
             </div>
-          </div>
+          )}
 
-          <Button
-            className="DefaultButton w-100"
-            variant="primary"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </Button>
-          <div className="text-center mt-3">
-            <a href="/login" className="text-muted">
-              Already a member? <span className="text-primary">Login</span>
-            </a>
+          <div className="text-center">
+            <Button className="DefaultButton" type="submit">{user ? "Edit Profile" : "Sign Up"}</Button>
           </div>
-          {error && <p className="text-danger text-center mt-3">{error}</p>}
         </Form>
       </div>
     </div>

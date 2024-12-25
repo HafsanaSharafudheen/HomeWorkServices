@@ -94,4 +94,12 @@
     visibility: visible;
     opacity: 1;
   }
+  .card {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
   

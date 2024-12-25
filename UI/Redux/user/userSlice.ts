@@ -56,9 +56,14 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    logout: (state) => {
+      state.user = null; 
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
 // Export actions and reducer
-export const { signupStart, signupSuccess, signupFailure, resetState } = userSlice.actions;
+export const { signupStart, signupSuccess, signupFailure, resetState,logout } = userSlice.actions;
 export default userSlice.reducer;

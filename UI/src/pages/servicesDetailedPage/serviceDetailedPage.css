@@ -45,5 +45,15 @@
     background-color: var(--secondary-color);
   }
  
+  .no-providers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    text-align: center;
+    color: #6c757d;
+    font-size: 1rem;
+    font-weight: 500; 
+  }
   
 

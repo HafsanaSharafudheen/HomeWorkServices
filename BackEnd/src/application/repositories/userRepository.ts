@@ -18,6 +18,10 @@ const saveUser = async (userData: Partial<IUser>): Promise<IUser> => {
     throw new Error(`Error fetching user from database: ${error}`);
   }
 };
+
+const findUserByEmail = async (email: string) => {
+  return User.findOne({ "email" :email});
+};
 export const saveData = async (reviewData: Partial<IReview>) => {
   const review = new Review(reviewData); 
   return await review.save(); 
@@ -27,4 +31,4 @@ export const findReview = async (userId: string,bookingId: string,providerId: st
  Promise<IReview | null> => {
   return await Review.findOne({ userId, bookingId, providerId });
 }
-export default { saveUser,getUserById };
+export default { saveUser,getUserById,findUserByEmail };

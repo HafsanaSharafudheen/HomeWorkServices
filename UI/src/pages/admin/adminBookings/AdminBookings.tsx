@@ -75,18 +75,15 @@ const AdminBookings = () => {
         <SideBar />
       </div>
 
-      {/* Main Content */}
       <div className="col-lg-9 col-md-8 col-sm-12">
         <h2 className="table-title my-4">Booking Details</h2>
 
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          {/* Total Bookings */}
+        <div className="d-flex mb-3">
           <div className="d-flex align-items-center">
             <FaUsers className="me-2 text-primary" />
             <span>Total Bookings: {filteredBookings.length}</span>
           </div>
 
-          {/* Search and Filter */}
           <div className="d-flex align-items-center">
             <div className="form-floating me-3">
               <input
@@ -100,7 +97,6 @@ const AdminBookings = () => {
               <label htmlFor="searchInput">Search</label>
             </div>
 
-            {/* Filter Dropdown */}
             <div className="dropdown">
               <button
                 className="btn btn-primary dropdown-toggle"

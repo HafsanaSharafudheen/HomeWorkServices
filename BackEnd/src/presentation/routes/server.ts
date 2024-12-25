@@ -21,6 +21,8 @@ import { getUserDetails } from "../controllers/user/fetchUserDetails";
 import { SaveReview } from "../controllers/user/saveReviewFromUser";
 import { getReview } from "../controllers/user/reviewDetails";
 import fetchBookings from "../controllers/admin/fetchBookings";
+import { fetchDashboardData } from "../controllers/admin/fetchDashboardData";
+import UserProfileUpdate from "../controllers/user/userProfileUpdate";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -46,6 +48,8 @@ app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
 app.post('/updateProfile',ServiceProfileUpdate)
+app.post('/updateUserProfile',UserProfileUpdate)
+
 app.get('/providers',fetchAllProvidersByCategory);
 
 
@@ -56,6 +60,7 @@ app.get('/fetchUserDetails',getUserDetails)
 app.post('/reviews',SaveReview)
 app.get('/fetchAllBookings',fetchBookings)
 app.get('/getReviewDetails',getReview)
+app.get('/adminDashboardData',fetchDashboardData)
 app.use(errorMiddleware);
 
 

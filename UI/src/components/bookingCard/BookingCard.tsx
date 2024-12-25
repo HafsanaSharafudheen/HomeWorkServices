@@ -10,6 +10,7 @@ import {
   FaMapMarkerAlt,
   FaMoneyBillWave,
   FaStar,
+  FaWhatsapp,
 } from "react-icons/fa";
 import "./BookingCard.css";
 
@@ -57,8 +58,8 @@ const BookingCard: React.FC<BookingProps> = ({ booking }) => {
   return (
     <div className="card booking-card shadow-sm rounded border p-3 mb-4 mt-3">
       <div>
-        <h6 className="text-success">{provider?.serviceCategory}</h6>
-        <p>
+      <h6 className="text-success">{provider?.serviceCategory?.toUpperCase()}</h6>
+      <p>
           <FaCalendarAlt className="me-2 text-secondary" />
           {new Date(booking.selectedDate).toLocaleDateString()}
         </p>
@@ -69,14 +70,18 @@ const BookingCard: React.FC<BookingProps> = ({ booking }) => {
       </div>
 
       {provider && (
-        <div className="mt-3">
-          <p>
+        <div>
+          <p style={{color:'Green',fontWeight:"500"}}>
             <FaUser className="me-2 text-secondary" />
             {provider.fullName}
           </p>
           <p>
             <FaPhoneAlt className="me-2 text-secondary" />
-            {provider.contactNumber} (WhatsApp: {provider.whatsappNumber})
+            {provider.contactNumber}
+          </p>
+          <p>
+            <FaWhatsapp className="me-2 text-secondary" />
+             {provider.whatsappNumber}
           </p>
           <p>
             <FaMapMarkerAlt className="me-2 text-secondary" />
@@ -90,7 +95,7 @@ const BookingCard: React.FC<BookingProps> = ({ booking }) => {
         </div>
       )}
 
-      <div className="mt-3 text-center">
+      <div className="text-center">
         {booking.payment.status === "pending" && (
           <>
             <button className="btn btn-danger me-2">Cancel Booking</button>

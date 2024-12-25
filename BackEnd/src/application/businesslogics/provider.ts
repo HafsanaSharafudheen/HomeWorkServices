@@ -28,9 +28,8 @@ const findAllProvidersByCategory = async ( serviceCategory: string ): Promise<an
   const providers = await Provider.find({
     serviceCategory: { $regex: new RegExp(serviceCategory, "i") }
   });
-  if (providers.length === 0) {
-    throw new Error("No service provider found");
-  }
+  console.log("findaLlPeroviders by category", providers);
+ 
   return providers;
 };
 

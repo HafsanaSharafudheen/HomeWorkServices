@@ -60,7 +60,7 @@ const Category = () => {
   };
 
   return (
-    <div className="category-container row">
+    <div className="row">
       <div className="col-md-2">
         <SideBar />
       </div>

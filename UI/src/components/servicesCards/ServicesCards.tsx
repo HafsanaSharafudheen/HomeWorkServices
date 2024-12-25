@@ -20,13 +20,13 @@ const servicesData = [
   { id: 3, name: "Beautician", icon: beautician },
   { id: 4, name: "Carpenter", icon: carpenter },
   { id: 5, name: "CCTV Mechanic", icon: cctv },
-  { id: 6, name: "Interior Designing", icon: interiordesing },
+  { id: 6, name: "InteriorDesigning", icon: interiordesing },
   { id: 7, name: "Painter", icon: painter },
   { id: 8, name: "Cleaning", icon: cleaning },
-  { id: 9, name: "Home Renovation", icon: HomeRenovation },
+  { id: 9, name: "HomeRenovation", icon: HomeRenovation },
 
-  { id: 10, name: "Home Nurse", icon: homeNurse },
-  { id: 11, name: "Appliances Service", icon: appliancesService },
+  { id: 10, name: "HomeNurse", icon: homeNurse },
+  { id: 11, name: "AppliancesService", icon: appliancesService },
   { id: 12, name: "Gardner", icon: Gardner },
 
 

@@ -29,18 +29,40 @@ function Login() {
     e.preventDefault();
     dispatch(signupStart());
 
-    if (!formData.email || !formData.password) {
-      setError("Both fields are required.");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formData.email && !formData.password) {
+      setError("Email and Password are required.");
       return;
     }
-
+  
+    if (!formData.email) {
+      setError("Email is required.");
+      return;
+    }
+  
+    if (!emailRegex.test(formData.email)) {
+      setError("Invalid email format. Please enter a valid email.");
+      return;
+    }
+  
+    if (!formData.password) {
+      setError("Password is required.");
+      return;
+    }
     try {
       const response = await axios.post("/login", formData);
       dispatch(signupStart());
-    
+      // Check for redirect data in localStorage
+      const redirectData = localStorage.getItem("redirectAfterLogin");
+
       const user = response.data.user;
-    
-      if (user.isProvider) {
+      if (redirectData) {
+        const parsedData = JSON.parse(redirectData);
+        navigate(`/providers`, { state: parsedData });
+        localStorage.removeItem("redirectAfterLogin");
+      }
+      else if (user.isProvider) {
         dispatch(signupSuccess(user));
         navigate("/serviceProviderDashboard");
       } else if (user.isAdmin) {
@@ -51,9 +73,16 @@ function Login() {
         navigate("/");
       }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || "Login failed. Please try again.";
-      setError(errorMessage);
-      dispatch(signupFailure(errorMessage));
+      const errorMessage = err.response.data.error;
+      ;
+      if (errorMessage === "User not found") {
+        setError("User not found. Please check your email.");
+      } else if (errorMessage === "Invalid credentials") {
+        setError("Invalid password. Please try again.");
+      } else {
+        setError(errorMessage);
+      }
+            dispatch(signupFailure(errorMessage));
     }
     
   };
@@ -79,7 +108,7 @@ function Login() {
               placeholder="email"
               className="DefaultInput no-focus"
               value={formData.email}
-              onChange={handleChange}
+              onChange={handleChange} 
             />
             <Form.Label>Email</Form.Label>
           </div>
@@ -90,7 +119,7 @@ function Login() {
               placeholder="Password"
               className="DefaultInput no-focus"
               value={formData.password}
-              onChange={handleChange}
+              onChange={handleChange} 
             />
             <Form.Label>Password</Form.Label>
           </div>

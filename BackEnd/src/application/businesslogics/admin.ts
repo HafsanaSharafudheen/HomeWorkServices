@@ -59,5 +59,71 @@ const findAllBookings = async (): Promise<any> => {
   }
 };
 
+export const getDashboardDetails = async (): Promise<any> => {
+  const totalBookings = await Booking.countDocuments();
+  const totalUsers = await User.countDocuments();
+  const totalServiceProviders = await Provider.countDocuments();
 
-export default { findAllProviders,findAllUsers,findAllBookings  };
+  // Aggregate bookings by date
+  const bookingsByDate = await Booking.aggregate([
+    {
+      $group: {
+        _id: {
+          year: { $year: "$selectedDate" },
+          month: { $month: "$selectedDate" },
+          day: { $dayOfMonth: "$selectedDate" },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 },
+    },
+  ]);
+
+  // Aggregate bookings by time
+  const bookingsByTime = await Booking.aggregate([
+    {
+      $group: {
+        _id: "$selectedTime",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $sort: { count: -1 },
+    },
+  ]);
+
+  // Aggregate payment status
+  const paymentStatus = await Booking.aggregate([
+    {
+      $group: {
+        _id: "$payment.status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  return {
+    totalBookings,
+    totalUsers,
+    totalServiceProviders,
+    bookingsByDate: {
+      labels: bookingsByDate.map(
+        (item) => `${item._id.year}-${item._id.month}-${item._id.day}`
+      ),
+      data: bookingsByDate.map((item) => item.count),
+    },
+    bookingsByTime: {
+      labels: bookingsByTime.map((item) => item._id),
+      data: bookingsByTime.map((item) => item.count),
+    },
+    paymentStatus: {
+      labels: paymentStatus.map((item) => item._id),
+      data: paymentStatus.map((item) => item.count),
+    },
+  };
+};
+
+
+export default { findAllProviders,findAllUsers,findAllBookings,getDashboardDetails };

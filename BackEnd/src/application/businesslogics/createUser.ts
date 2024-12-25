@@ -24,6 +24,10 @@ const execute = async (userData: {
     throw new Error("Address must include city, district, and pin.");
   }
 
+  const existingUser = await userRepository.findUserByEmail(email);
+  if (existingUser) {
+    throw new Error("Email already exists. Please use a different email.");
+  }
   // Hash the user's password
   const hashPassword = async (password: string): Promise<string> => {
     return bcrypt.hash(password, 10);

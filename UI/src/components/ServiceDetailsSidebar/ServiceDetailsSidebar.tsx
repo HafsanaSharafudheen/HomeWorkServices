@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
 import "./ServiceDetailsSidebar.css";
 import { FaTimes } from "react-icons/fa";
 import { Provider } from "../../types/provider";
@@ -8,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "../../axios/axios";
 import Swal from "sweetalert2"; 
 import { useNavigate } from "react-router-dom";
+import { RootState } from '../../../Redux/store';
 
 const timeSlots = [
   { start: "9:00 AM", end: "11:00 AM" },
@@ -20,6 +23,8 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
   const [selectedTab, setSelectedTab] = useState<string>("slots");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+  const user = useSelector((state: RootState) => state.user.user);
+
 const navigate=useNavigate()
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
@@ -30,6 +35,36 @@ const navigate=useNavigate()
   };
 
   const handleRequest = async() => {
+    if (!user) {
+      // Save current data in localStorage
+      localStorage.setItem(
+        "redirectAfterLogin",
+        JSON.stringify({
+          provider: provider, 
+          selectedTab,
+          selectedDate: selectedDate ? selectedDate.toISOString() : null,
+          selectedTimeSlot,
+        })
+    );
+    
+      Swal.fire({
+        title: "Login Required",
+        text: "You need to log in to request a service.",
+        icon: "info",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-text-swal-popup",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
+    
+      return;
+    }
+    
+    
     if (!selectedDate || !selectedTimeSlot) {
         Swal.fire("Error", "Please select a date and time slot before booking.", "error");
         return;
