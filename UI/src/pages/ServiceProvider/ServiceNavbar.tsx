@@ -1,7 +1,11 @@
 import './serviceProvider.css'
 import logo from '../../assets/logo.png'
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store';
 
 const ServiceNavbar = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+
   return (
     <div className="row  Servicenavbar align-items-center p-3">
         <div className="col-md-6">
@@ -12,7 +16,7 @@ const ServiceNavbar = () => {
         </div>
         <div className="col-md-6">
         <div className="user-details">
-        <p>Welcome, TO HOMEWORK</p>
+        <p>Welcome, {user?.fullName}</p>
         <small>Your journey to excellence begins here.</small>
       </div>
         </div>

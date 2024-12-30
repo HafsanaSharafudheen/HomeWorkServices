@@ -39,4 +39,37 @@ const getBookingsByUserId = async (userId: string) => {
 };
 
 
-export default { getBookingsByUserId,saveBooking };
+export const countBookings = async () => {
+  return Booking.countDocuments();
+};
+
+export const aggregateBookingsByDate = async () => {
+  return Booking.aggregate([
+    {
+      $group: {
+        _id: {
+          year: { $year: "$selectedDate" },
+          month: { $month: "$selectedDate" },
+          day: { $dayOfMonth: "$selectedDate" },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+  ]);
+};
+
+export const aggregatePaymentStatus = async () => {
+  return Booking.aggregate([
+    {
+      $group: {
+        _id: "$payment.status",
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+};
+
+export default { getBookingsByUserId,saveBooking ,countBookings,
+  aggregatePaymentStatus,
+  aggregateBookingsByDate};

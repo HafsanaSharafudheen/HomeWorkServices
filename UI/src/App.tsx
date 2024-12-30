@@ -18,6 +18,7 @@ import ServicesDetails from './pages/servicesDetailedPage/servicesDetails';
 import Bookings from './pages/UserBookings/Bookings';
 import Profile from './pages/Profile/Profile';
 import AdminBookings from './pages/admin/adminBookings/adminBookings';
+import ProviderBookings from './pages/ServiceProvider/ProviderBookings/ProviderBookings';
 
 
 const App = () => {
@@ -42,6 +43,8 @@ const App = () => {
         <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/serviceProviderDashboard" element={<ServiceProviderDashboard />} />
+        <Route path="/ProviderBookings" element={<ProviderBookings />} />
+
         <Route path="/providers" element={<ServicesDetails />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path='/ServiceProfile' element={<ServiceProfile />} />

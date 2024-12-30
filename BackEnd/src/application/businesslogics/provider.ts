@@ -1,4 +1,6 @@
 import Provider, { IProvider } from '../../infrastructure/dbModels/serviceProvider';
+import { aggregateBookingsByDate, aggregatePaymentStatus, countBookings } from '../repositories/bookingRepository';
+import { dataFetching, fetchBookingsByDateRange } from '../repositories/providerRepository';
 
 const findProviderById = async (id: string): Promise<IProvider> => {
   const provider = await Provider.findOne({ _id: id });
@@ -59,10 +61,89 @@ export const updateProviderAvailable = async (
     throw error;
   }
 };
+export const getDashboardData = async () => {
+  const totalBookings = await countBookings();
 
-// Exporting all functions together
+  const bookingsByDate = await aggregateBookingsByDate();
+  const paymentStatus = await aggregatePaymentStatus();
+
+  return {
+    totalBookings,
+    bookingsByDate: {
+      labels: bookingsByDate.map((item) => `${item._id.year}-${item._id.month}-${item._id.day}`),
+      data: bookingsByDate.map((item) => item.count),
+    },
+    paymentStatus: {
+      labels: paymentStatus.map((item) => item._id),
+      data: paymentStatus.map((item) => item.count),
+    },
+  };
+};
+
+
+export const fetchDataWithDate = async (startDate: Date, endDate: Date) => {
+  // Fetch bookings within the date range
+  const bookings = await fetchBookingsByDateRange(startDate, endDate);
+
+  // Count total bookings-----To provide a quick summary of the total bookings
+  const totalBookings = bookings.length;
+
+  //Initializes an object to store the count of bookings for 
+  // each payment status (pending, completed, and cancelled). 
+  
+   const paymentStatusCounts: Record<"pending" | "completed" | "cancelled", number> = {
+    pending: 0,
+    completed: 0,
+    cancelled: 0,
+  };
+//Loops through each booking in the bookings array.
+  bookings.forEach((booking) => {
+    if (booking.payment.status === "pending" || 
+        booking.payment.status === "completed" || 
+        booking.payment.status === "cancelled") {
+          // Increments the respective status count in paymentStatusCounts
+      paymentStatusCounts[booking.payment.status] += 1;
+    }
+  });
+
+//Initializes an empty object to store the count of bookings for each date.
+  const bookingsByDate: Record<string, number> = {};
+
+  // Count bookings for each date
+  bookings.forEach((booking) => {
+    //Converts the selectedDate of the booking into a YYYY-MM-DD string format.
+    const date = booking.selectedDate.toISOString().split("T")[0]; 
+    //Increments the count for that date in bookingsByDate. 
+    // If the date is not already in the object, it initializes it to 0 before adding 1.
+
+    bookingsByDate[date] = (bookingsByDate[date] || 0) + 1;
+  });
+
+  return {
+    totalBookings,
+    bookingsByDate: {
+      labels: Object.keys(bookingsByDate), //An array of all unique dates 
+      data: Object.values(bookingsByDate), // An array of counts for each date
+    },
+    paymentStatus: {
+      labels: Object.keys(paymentStatusCounts), // An array of all payment statuses
+      data: Object.values(paymentStatusCounts), //: An array of counts for each payment status.
+    },
+  };
+};
+
+export const findAllBookingsData = async (providerId: string) => {
+  try {
+      const bookings = await  dataFetching(providerId);
+      return bookings;
+  } catch (error) {
+      console.error("Error fetching bookings from the database:", error);
+      throw new Error("Failed to fetch bookings.");
+  }
+}
+
 export default {
-  findProviderById,
-  updateProviderProfile,
+  findProviderById,findAllBookingsData,
+  updateProviderProfile,getDashboardData,fetchDataWithDate,
   findAllProvidersByCategory,updateProviderAvailable
 };

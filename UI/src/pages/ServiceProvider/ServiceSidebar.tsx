@@ -11,7 +11,7 @@ const ServiceSidebar = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/bookings" className="nav-link d-flex align-items-center">
+          <NavLink to="/ProviderBookings" className="nav-link d-flex align-items-center">
             <FaBook className="me-2" /> Bookings
           </NavLink>
         </li>

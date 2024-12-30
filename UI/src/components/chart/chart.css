@@ -1,0 +1,20 @@
+.smallCardStyle {
+    background-color:var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1px;
+    margin: 1px 0;
+  }
+  
+  .smallCardStyle .card-title {
+    font-size: 12px;
+    color: #6c757d; 
+  }
+  
+  .smallCardStyle .card-text {
+    font-size: 14px;
+    font-weight: bold;
+    color:var(--text-color);
+  }
+  

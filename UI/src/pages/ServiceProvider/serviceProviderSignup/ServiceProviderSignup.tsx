@@ -145,7 +145,7 @@ function ServiceProviderSignup() {
               end: value,
             },
           };
-
+          
         case "education.institute":
           return {
             ...prev,
@@ -384,7 +384,7 @@ function ServiceProviderSignup() {
           <Form.Group>
             <Form.Label>Education</Form.Label>
             <div className="row">
-              <div className="col-md-6 mb-3">
+              <div className="col-md-4 mb-3">
                 <div className="form-floating">
                   <Form.Control
                     type="text"
@@ -396,7 +396,7 @@ function ServiceProviderSignup() {
                   <Form.Label>Institute</Form.Label>
                 </div>
               </div>
-              <div className="col-md-6 mb-3">
+              <div className="col-md-4 mb-3">
                 <div className="form-floating">
                   <Form.Control
                     type="number"
@@ -406,6 +406,18 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>Year of Completion</Form.Label>
+                </div>
+              </div>
+              <div className="col-md-4 mb-3">
+                <div className="form-floating">
+                  <Form.Control
+                    type="text"
+                    name="yearsOfExperience"
+                    placeholder="yearsOfExperience"
+                    value={formData.yearsOfExperience}
+                    onChange={handleChange}
+                  />
+                  <Form.Label>Experience</Form.Label>
                 </div>
               </div>
             </div>
