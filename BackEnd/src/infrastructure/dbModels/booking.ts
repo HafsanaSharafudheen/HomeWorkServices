@@ -6,7 +6,8 @@ export interface IBooking extends Document {
   selectedDate: Date;
   selectedTime: string;
   createdAt: Date;
-  payment: {
+  status: "pending" | "rejected" | "completed";
+    payment: {
     method: string;
     amount: number;
     releasedDate?: Date;
@@ -20,6 +21,10 @@ const bookingSchema: Schema = new Schema({
   selectedDate: { type: Date, required: true },
   selectedTime: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
+  status: {
+    type: String,
+    enum: ["pending", "rejected","accepted", "completed"],
+    default: "pending",},
   payment: {
     method: { type: String, required: true },
     amount: { type: Number, required: true },

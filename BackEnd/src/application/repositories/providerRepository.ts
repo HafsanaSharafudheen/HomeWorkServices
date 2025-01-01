@@ -1,6 +1,8 @@
 import Provider from '../../infrastructure/dbModels/serviceProvider'
 import Booking from '../../infrastructure/dbModels/booking';
+import Diy from '../../infrastructure/dbModels/diy'
 import mongoose from 'mongoose';
+import { IDIY } from '../../infrastructure/dbModels/diy';
 const saveUser = async (providerData: any): Promise<any> => {
   const provider = new Provider(providerData);
   return provider.save();
@@ -43,6 +45,11 @@ export const dataFetching = async (providerId: string) => {
       console.error('Error in data fetching:', error);
       throw new Error('Failed to fetch data.');
   }
+};
+
+export const saveDIYToDB = async (diyData: IDIY,providerId:string) => {
+  const diy = new Diy(diyData,providerId);
+  return await diy.save();
 };
 
 export default { saveUser };

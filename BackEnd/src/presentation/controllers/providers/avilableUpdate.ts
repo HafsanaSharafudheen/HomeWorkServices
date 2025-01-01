@@ -14,4 +14,6 @@ console.log(req.body)
   }
 };
 
+
+
 export default updateAvailability;

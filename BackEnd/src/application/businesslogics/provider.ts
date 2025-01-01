@@ -1,6 +1,8 @@
+import booking from '../../infrastructure/dbModels/booking';
 import Provider, { IProvider } from '../../infrastructure/dbModels/serviceProvider';
 import { aggregateBookingsByDate, aggregatePaymentStatus, countBookings } from '../repositories/bookingRepository';
-import { dataFetching, fetchBookingsByDateRange } from '../repositories/providerRepository';
+import { dataFetching, fetchBookingsByDateRange, saveDIYToDB } from '../repositories/providerRepository';
+import { IDIY } from '../../infrastructure/dbModels/diy';
 
 const findProviderById = async (id: string): Promise<IProvider> => {
   const provider = await Provider.findOne({ _id: id });
@@ -142,8 +144,24 @@ export const findAllBookingsData = async (providerId: string) => {
   }
 }
 
+export const updateBookingStatusByProvider=async(bookingId:string)=>{
+  try {
+    await booking.findOneAndUpdate(
+      { _id: bookingId }, 
+      { $set: { status: "completed" } }, 
+    );
+    console.log(`Booking with ID ${bookingId} status updated to accepted.`);
+  } catch (error) {
+    console.error(`Error updating booking status: ${error}`);
+    throw error; 
+  }
+}
+export const createDIYService = async (diyData: IDIY,providerId:string) => {
+  return await saveDIYToDB(diyData,providerId);
+};
+
 export default {
-  findProviderById,findAllBookingsData,
+  findProviderById,findAllBookingsData,updateBookingStatusByProvider,
   updateProviderProfile,getDashboardData,fetchDataWithDate,
-  findAllProvidersByCategory,updateProviderAvailable
+  findAllProvidersByCategory,updateProviderAvailable,createDIYService
 };
