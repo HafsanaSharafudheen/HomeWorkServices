@@ -5,6 +5,7 @@ import { RootState } from "../../../../Redux/store";
 import axios from '../../axios/axios';
 import { DIY } from '../../types/diy';
 import './PreviousDiy.css'
+import { FaEdit } from 'react-icons/fa';
 const PreviousDIY = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const providerId = user?.id;
@@ -42,17 +43,17 @@ const PreviousDIY = () => {
 
   return (
     <div className="mt-5">
-      <h4>Your Previous Tips</h4>
+      <h4 className='headingStyle'>Your Previous Tips</h4>
       {loading ? (
         <p>Loading...</p>
       ) : diyTips.length > 0 ? (
         <div className="row">
           {diyTips.map((tip) => (
-            <div key={tip._id} className="col-md-4 mb-4">
+            <div key={tip._id} className="col-md-12 mb-4">
 <div className="diyCard">
   <img src={tip.imageUrl || 'default-image.jpg'} alt="DIY" />
   <div className="card-body">
-    <h5 className="headingStyle">{tip.ditTitle}</h5>
+    <h5 className="titleStyle">{tip.ditTitle}</h5>
     <p className="card-text">{tip.purpose}</p>
     <button
       className="diyLink"
@@ -95,6 +96,7 @@ const PreviousDIY = () => {
             <Button variant="secondary" onClick={handleCloseModal}>
               Close
             </Button>
+           
           </Modal.Footer>
         </Modal>
       )}

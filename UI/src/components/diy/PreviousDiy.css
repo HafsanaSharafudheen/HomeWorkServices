@@ -23,15 +23,15 @@
     object-fit: cover;
   }
 
-  .headingStyle {
-    font-size: 18px;
+  .titleStyle {
+    font-size: 15px;
     font-weight: bold;
     margin-bottom: 8px;
     color: #333;
   }
   
   .card-text {
-    font-size: 9px;
+    font-size: 12px;
     margin-bottom: 8px;
   }
   .diyLink{
