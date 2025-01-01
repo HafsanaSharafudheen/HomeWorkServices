@@ -1,7 +1,7 @@
 import booking from '../../infrastructure/dbModels/booking';
 import Provider, { IProvider } from '../../infrastructure/dbModels/serviceProvider';
 import { aggregateBookingsByDate, aggregatePaymentStatus, countBookings } from '../repositories/bookingRepository';
-import { dataFetching, fetchBookingsByDateRange, saveDIYToDB } from '../repositories/providerRepository';
+import { dataFetching, fetchBookingsByDateRange, findAllDiys, saveDIYToDB } from '../repositories/providerRepository';
 import { IDIY } from '../../infrastructure/dbModels/diy';
 
 const findProviderById = async (id: string): Promise<IProvider> => {
@@ -156,9 +156,13 @@ export const updateBookingStatusByProvider=async(bookingId:string)=>{
     throw error; 
   }
 }
-export const createDIYService = async (diyData: IDIY,providerId:string) => {
-  return await saveDIYToDB(diyData,providerId);
+export const createDIYService = async (diyData: IDIY) => {
+  return await saveDIYToDB(diyData);
 };
+export const searchDIYS=async(providerId:string)=>{
+  return findAllDiys(providerId);
+
+}
 
 export default {
   findProviderById,findAllBookingsData,updateBookingStatusByProvider,

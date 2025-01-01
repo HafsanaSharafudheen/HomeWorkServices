@@ -1,0 +1,51 @@
+.diyCard {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .diyCard:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+  }
+  
+  .diyCard img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 16px;
+    object-fit: cover;
+  }
+
+  .headingStyle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .card-text {
+    font-size: 9px;
+    margin-bottom: 8px;
+  }
+  .diyLink{
+    font-size: small;;
+    font-weight: 500;
+    color: blue;
+    border: none;
+    background-color: white;
+  }
+
+ 
+  
+  .diyCard-container {
+    margin-top: 20px;
+  }
+  
+

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../Redux/store";
+
 import { DIY } from "../../../types/diy";
 import ServiceSidebar from "../ServiceSidebar";
 import ServiceNavbar from "../ServiceNavbar";
@@ -8,10 +7,9 @@ import imagePath from "../../../assets/diy.jpg";
 import { FaPlusCircle, FaRegImage, FaVideo } from "react-icons/fa";
 import './diyForm.css'
 import axios from "../../../axios/axios";
-const DIYForm: React.FC = () => {
-  const user = useSelector((state: RootState) => state.user.user);
+import PreviousDIY from "../../../components/diy/PreviousDIY";
+ export const DIYForm: React.FC = () => {
 
-  const [diyTips, setDiyTips] = useState<DIY[]>([]);
 
   const [formData, setFormData] = useState<{
     ditTitle: string;
@@ -35,25 +33,8 @@ const DIYForm: React.FC = () => {
     videos: [],
   });
 
-  const providerId = user?.id;
 
-  //   // Fetch previously added DIY tips
-  //   useEffect(() => {
-  //     const fetchDIYs = async () => {
-  //       try {
-  //         const response = await axios.get(`/DiysByProvider`, {
-  //           params: { providerId },
-  //         });
-  //         setDiyTips(response.data.diy);
-  //       } catch (error) {
-  //         console.error("Error fetching DIYs:", error);
-  //       }
-  //     };
-
-  //     if (providerId) {
-  //       fetchDIYs();
-  //     }
-  //   }, [providerId]);
+   
 
   // Add a new step dynamically
   const handleAddStep = () => {
@@ -268,26 +249,9 @@ const DIYForm: React.FC = () => {
           </form>
 
 
-          <div className="mt-5">
-            <h4>Your Previous Tips</h4>
-            {diyTips.length > 0 ? (
-              <ul className="list-group">
-                {diyTips.map((tip) => (
-                  <li key={tip._id} className="list-group-item">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h5>{tip.ditTitle}</h5>
-                        <p className="text-muted">{tip.purpose}</p>
-                      </div>
-                      <button className="btn btn-link">Edit</button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No DIY tips added yet.</p>
-            )}
-          </div>
+        <div>
+          <PreviousDIY/>
+        </div>
         </div>
       </div>
     </div>

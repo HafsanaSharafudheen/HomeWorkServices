@@ -47,9 +47,13 @@ export const dataFetching = async (providerId: string) => {
   }
 };
 
-export const saveDIYToDB = async (diyData: IDIY,providerId:string) => {
-  const diy = new Diy(diyData,providerId);
+export const saveDIYToDB = async (diyData: IDIY) => {
+  const diy = new Diy(diyData);
   return await diy.save();
 };
+export const findAllDiys= async(providerId:string)=>{
+  const result = await Diy.find({ providerId :providerId});
+return result
+}
 
 export default { saveUser };
