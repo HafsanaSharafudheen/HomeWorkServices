@@ -1,44 +1,39 @@
-/* Profile Background */
 .profile-background {
-    width: 100%;
-    height: 200px;
-    background:var(--border-color);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  /* Profile Image */
-  .profile-img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    position: absolute;
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid white;
-    z-index: 2;
-  }
-  
-  .user-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-top: 1rem;
-  }
-  
- 
-  
-  .user-detail .icon {
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
-  }
-  
-  /* Buttons */
-  .btn {
-    /* font-size: 1rem; */
-    display: inline-flex;
-    align-items: center;
-  }
-  
+  width: 100%;
+  height: 200px;
+  background: var(--border-color);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid white;
+  z-index: 2;
+}
+.mainContainer{
+  background-color: var(--border-color);
+  color: white;
+}
+
+.user-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.user-detail .icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+  color: white;
+}
+
+

@@ -27,6 +27,7 @@ import { fetchServiceProviderDashboardData, fetchDashboardDataWithDate } from '.
 import fetchProviderBookings from "../controllers/providers/fetchProviderBookings";
 import updateStatus from "../controllers/providers/bookingStstusUpdate";
 import { createNewDIY, findAllDiysByProvider } from "../controllers/providers/createNewDIY";
+import fetchTestimonials from "../controllers/user/fetchTestimonials ";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -70,6 +71,7 @@ app.get('/dashboardDataWithDate',fetchDashboardDataWithDate)
 app.patch('/updateBookingStatus',updateStatus)
 app.post('/createDIY',createNewDIY)
 app.get('/DiysByProvider',findAllDiysByProvider)
+app.get('/testimonials',fetchTestimonials )
 app.use(errorMiddleware);
 
 

@@ -38,8 +38,8 @@ function Profile() {
   };
 
   return (
-    <div className="container">
-      <div className="profile-header position-relative">
+   
+      <div className="profile-header  position-relative">
         {/* Background Section */}
         <div className="profile-background"></div>
 
@@ -51,35 +51,33 @@ function Profile() {
         />
 
         
-         {/* User Details */}
-        <div className="row mt-4 justify-content-center">
+    <div className="mainContainer">
+    <div className="row justify-content-center">
           <div className="col-md-6 text-center mt-3">
             <h4 className="user-name mb-2">{user?.fullName || 'Loading...'}</h4>
-            <div className="user-detail d-flex justify-content-start align-items-center mb-3">
-              <FaEnvelope className="me-3 text-secondary" size={15} />
+            <div className="user-detail d-flex justify-content-start align-items-center">
+              <FaEnvelope className="me-3 text-warning" size={15} />
               <p className="detail-text">{user?.email || 'Email N/A'}</p>
             </div>
-            <div className="user-detail d-flex justify-content-start align-items-center mb-3">
+            <div className="user-detail d-flex justify-content-start align-items-center">
               <FaWhatsapp className="me-3 text-success" size={15} />
               <p className="detail-text">{user?.whatsappNumber || 'N/A'}</p>
             </div>
 
-            <div className="user-detail d-flex justify-content-start align-items-center mb-3">
+            <div className="user-detail d-flex justify-content-start align-items-center">
               <FaPhone className="me-3 text-primary" size={15} />
               <p className="detail-text">{user?.phone || 'N/A'}</p>
             </div>
 
-            <div className="user-detail d-flex justify-content-start align-items-start mb-3">
+            <div className="user-detail d-flex justify-content-start align-items-start">
               <FaMapMarkerAlt className="me-3 text-danger" size={15} />
               <div>
                 <p className="detail-text d-block">
-                  {user?.address?.city || 'City N/A'}
-                </p>
-                <p className="detail-text d-block">
+                  {user?.address?.city || 'City N/A'}{','}
+         
                   {user?.address?.district || 'District N/A'}
-                </p>
-                <p className="detail-text d-block">
-                  {user?.address?.pin ? `Pin: ${user.address.pin}` : 'Pin Code N/A'}
+               
+                  {user?.address?.pin ? ` , ${user.address.pin}` : 'Pin Code N/A'}
                 </p>
               </div>
             </div>
@@ -88,19 +86,23 @@ function Profile() {
           </div>
         </div>  
 
-        {/* Action Buttons */}
-        <div className="row mt-3 justify-content-center">
-          <div className="col-md-6 text-center">
-            <button className="btn btn-danger me-3" onClick={handleEditProfile}>
-              <FaEdit className="me-2" /> Edit Profile
-            </button>
-            <button className="btn btn-danger" onClick={handleLogout}>
-              <FaSignOutAlt className="me-2" /> Logout
-            </button>
-          </div>
-        </div>
-      </div>
+        <div className="row mt-3  justify-content-center">
+  <div className="col-md-6 text-center mb-5">
+    <div className="d-inline-flex gap-3">
+      <button className="btn btn-primary px-4 py-2" onClick={handleEditProfile} style={{ whiteSpace: "nowrap" }}>
+        <FaEdit className="me-2" /> Edit Profile
+      </button>
+      <button className="btn btn-warning px-4 py-2" onClick={handleLogout} style={{ whiteSpace: "nowrap" }}>
+        <FaSignOutAlt className="me-2" /> Logout
+      </button>
     </div>
+  </div>
+</div>
+    </div>
+       
+
+      </div>
+   
   );
 }
 

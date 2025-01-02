@@ -108,7 +108,7 @@ const Signup: React.FC = () => {
       if (user) {
         const response = await axios.post("/updateUserProfile", formData);
         if (response.status === 200) {
-          navigate("/profile");
+          navigate("/YourBookings");
         }
       } else {
         const response = await axios.post("/signup", formData);

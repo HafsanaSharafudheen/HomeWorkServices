@@ -47,9 +47,9 @@ const Header: React.FC = () => {
                   title="Profile"
                   id="offcanvasNavbarDropdown-profile-expand-sm"
                 >
-                  <NavDropdown.Item as={Link} to="/profile">
+                  {/* <NavDropdown.Item as={Link} to="/profile">
                     <span className="DefaultFontColor">Your Profile</span>
-                  </NavDropdown.Item>
+                  </NavDropdown.Item> */}
                   <NavDropdown.Item as={Link} to="/YourBookings">
                     <span className="DefaultFontColor">Your Bookings</span>
                   </NavDropdown.Item>

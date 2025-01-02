@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Review  {
     userId:string;
       providerId:string;
@@ -7,4 +9,5 @@ export interface Review  {
     workVideo?: string; 
     createdAt?: Date;
     updatedAt?: Date;
+    userDetails:User[]
   }

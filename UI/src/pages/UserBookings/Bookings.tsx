@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import "./Bookings.css";
 import BookingCard from "../../components/bookingCard/BookingCard";
 import axios from "../../axios/axios";
+import Profile from "../Profile/Profile";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
@@ -24,6 +25,13 @@ function Bookings() {
   return (
     <>
       <Header />
+   
+        <div className="row">
+          {/* Profile Section */}
+          <div className="col-md-4">
+            <Profile />
+          </div>
+          <div className="col-md-8">
       <div className="bookingsPage">
         {bookings.length === 0 ? (
           <div className="no-bookings">
@@ -40,6 +48,8 @@ function Bookings() {
             </div>
           </div>
         )}
+      </div>
+      </div>
       </div>
       <Footer />
     </>
