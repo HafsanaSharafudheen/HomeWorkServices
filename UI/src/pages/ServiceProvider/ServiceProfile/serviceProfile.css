@@ -60,14 +60,14 @@
   border-color: #dc3545;
 }
 
-.edit-profile-link {
+.editProfileLink {
   margin-top: 10px;
   display: block;
-  font-size: 14px;
+  font-size: 17px;
   color: #007bff;
   text-decoration: none;
 }
 
-.edit-profile-link:hover {
+.editProfileLink:hover {
   text-decoration: underline;
 }

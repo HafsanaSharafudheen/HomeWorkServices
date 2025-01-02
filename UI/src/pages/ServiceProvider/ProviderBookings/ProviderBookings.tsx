@@ -5,12 +5,12 @@ import axios from '../../../axios/axios';
 import { Booking } from '../../../types/booking';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../Redux/store';
-
+import './ProviderBookings.css'
 function ProviderBookings() {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const Provider = useSelector((state: RootState) => state.user.user);
 
-    const providerId = Provider?.id;
+    const providerId = Provider?._id;
 
     const fetchBookings = async () => {
         try {
@@ -61,16 +61,16 @@ function ProviderBookings() {
     return (
         <div>
             <ServiceNavbar />
-            <div className="container-fluid">
+            
                 <div className="row">
                     <div className="col-md-3">
                         <ServiceSidebar />
                     </div>
                     <div className="col-md-9">
                         {bookings.length > 0 ? (
-                            <div className="provider-details">
+                            <div className="providerDetails">
                                
-                                <div className="card-body">
+                                <div className="cardBody">
                                     <ul className="list-group">
                                         {bookings.map((booking) => (
                                             <li
@@ -82,7 +82,7 @@ function ProviderBookings() {
                                                 <div className="d-flex justify-content-between align-items-center">
                                                 
                                                     <div>
-                                                        <p>{booking?.userDetails?.[0]?.fullName}</p>
+                                                        <span>{booking?.userDetails?.[0]?.fullName}</span>
                                                         <p>
                                                        
                                                             {booking?.userDetails?.[0]?.address.city},{' '}
@@ -98,15 +98,15 @@ function ProviderBookings() {
                                                         </p>
                                                         <p>
     {booking.status === 'completed' ? (
-        <p className="badge bg-success text-white" style={{ fontSize: '9px' }}>
+        <p className="badge bg-success text-white" style={{ fontSize: '15px' }}>
             Completed
         </p>
     ) : booking.status === 'rejected' ? (
-        <p className="badge bg-danger text-white" style={{ fontSize: '8px' }}>
+        <p className="badge bg-danger text-white" style={{ fontSize: '15px' }}>
             Rejected
         </p>
     ) : (
-        <p className="badge bg-warning text-dark" style={{ fontSize: '8px' }}>
+        <p className="badge bg-warning text-dark" style={{ fontSize: '15px' }}>
             Pending
         </p>
     )}
@@ -119,21 +119,15 @@ function ProviderBookings() {
                                                         {booking.status === 'pending' && (
                                                           <>
                                                           <button
-                                                              className="btn btn-success btn-sm mb-1"
-                                                              style={{
-                                                                  fontSize: '8px', 
-                                                                  padding: '4px 8px', 
-                                                              }}
+                                                              className="btn btn-success mb-1"
+                                                              
                                                               onClick={() => handleStatusUpdate(booking._id)}
                                                           >
                                                               Mark as Completed
                                                           </button>
                                                           <button
-                                                              className="btn btn-danger btn-sm mb-1 ms-2"
-                                                              style={{
-                                                                  fontSize: '8px',
-                                                                  padding: '4px 8px', 
-                                                              }}
+                                                              className="btn btn-danger mb-1 ms-2"
+                                                            
                                                           >
                                                               Reject
                                                           </button>
@@ -144,7 +138,7 @@ function ProviderBookings() {
                                                             <div>
                                                                 <label
                                                                     htmlFor={`file-upload-${booking._id}`}
-                                                                    className="btn btn-primary btn-sm"
+                                                                    className="btn btn-primary"
                                                                 >
                                                                     Upload Image/Video
                                                                 </label>
@@ -182,7 +176,7 @@ function ProviderBookings() {
                     </div>
                 </div>
             </div>
-        </div>
+       
     );
 }
 

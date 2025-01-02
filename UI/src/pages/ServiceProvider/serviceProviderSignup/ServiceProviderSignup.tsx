@@ -50,6 +50,7 @@ function ServiceProviderSignup() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     if (mode === "edit" && profileId) {
       const fetchProfile = async () => {
         try {
@@ -495,11 +496,11 @@ function ServiceProviderSignup() {
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
-                    disabled={mode === "edit"}
+                    hidden={mode === "edit"}
                   />
                   <Form.Label>Password</Form.Label>
                 </div>
-                <ul className="passwordCriteria">
+                <ul className="passwordCriteria" hidden={mode==='edit'}>
                   <li style={{ color: passwordConditions.length ? "green" : "black" }}>
                     At least 6 characters
                   </li>
@@ -525,7 +526,8 @@ function ServiceProviderSignup() {
                     placeholder="Confirm Password"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    disabled={mode === "edit"}
+                    hidden={mode === "edit"}
+                    
                   />
                   <Form.Label>Confirm Password</Form.Label>
                 </div>

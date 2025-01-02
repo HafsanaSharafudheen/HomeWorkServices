@@ -10,10 +10,10 @@ const Header: React.FC = () => {
 
   return (
     <header className="HeaderContainer">
-      <Navbar expand="sm" className="p-0">
+      <Navbar expand="sm">
           {/* Logo Section */}
           <Navbar.Brand href="/" className="d-flex align-items-center">
-            <img src={logo} alt="Logo" style={{ height: "100px" }} />
+            <img src={logo} alt="Logo" style={{ height: "150px" }} />
           </Navbar.Brand>
 
           {/* Toggle Icon */}
@@ -39,9 +39,17 @@ const Header: React.FC = () => {
               <Nav.Link as={Link} to="/">
                 <span className="DefaultFontColor">Home</span>
               </Nav.Link>
-              <Nav.Link as={Link} to="/services">
-                <span className="DefaultFontColor">Services</span>
-              </Nav.Link>
+              <Nav.Link
+  onClick={() => {
+    const section = document.getElementById('serviceSection');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }}
+>
+  <span className="DefaultFontColor">Services</span>
+</Nav.Link>
+
               {user && (
                 <NavDropdown
                   title="Profile"

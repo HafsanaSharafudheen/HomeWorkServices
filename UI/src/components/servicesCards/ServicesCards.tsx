@@ -45,7 +45,7 @@ const navigate=useNavigate()
   return (
     <div className="container text-center my-5">
       <div className="row mt-5">
-        <h1 className="HeadingStyle">OUR SERVICES</h1>
+        <h1 id="serviceSection" className="HeadingStyle">OUR SERVICES</h1>
         {servicesData.slice(0, visibleServices).map((service) => (
           <div key={service.id} className="col-lg-2 col-md-3 col-sm-6 mb-4"  onClick={() => handleServiceClick(service.name)} >
             <div className="service-card">

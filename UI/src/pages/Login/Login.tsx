@@ -123,13 +123,12 @@ function Login() {
             />
             <Form.Label>Password</Form.Label>
           </div>
-          <Button
-            className="DefaultButton w-100"
-            variant="primary"
-            type="submit"
-          >
-            Login
-          </Button>
+          <div className="text-center">
+  <Button className="DefaultButton" variant="primary" type="submit">
+    Login
+  </Button>
+</div>
+
           <div className="text-center mt-3">
             <a href="/signup" className="text-muted">
               Not a member? <span className="text-primary">Sign up</span>

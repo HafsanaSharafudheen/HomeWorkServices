@@ -78,8 +78,8 @@ const AdminBookings = () => {
       <div className="col-lg-9 col-md-8 col-sm-12">
         <h2 className="table-title my-4">Booking Details</h2>
 
-        <div className="d-flex mb-3">
-          <div className="d-flex align-items-center">
+        <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
+        <div className="d-flex align-items-center">
             <FaUsers className="me-2 text-primary" />
             <span>Total Bookings: {filteredBookings.length}</span>
           </div>
@@ -146,7 +146,6 @@ const AdminBookings = () => {
           </div>
         </div>
 
-        {/* Table */}
         <div className="table-responsive">
           <table className="bookingstable table">
             <thead>
@@ -180,7 +179,7 @@ const AdminBookings = () => {
                     </td>
                     <td>
                       {booking.payment.status !== "completed" && (
-                        <button className="btn btn-primary">Transfer Payment</button>
+                        <button className="btn-sm btn-primary">Transfer Payment</button>
                       )}
                     </td>
                   </tr>

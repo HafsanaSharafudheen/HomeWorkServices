@@ -123,7 +123,7 @@ function Chart() {
   
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard">
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger text-center">{error}</p>}
@@ -192,7 +192,7 @@ function Chart() {
     <div className="col-md-3">
   <button
     onClick={handleDateSearch}
-    className="btn btn-primary w-50 d-flex align-items-center justify-content-center"
+    className="btn btn-primary d-flex align-items-center justify-content-center"
   >
     Search
   </button>
@@ -202,11 +202,12 @@ function Chart() {
 </Form>
 
       {/* Chart */}
-      <Card>
-  <Card.Body style={{ backgroundColor: "white"}}>
+     <div className="ChartDiagram">
+     <Card.Body style={{ backgroundColor: "white"}}>
     <Bar data={chartData} options={chartOptions} />
   </Card.Body>
-</Card>
+     </div>
+ 
 
     </div>
   );

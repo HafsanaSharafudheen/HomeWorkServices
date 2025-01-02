@@ -3,7 +3,7 @@ import { Review } from "../types/review";
 
 const TestimonialSlider: React.FC<{ testimonials: Review[] }> = ({ testimonials }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
+  if (!testimonials || testimonials.length === 0) return null; 
   const handlePrev = (): void => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
@@ -16,7 +16,6 @@ const TestimonialSlider: React.FC<{ testimonials: Review[] }> = ({ testimonials 
     );
   };
 
-  if (!testimonials.length) return null;
 
   // Extract current testimonial details
   const currentTestimonial = testimonials[currentIndex];

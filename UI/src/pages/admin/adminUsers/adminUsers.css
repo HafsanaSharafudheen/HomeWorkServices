@@ -6,7 +6,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   margin-bottom: 20px;
-  font-size: 12px; 
+  font-size: 16px; 
 }
 
 .user-image {
@@ -19,14 +19,14 @@
   margin: 0 auto; /* Center the image */
 }
 
-.user-profile {
+.userProfile {
   text-align: center;
 }
 
 .user-profile span  {
   display: block;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 16px;
   color: #333;
 }
 
@@ -34,17 +34,17 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .contact-icons svg {
-  font-size: 14px; /* Adjust the icon size */
-  color: #6c757d;
+  font-size: 16px;
+  color: var(--border-color);
 }
 .userstable .btn {
   
   padding: 8px 8px;
-  font-size: 10px;
+  font-size: 14px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -66,5 +66,7 @@
 .btn-delete:hover {
   background: #c0392b;
 }
-
+.totalCount{
+  font-size: 18px;
+}
 

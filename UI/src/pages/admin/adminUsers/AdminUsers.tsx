@@ -90,13 +90,16 @@ const AdminUsers = () => {
 
       {/* Main Content */}
       <div className="col-lg-9 col-md-8 col-sm-12">
+      <h2 className="table-title my-4">User Details</h2>
 
-        <div className="d-flex justify-content-between mb-3">
-  <div className="d-flex align-items-center">
-    <FaUsers className="me-2" />
+      <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
+      <div className="d-flex align-items-center">
+      <FaUsers className="me-2 text-primary" />
     <span>Total Users: {filteredUsers.length}</span>
   </div>
-  <div className="form-floating mt-2">
+  <div className="d-flex align-items-center">
+
+  <div className="form-floating me-2">
     <input
       type="text"
       id="searchInput"
@@ -106,6 +109,7 @@ const AdminUsers = () => {
       onChange={(e) => setSearchTerm(e.target.value)}
     />
     <label htmlFor="searchInput">Search by name</label>
+ 
   </div>
   <div className="dropdown mt-2">
     <button
@@ -145,6 +149,7 @@ const AdminUsers = () => {
       </li>
     </ul>
   </div>
+  </div>
 </div>
 
         {/* Table */}
@@ -163,7 +168,7 @@ const AdminUsers = () => {
     currentUsers.map((user) => (
       <tr key={user._id}>
         <td>
-          <div className="user-profile">
+          <div className="userProfile">
             <img
               src={user.image || "https://via.placeholder.com/100"}
               alt={user.fullName}
@@ -174,22 +179,23 @@ const AdminUsers = () => {
         </td>
         <td>
           <div className="contact-icons">
-            <FaPhone />
+            <FaPhone className="text-primary me-2"/>
             <span>{user.phone}</span>
           </div>
           <div className="contact-icons">
-            <FaWhatsapp />
-            <span>{user.whatsappNumber}</span>
+          <FaWhatsapp className="text-success me-2" />
+          <span>{user.whatsappNumber}</span>
           </div>
           <div className="contact-icons">
-            <FaEnvelope />
-            <span>{user.email}</span>
+          <FaEnvelope className="text-warning me-2" />
+          <span>{user.email}</span>
           </div>
         </td>
         <td>
           <div className="contact-icons">
-            <FaMapMarkerAlt />
-            <span>
+          <FaMapMarkerAlt className="text-danger me-2" />
+
+          <span>
               {user.address.city}, {user.address.district}
             </span>
           </div>

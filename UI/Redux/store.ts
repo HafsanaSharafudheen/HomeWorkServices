@@ -3,10 +3,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Default is localStorage
 import userReducer from './user/userSlice';
+import storageSession from 'redux-persist/lib/storage/session';
 
 const persistConfig = {
   key: 'user', // Key in storage
-  storage, // Use localStorage
+  storage:storageSession
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);

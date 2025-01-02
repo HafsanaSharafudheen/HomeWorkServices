@@ -140,7 +140,7 @@ function ServiceProfile() {
       </button>
       <Button
         variant="link"
-        className="edit-profile-link"
+        className="editProfileLink"
         onClick={() =>
           navigate("/serviceProviderSignup", {
             state: { mode: "edit", profileId: profileId?.toString() },
