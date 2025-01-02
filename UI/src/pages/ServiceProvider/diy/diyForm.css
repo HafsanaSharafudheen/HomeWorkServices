@@ -1,16 +1,16 @@
 .cardImg {
     width: 100%;
-    height: 300px; /* Set the height of the image */
-    object-fit: cover; /* Ensures the image is properly cropped without stretching */
-    border-radius: 10px; /* Optional: Adds rounded corners to the image */
+    height: 300px;
+    object-fit: cover; 
+    border-radius: 10px; 
   }
   
 .div-bg-image-1{
   background-image: url(/src/assets/diy.jpg);
   background-size: cover; 
-  background-repeat: no-repeat; /* Prevents image repetition */
-  background-position: center; /* Centers the image within the div */
-  width: 100%; /* Makes the div span the full width of its container */
+  background-repeat: no-repeat; 
+  background-position: center;
+  width: 100%;
   height: 300px;
 
 }
