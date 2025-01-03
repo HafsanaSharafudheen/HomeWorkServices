@@ -7,6 +7,7 @@ import "./Login.css";
 import image from "../../assets/blackTools.jpeg";
 import axios from "../../axios/axios";
 import { RootState } from '../../../Redux/store';
+import Swal from 'sweetalert2';
 
 function Login() {
   const dispatch = useDispatch();
@@ -53,10 +54,22 @@ function Login() {
     try {
       const response = await axios.post("/login", formData);
       dispatch(signupStart());
-      // Check for redirect data in localStorage
-      const redirectData = localStorage.getItem("redirectAfterLogin");
+
 
       const user = response.data.user;
+      if (user.isBlocked) {
+        Swal.fire({
+          title: "Account Blocked",
+          text: "Your account is blocked. Please contact support for assistance.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        dispatch(signupFailure("User is blocked"));
+        return;
+      }
+  
+      // Check for redirect data in localStorage
+      const redirectData = localStorage.getItem("redirectAfterLogin");
       if (redirectData) {
         const parsedData = JSON.parse(redirectData);
         navigate(`/providers`, { state: parsedData });

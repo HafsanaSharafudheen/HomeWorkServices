@@ -41,6 +41,7 @@ export const loginUser = async (email: string, password: string) => {
       email: user.email,
       isProvider,
       isAdmin,
+      isBlocked: user.isBlocked,
     },
     secret,
     { expiresIn: "1h" }
@@ -56,7 +57,8 @@ export const loginUser = async (email: string, password: string) => {
       email: user.email,
       fullName: user.fullName,
       isProvider,
-      isAdmin
+      isAdmin,
+      isBlocked: user.isBlocked,
     },
   };
 };

@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import Provider from '../../infrastructure/dbModels/serviceProvider';
 import User from '../../infrastructure/dbModels/user';
 import Booking from "../../infrastructure/dbModels/booking";
+import mongoose from 'mongoose';
 
 const findAllProviders = async (): Promise<any> => {
     const providers = await Provider.find(); 
@@ -126,4 +127,19 @@ export const getDashboardDetails = async (): Promise<any> => {
 };
 
 
-export default { findAllProviders,findAllUsers,findAllBookings,getDashboardDetails };
+export const updateUserBlockStatus = async (userId:string, isBlocked:boolean) => {
+  const objectId = new mongoose.Types.ObjectId(userId);
+
+  const user = await User.findByIdAndUpdate(
+    objectId,           
+    { isBlocked },     
+    { new: true }      
+  );
+  
+  if (!user) throw new Error("User not found");
+  return user;
+};
+
+
+
+export default { findAllProviders,findAllUsers,findAllBookings,getDashboardDetails,updateUserBlockStatus };

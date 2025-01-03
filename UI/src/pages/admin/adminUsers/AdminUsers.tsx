@@ -3,7 +3,7 @@ import "./adminUsers.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
 import { User } from "../../../types/user";
-import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFilter, FaUsers, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFilter, FaUsers, FaEdit, FaTrash, FaBan, FaCheck } from 'react-icons/fa';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -47,20 +47,30 @@ const AdminUsers = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, filterType, users]);
 
-  const handleEditUser = (id: string) => {
-    alert(`Edit functionality for user with ID: ${id}`);
-  };
-
-  const handleDeleteUser = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await axios.delete(`/api/users/${id}`);
-        setUsers(users.filter((user) => user._id !== id));
-      } catch (error) {
-        console.error("Error deleting user:", error);
-      }
+  const handleBlockUser = async (id) => {
+    try {
+      const response = await axios.patch(`/block/${id}`);
+      const updatedUser = response.data.user;
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user._id === id ? updatedUser : user))
+      );
+    } catch (error) {
+      console.error("Error blocking user:", error);
     }
   };
+  
+  const handleUnblockUser = async (id) => {
+    try {
+      const response = await axios.patch(`/unblock/${id}`);
+      const updatedUser = response.data.user;
+      setUsers((prevUsers) =>
+        prevUsers.map((user) => (user._id === id ? updatedUser : user))
+      );
+    } catch (error) {
+      console.error("Error unblocking user:", error);
+    }
+  };
+  
 
   // Pagination logic
   const indexOfLastUser = currentPage * usersPerPage;
@@ -201,20 +211,25 @@ const AdminUsers = () => {
           </div>
           <p>PIN: {user.address.pin}</p>
         </td>
-        <td>
-                      <button
-                        className="btn btn-edit"
-                        onClick={() => handleEditUser(user._id)}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="btn btn-delete"
-                        onClick={() => handleDeleteUser(user._id)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
+
+<td>
+  {user?.isBlocked ? (
+    <button className="btn btn-unblock"
+     
+      onClick={() => handleUnblockUser(user._id)}
+    >
+      <FaCheck/> Unblock
+    </button>
+  ) : (
+    <button
+      className="btn btn-block"
+      onClick={() => handleBlockUser(user._id)}
+    >
+      <FaBan /> Block
+    </button>
+  )}
+</td>
+
       </tr>
     ))
   ) : (

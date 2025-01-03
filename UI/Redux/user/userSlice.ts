@@ -9,6 +9,7 @@ export interface User {
   role: string;
   password?: string;
   address: string;
+  isBlocked:boolean;
   
 }
 

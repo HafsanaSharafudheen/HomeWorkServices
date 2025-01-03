@@ -9,5 +9,6 @@
     address:{district:string,city:string,pin?:number|string}
     createdAt?: string;
     confirmPassword: string;
+    isBlocked?: boolean;
   }
   

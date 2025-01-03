@@ -49,24 +49,36 @@
   border: none;
   cursor: pointer;
 }
-.btn-edit {
-  background: #17a2b8;
-  color: #fff;
-}
 
-.btn-edit:hover {
-  background: #138496;
-}
-
-.btn-delete {
-  background: #e74c3c;
-  color: #fff;
-}
-
-.btn-delete:hover {
-  background: #c0392b;
-}
 .totalCount{
   font-size: 18px;
 }
+
+/* adminUsers.css */
+.btn-block {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-block:hover {
+  background-color: darkred;
+}
+
+.btn-unblock {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-unblock:hover {
+  background-color: darkgreen;
+}
+
 

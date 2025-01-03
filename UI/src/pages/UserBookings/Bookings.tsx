@@ -25,13 +25,14 @@ function Bookings() {
   return (
     <>
       <Header />
-   
+   <hr></hr>
         <div className="row">
           {/* Profile Section */}
           <div className="col-md-4">
             <Profile />
           </div>
           <div className="col-md-8">
+            
       <div className="bookingsPage">
         {bookings.length === 0 ? (
           <div className="no-bookings">
@@ -40,7 +41,8 @@ function Bookings() {
           </div>
         ) : (
           <div className="bookingsContainer">
-            <h3 className="headingStyle">Your Bookings</h3>
+                     <h3 className="headingStyle">Your Bookings</h3>
+
             <div className="bookingsGrid">
               {bookings.map((booking) => (
                 <BookingCard key={booking.id} booking={booking} />

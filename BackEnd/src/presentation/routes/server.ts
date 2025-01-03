@@ -28,6 +28,7 @@ import fetchProviderBookings from "../controllers/providers/fetchProviderBooking
 import updateStatus from "../controllers/providers/bookingStstusUpdate";
 import { createNewDIY, findAllDiysByProvider } from "../controllers/providers/createNewDIY";
 import fetchTestimonials from "../controllers/user/fetchTestimonials ";
+import userActions from "../controllers/admin/userActions";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -72,6 +73,9 @@ app.patch('/updateBookingStatus',updateStatus)
 app.post('/createDIY',createNewDIY)
 app.get('/DiysByProvider',findAllDiysByProvider)
 app.get('/testimonials',fetchTestimonials )
+app.patch("/block/:id", userActions.blockUser);
+app.patch("/unblock/:id", userActions.unblockUser);
+
 app.use(errorMiddleware);
 
 
