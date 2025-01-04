@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import "./adminUsers.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
@@ -11,41 +11,35 @@ const AdminUsers = () => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
+  const [totalUsers, setTotalUsers] = useState(0);
+
   const [filterType, setFilterType] = useState(""); 
 
-  useEffect(() => {
-    const fetchUsers = async () => {
+ 
+    const fetchUsers = async (page: number,search: string,filter: string) => {
       try {
-        const response = await axios.get("/fetchUsers");
-        setUsers(response.data.users);
+        const response = await axios.get("/fetchUsers", {
+          params: {
+            page, search,filter,
+            limit: usersPerPage,
+           
+          },
+        });      
+          setUsers(response.data.users);
+        setTotalUsers(response.data.totalCount);
+
         setFilteredUsers(response.data.users);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
-    fetchUsers();
-  }, []);
+    useEffect(() => {
+    fetchUsers(currentPage,searchTerm,filterType);
+  }, [currentPage,searchTerm,filterType]);
 
-  useEffect(() => {
-    let filtered = [...users];
 
-    // Apply search filter
-    if (searchTerm) {
-      filtered = filtered.filter((user) =>
-        user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    // Apply sorting based on filterType
-    if (filterType === "alphabetical") {
-      filtered.sort((a, b) => a.fullName.localeCompare(b.fullName));
-    } else if (filterType === "date") {
-      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    }
-
-    setFilteredUsers(filtered);
-  }, [searchTerm, filterType, users]);
+ 
 
   const handleBlockUser = async (id) => {
     try {
@@ -70,17 +64,10 @@ const AdminUsers = () => {
       console.error("Error unblocking user:", error);
     }
   };
-  
 
-  // Pagination logic
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
+ 
   const handleNextPage = () => {
-    if (currentPage < Math.ceil(filteredUsers.length / usersPerPage)) {
+    if (currentPage < Math.ceil(totalUsers / usersPerPage)) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
@@ -90,7 +77,6 @@ const AdminUsers = () => {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
-
   return (
     <div className="row admin-users-container">
       {/* Sidebar */}
@@ -170,12 +156,13 @@ const AdminUsers = () => {
                 <th>Profile</th>
                 <th>Contact</th>
                 <th>Address</th>
+
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-  {currentUsers.length > 0 ? (
-    currentUsers.map((user) => (
+  {users.length > 0 ? (
+    users.map((user) => (
       <tr key={user._id}>
         <td>
           <div className="userProfile">
@@ -211,6 +198,8 @@ const AdminUsers = () => {
           </div>
           <p>PIN: {user.address.pin}</p>
         </td>
+      
+
 
 <td>
   {user?.isBlocked ? (
@@ -243,10 +232,9 @@ const AdminUsers = () => {
           </table>
         </div>
 
-        {/* Pagination */}
-        <div className="pagination d-flex align-items-center justify-content-center">
+         <div className="pagination d-flex align-items-center justify-content-center">
           <button
-            className={`btn btn-primary mx-2`}
+            className="btn btn-primary mx-2"
             disabled={currentPage === 1}
             onClick={handlePrevPage}
           >
@@ -254,10 +242,8 @@ const AdminUsers = () => {
           </button>
           <span className="mx-3">{currentPage}</span>
           <button
-            className={`btn btn-primary mx-2`}
-            disabled={
-              currentPage === Math.ceil(filteredUsers.length / usersPerPage)
-            }
+            className="btn btn-primary mx-2"
+            disabled={currentPage >= Math.ceil(totalUsers / usersPerPage)}
             onClick={handleNextPage}
           >
             Next

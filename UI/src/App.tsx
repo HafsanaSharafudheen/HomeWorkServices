@@ -16,10 +16,8 @@ import ServiceProviderSignup from './pages/ServiceProvider/serviceProviderSignup
 import ServiceProfile from './pages/ServiceProvider/ServiceProfile/ServiceProfile';
 import ServicesDetails from './pages/servicesDetailedPage/servicesDetails';
 import Bookings from './pages/UserBookings/Bookings';
-import Profile from './pages/Profile/Profile';
 import AdminBookings from './pages/admin/adminBookings/adminBookings';
 import ProviderBookings from './pages/ServiceProvider/ProviderBookings/ProviderBookings';
-import diyForm from './pages/ServiceProvider/diy/diyForm';
 import DiyForm from './pages/ServiceProvider/diy/diyForm';
 
 
@@ -34,22 +32,16 @@ const App = () => {
         <Route path="/adminCategories" element={<Category />} />
         <Route path="/adminUsers" element={<AdminUsers />} />
         <Route path="/adminBookings" element={<AdminBookings />} />
-
         <Route path="/adminServiceProviders" element={<AdminServiceProviders />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/aboutUs" element={<About />} />
         <Route path="/YourBookings" element={<Bookings />} />
-        
-       
-
         <Route path="/serviceProviderSignup" element={<ServiceProviderSignup />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/serviceProviderDashboard" element={<ServiceProviderDashboard />} />
         <Route path="/ProviderBookings" element={<ProviderBookings />} />
-
         <Route path="/providers" element={<ServicesDetails />} />
         <Route path="/diyhub" element={<DiyForm />} />
-
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path='/ServiceProfile' element={<ServiceProfile />} />
       </Routes>

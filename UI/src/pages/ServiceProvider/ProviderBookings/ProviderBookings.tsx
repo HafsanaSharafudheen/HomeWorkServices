@@ -10,7 +10,7 @@ function ProviderBookings() {
     const [bookings, setBookings] = useState<Booking[]>([]);
     const Provider = useSelector((state: RootState) => state.user.user);
 
-    const providerId = Provider?._id;
+    const providerId = Provider?.id;
 
     const fetchBookings = async () => {
         try {

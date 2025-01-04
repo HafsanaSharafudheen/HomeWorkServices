@@ -12,13 +12,41 @@ const findAllProviders = async (): Promise<any> => {
     return providers;
 };
 
-const findAllUsers = async (): Promise<any> => {
-    const users=await User.find(); 
-if (!users || users.length === 0) {
-  console.warn("No users found in the database.");
+const findAllUsers = async  (page: number, limit: number,search:string, filter: string): Promise<any> => {
+try{
+  const skip = (page - 1) * limit;
+  const searchQuery = search
+  ? {
+      $or: [
+        { fullName: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { phone: { $regex: search, $options: "i" } },
+
+        { "address.city": { $regex: search, $options: "i" } },
+        { "address.district": { $regex: search, $options: "i" } },
+      ]
+    }
+  : {};
+  const sortOptions: any = {};
+  if (filter === "alphabetical") {
+    sortOptions.fullName = 1; // Sort by fullName in ascending order
+  } else if (filter === "date") {
+    sortOptions.createdAt = -1; // Sort by creation date in descending order
+  }
+  const users = await User.find(searchQuery).sort(sortOptions).skip(skip).limit(limit);
+  const totalCount = await User.countDocuments(searchQuery);
+
+  if (!users || users.length === 0) {
+    console.warn("No users found in the database.");
+  }
+
+  return { users, totalCount };
+} catch (error) {
+  console.error("Error fetching users in findAllUsers:", error);
+  throw new Error("Failed to fetch users.");
 }
-return users
-}
+};
+ 
 const findAllBookings = async (): Promise<any> => {
   try {
     const bookings = await Booking.aggregate([
