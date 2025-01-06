@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import "./adminBookings.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../axios/axios";
@@ -12,13 +12,34 @@ const AdminBookings = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [bookingsPerPage] = useState(10);
   const [filterType, setFilterType] = useState("");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
+
+  const timeSlots = ["9-11 AM", "11-1 PM", "2-4 PM", "4-6 PM"];
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         const response = await axios.get<{ bookings: Booking[] }>("/fetchAllBookings");
-        setBookings(response.data.bookings);
-        setFilteredBookings(response.data.bookings);
+        const bookingsData = response.data.bookings;
+
+        setBookings(bookingsData);
+        setFilteredBookings(bookingsData);
+
+        //set for removes duplicate serviceCategory values.
+        // A clean array of unique and valid serviceCategory values.example:['Cleaning', 'Plumbing']
+
+        const uniqueCategories = [
+          ...new Set(
+            bookingsData.map(
+              (booking) => booking.providerDetails?.[0]?.serviceCategory
+            )
+          ),
+        ].filter((category) => category);//Filters out invalid or undefined categories.
+
+        setCategories(uniqueCategories as string[]);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -40,17 +61,55 @@ const AdminBookings = () => {
       );
     }
 
-    // Apply additional filters based on filterType
-    if (filterType === "paymentTransfer") {
-      filtered = filtered.filter((booking) => booking.payment.status !== "completed");
-    } else if (filterType === "cancelled") {
-      filtered = filtered.filter((booking) => booking.status === "cancelled");
-    } else if (filterType === "category") {
-      filtered = filtered.filter((booking) => booking.providerDetails?.[0]?.serviceCategory);
+    // Apply alphabetical order filter
+    if (filterType === "alphabetical") {
+      filtered.sort((a, b) =>
+        (a.userDetails?.[0]?.fullName || "").localeCompare(
+          b.userDetails?.[0]?.fullName || ""
+        )
+      );
+    }
+
+    // Sort by date (recent first)
+    if (filterType === "recent") {
+      filtered.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    }
+
+    // Filter by selected category
+    if (selectedCategory) {
+      filtered = filtered.filter(
+        (booking) =>
+          booking.providerDetails?.[0]?.serviceCategory === selectedCategory
+      );
+    }
+
+    // Filter by time slot
+    if (selectedTimeSlot) {
+      filtered = filtered.filter((booking) => {
+        const [start, end] = selectedTimeSlot
+          .split("-")
+          .map((time) => parseInt(time.replace(/[^0-9]/g, ""), 10));
+        const bookingHour = parseInt(
+          booking.selectedTime.split(":")[0],
+          10
+        );
+
+        return bookingHour >= start && bookingHour < end;
+      });
+    }
+
+    // Filter by payment status
+    if (paymentStatus) {
+      filtered = filtered.filter(
+        (booking) => booking.payment.status === paymentStatus
+      );
     }
 
     setFilteredBookings(filtered);
-  }, [searchTerm, filterType, bookings]);
+  }, [searchTerm, filterType, selectedCategory, selectedTimeSlot, paymentStatus, bookings]);
 
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
@@ -70,16 +129,15 @@ const AdminBookings = () => {
 
   return (
     <div className="row admin-bookings-container">
-      {/* Sidebar */}
       <div className="col-lg-3 col-md-4 col-sm-12">
         <SideBar />
       </div>
 
       <div className="col-lg-9 col-md-8 col-sm-12">
-        <h2 className="table-title my-4">Booking Details</h2>
+        <h2 className="headingStyle my-4">Booking Details</h2>
 
         <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
-        <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center">
             <FaUsers className="me-2 text-primary" />
             <span>Total Bookings: {filteredBookings.length}</span>
           </div>
@@ -97,9 +155,73 @@ const AdminBookings = () => {
               <label htmlFor="searchInput">Search</label>
             </div>
 
+            <div className="dropdown me-3">
+              <button
+                className=" btn btn-sm DefaultDropDown dropdown-toggle"
+                type="button"
+                id="categoryDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Category
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="categoryDropdown">
+                {categories.map((category) => (
+                  <li key={category}>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => setSelectedCategory(category)}
+                    >
+                      {category}
+                    </button>
+                  </li>
+                ))}
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => setSelectedCategory("")}
+                  >
+                    Clear Category
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div className="dropdown me-3">
+              <button
+                className="btn-sm btn DefaultDropDown dropdown-toggle"
+                type="button"
+                id="timeSlotDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Time Slot
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="timeSlotDropdown">
+                {timeSlots.map((slot) => (
+                  <li key={slot}>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => setSelectedTimeSlot(slot)}
+                    >
+                      {slot}
+                    </button>
+                  </li>
+                ))}
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => setSelectedTimeSlot("")}
+                  >
+                    Clear Time Slot
+                  </button>
+                </li>
+              </ul>
+            </div>
+
             <div className="dropdown">
               <button
-                className="btn btn-primary dropdown-toggle"
+                className="DefaultDropDown btn-sm btn dropdown-toggle"
                 type="button"
                 id="filterDropdown"
                 data-bs-toggle="dropdown"
@@ -112,33 +234,44 @@ const AdminBookings = () => {
                 <li>
                   <button
                     className="dropdown-item"
-                    onClick={() => setFilterType("paymentTransfer")}
+                    onClick={() => setFilterType("alphabetical")}
                   >
-                    Payment Transfer
+                    Alphabetical Order
                   </button>
                 </li>
                 <li>
                   <button
                     className="dropdown-item"
-                    onClick={() => setFilterType("cancelled")}
+                    onClick={() => setFilterType("recent")}
                   >
-                    Cancelled Bookings
+                    Recent First
                   </button>
                 </li>
                 <li>
                   <button
                     className="dropdown-item"
-                    onClick={() => setFilterType("category")}
+                    onClick={() => setPaymentStatus("completed")}
                   >
-                    Category Based
+                    Completed Payments
                   </button>
                 </li>
                 <li>
                   <button
                     className="dropdown-item"
-                    onClick={() => setFilterType("")}
+                    onClick={() => setPaymentStatus("pending")}
                   >
-                    Clear Filter
+                    Pending Payments
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className="dropdown-item"
+                    onClick={() => {
+                      setFilterType("");
+                      setPaymentStatus("");
+                    }}
+                  >
+                    Clear Filters
                   </button>
                 </li>
               </ul>
@@ -179,7 +312,7 @@ const AdminBookings = () => {
                     </td>
                     <td>
                       {booking.payment.status !== "completed" && (
-                        <button className="btn-sm btn-primary">Transfer Payment</button>
+                        <button className="DefaultButton2">Transfer Payment</button>
                       )}
                     </td>
                   </tr>
@@ -195,10 +328,9 @@ const AdminBookings = () => {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="pagination d-flex align-items-center justify-content-center">
           <button
-            className={`btn btn-primary mx-2`}
+            className={`btn btn-sm btn-primary mx-2`}
             disabled={currentPage === 1}
             onClick={handlePrevPage}
           >
@@ -206,7 +338,7 @@ const AdminBookings = () => {
           </button>
           <span className="mx-3">{currentPage}</span>
           <button
-            className={`btn btn-primary mx-2`}
+            className={`btn btn-sm btn-primary mx-2`}
             disabled={
               currentPage === Math.ceil(filteredBookings.length / bookingsPerPage)
             }

@@ -84,25 +84,68 @@ const Signup: React.FC = () => {
     e.preventDefault();
 
     const errors: { [key: string]: string } = {};
-    if (!formData.fullName) errors.fullName = "Full Name is required.";
-    if (!formData.email) errors.email = "Email is required.";
-    if (!formData.phone) errors.phone = "Phone Number is required.";
-    if (!formData.whatsappNumber) errors.whatsappNumber = "WhatsApp Number is required.";
-    if (!formData.address.city) errors["address.city"] = "City is required.";
-    if (!formData.address.district) errors["address.district"] = "District is required.";
-    if (!formData.address.pin) errors["address.pin"] = "Pin Code is required.";
+    // Full Name Validation
+  if (!formData.fullName) {
+    errors.fullName = "Full Name is required.";
+  } else if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
+    errors.fullName = "Full Name must not contain numbers or special characters.";
+  }
 
-    if (!user) {
-      if (!formData.password) errors.password = "Password is required.";
-      if (formData.password !== formData.confirmPassword) {
-        errors.confirmPassword = "Passwords do not match.";
+  // Email Validation
+  if (!formData.email) {
+    errors.email = "Email is required.";
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    errors.email = "Enter a valid email address (e.g., test@example.com).";
+  }
+
+  // Phone Number Validation
+  if (!formData.phone) {
+    errors.phone = "Phone Number is required.";
+  } else if (!/^\d{10}$/.test(formData.phone)) {
+    errors.phone = "Phone Number must be exactly 10 digits and contain no letters or special characters.";
+  }
+
+  // WhatsApp Number Validation
+  if (!formData.whatsappNumber) {
+    errors.whatsappNumber = "WhatsApp Number is required.";
+  } else if (!/^\d{10}$/.test(formData.whatsappNumber)) {
+    errors.whatsappNumber = "WhatsApp Number must be exactly 10 digits and contain no letters or special characters.";
+  }
+
+  // Password Validation (only for signup)
+  if (!user) {
+    if (!formData.password) {
+      errors.password = "Password is required.";
+    } else {
+      const passwordConditions = {
+        length: formData.password.length >= 6,
+        uppercase: /[A-Z]/.test(formData.password),
+        lowercase: /[a-z]/.test(formData.password),
+        number: /\d/.test(formData.password),
+        specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(formData.password),
+      };
+
+      if (!Object.values(passwordConditions).every(Boolean)) {
+        errors.password = `
+          Password must meet the following conditions`
       }
     }
 
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
+    if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
     }
+  }
+
+  // Address Validation
+  if (!formData.address.city) errors["address.city"] = "City is required.";
+  if (!formData.address.district) errors["address.district"] = "District is required.";
+  if (!formData.address.pin) errors["address.pin"] = "Pin Code is required.";
+
+  // If there are validation errors, set them in the state and stop submission
+  if (Object.keys(errors).length > 0) {
+    setFormErrors(errors);
+    return;
+  }
 
     try {
       if (user) {

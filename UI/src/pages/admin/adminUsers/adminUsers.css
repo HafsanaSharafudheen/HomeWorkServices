@@ -23,22 +23,22 @@
   text-align: center;
 }
 
-.user-profile span  {
+.userProfile p{
   display: block;
   margin-top: 4px;
-  font-size: 16px;
+  font-size: 12px;
   color: #333;
 }
 
-.contact-icons {
+.contactIcons {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 16px;
+  gap: 3px;
+  font-size: 12px;
 }
 
-.contact-icons svg {
-  font-size: 16px;
+.contactIcons svg {
+  font-size: 12px;
   color: var(--border-color);
 }
 .userstable .btn {
@@ -59,7 +59,6 @@
   background-color: red;
   color: white;
   border: none;
-  padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -72,7 +71,6 @@
   background-color: green;
   color: white;
   border: none;
-  padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
 }

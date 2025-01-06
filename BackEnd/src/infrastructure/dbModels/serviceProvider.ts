@@ -38,7 +38,7 @@ const providerSchema: Schema = new Schema({
     pin: { type: String, required: true },
   },
   phone: { type: String },
-  whatsappNumber: { type: String },
+  whatsappNumber: { type: String ,required:true,unique:true},
   password: { type: String, required: true },
   contactNumber: { type: String },
   serviceCategory: { type: String },

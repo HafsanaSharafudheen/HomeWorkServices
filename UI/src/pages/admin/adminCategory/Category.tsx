@@ -1,30 +1,23 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Category.css";
-import SideBar from '../adminDashboard/SideBar';
+import SideBar from "../adminDashboard/SideBar";
 import CategoryCard from "../../../components/CategoryCard/CategoryCard";
-import {CategoryModel} from '../../../types/category'
+import { CategoryModel } from "../../../types/category";
+import { FaClosedCaptioning, FaImage, FaTimes } from "react-icons/fa";
+import { Form } from 'react-bootstrap';
 
 const Category = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [newCategory, setNewCategory] = useState<{ categoryName: string; categoryImage: File | null }>({
+  const [newCategory, setNewCategory] = useState<{
+    categoryName: string;
+    categoryImage: File | null;
+  }>({
     categoryName: "",
     categoryImage: null,
   });
-
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     try {
-  //       const response = await axios.get("/api/categories");
-  //       setCategories(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching categories:", error);
-  //     }
-  //   };
-
-  //   fetchCategories();
-  // }, []);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleAddCategory = async () => {
     if (!newCategory.categoryName || !newCategory.categoryImage) {
@@ -45,6 +38,7 @@ const Category = () => {
       setCategories([...categories, response.data]);
       setShowPopup(false);
       setNewCategory({ categoryName: "", categoryImage: null });
+      setImagePreview(null);
     } catch (error) {
       console.error("Error adding category:", error);
     }
@@ -59,17 +53,30 @@ const Category = () => {
     }
   };
 
+  const handleImageUpload = (file: File | null) => {
+    if (file) {
+      setNewCategory({ ...newCategory, categoryImage: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageRemove = () => {
+    setNewCategory({ ...newCategory, categoryImage: null });
+    setImagePreview(null);
+  };
+
   return (
     <div className="row">
-      <div className="col-md-2">
+      <div className="col-lg-3 col-md-4 col-sm-12">
         <SideBar />
       </div>
-      <div className="col-md-10 content-container">
+      <div className="col-lg-9 col-md-8 col-sm-12">
         <div className="header">
-          <button
-            className="add-category-button"
-            onClick={() => setShowPopup(true)}
-          >
+          <button className="DefaultButton" onClick={() => setShowPopup(true)}>
             Add New Category
           </button>
         </div>
@@ -87,32 +94,65 @@ const Category = () => {
         {showPopup && (
           <div className="popup-overlay">
             <div className="popup-content">
-              <h2>Add New Category</h2>
-              <label>
-                Category Name:
-                <input
-                  type="text"
-                  value={newCategory.categoryName}
-                  onChange={(e) =>
-                    setNewCategory({ ...newCategory, categoryName: e.target.value })
-                  }
-                />
-              </label>
-              <label>
-                Upload Image:
-                <input
-                  type="file"
-                  onChange={(e) =>
-                    setNewCategory({
-                      ...newCategory,
-                      categoryImage: e.target.files ? e.target.files[0] : null,
-                    })
-                  }
-                />
-              </label>
+              <h2 className="headingStyle">Add New Category</h2>
+              <div className="form-floating mb-3">
+            <Form.Control
+              type="text"
+              name=" CategoryName:"
+              placeholder=" Category Name:"
+              className="DefaultInput no-focus"
+              value={newCategory.categoryName}
+              onChange={(e) =>
+                setNewCategory({
+                  ...newCategory,
+                  categoryName: e.target.value,
+                })
+              }            />
+            <Form.Label>Categoty Name</Form.Label>
+          </div>
+             
+          <div className="upload-container">
+  {!imagePreview ? (
+    <label className="upload-label">
+      <div className="upload-box">
+        <FaImage className="upload-icon" />
+        <p>Click to Upload Image</p>
+      </div>
+      <input
+        type="file"
+        className="upload-input"
+        onChange={(e) =>
+          handleImageUpload(e.target.files ? e.target.files[0] : null)
+        }
+      />
+    </label>
+  ) : (
+    <div className="image-preview-container">
+      <img src={imagePreview} alt="Preview" className="image-preview" />
+      <div className="close-icon-container" onClick={handleImageRemove}>
+        <span className="tooltip">Remove Image</span>
+        <FaTimes className="close-icon" />
+      </div>
+    </div>
+  )}
+</div>
+
+
+
               <div className="popup-buttons">
-                <button onClick={handleAddCategory}>Save</button>
-                <button onClick={() => setShowPopup(false)}>Cancel</button>
+                <button className="btn-primary" onClick={handleAddCategory}>
+                  Save
+                </button>
+                <button
+                  className="btn-danger"
+                  onClick={() => {
+                    setShowPopup(false);
+                    setNewCategory({ categoryName: "", categoryImage: null });
+                    setImagePreview(null);
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

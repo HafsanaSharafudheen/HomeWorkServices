@@ -22,6 +22,11 @@ const saveUser = async (userData: Partial<IUser>): Promise<IUser> => {
 const findUserByEmail = async (email: string) => {
   return User.findOne({ "email" :email});
 };
+const findUserByWhatsappNumber=async(whatsappNumber: number) => {
+  return User.findOne({"whatsappNumber":whatsappNumber});
+}
+
+
 export const saveData = async (reviewData: Partial<IReview>) => {
   const review = new Review(reviewData); 
   return await review.save(); 
@@ -31,4 +36,4 @@ export const findReview = async (userId: string,bookingId: string,providerId: st
  Promise<IReview | null> => {
   return await Review.findOne({ userId, bookingId, providerId });
 }
-export default { saveUser,getUserById,findUserByEmail };
+export default { saveUser,getUserById,findUserByEmail,findUserByWhatsappNumber };

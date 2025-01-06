@@ -1,14 +1,22 @@
 import { getDashboardData, fetchDataWithDate } from '../../../application/businesslogics/provider';
 
-export const fetchServiceProviderDashboardData = async (req: Request, res: any): Promise<void> => {
-    try {
-      const data = await getDashboardData();
-      res.status(200).json(data);
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-      res.status(500).json({ message: "Internal Server Error" });
-    }
-  };
+export const fetchServiceProviderDashboardData = async (req: any, res: any): Promise<void> => {
+  const providerId = req.user?.id; // Ensure `req.user.id` exists
+
+  if (!providerId) {
+    return res.status(400).json({ message: "Provider ID is required" });
+  }
+
+  try {
+    const data = await getDashboardData(providerId);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
   export const fetchDashboardDataWithDate=async(req:any,res:any): Promise<void> => {
 
     const { startDate, endDate } = req.query;

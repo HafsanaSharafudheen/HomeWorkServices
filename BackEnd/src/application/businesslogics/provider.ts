@@ -63,25 +63,57 @@ export const updateProviderAvailable = async (
     throw error;
   }
 };
-export const getDashboardData = async () => {
-  const totalBookings = await countBookings();
 
-  const bookingsByDate = await aggregateBookingsByDate();
-  const paymentStatus = await aggregatePaymentStatus();
+export const getDashboardData = async (providerId: string) => {
+  try {
+    // Fetch total bookings for the provider
+    const totalBookings = await booking.countDocuments({ providerId });
 
-  return {
-    totalBookings,
-    bookingsByDate: {
-      labels: bookingsByDate.map((item) => `${item._id.year}-${item._id.month}-${item._id.day}`),
-      data: bookingsByDate.map((item) => item.count),
-    },
-    paymentStatus: {
-      labels: paymentStatus.map((item) => item._id),
-      data: paymentStatus.map((item) => item.count),
-    },
-  };
+    // Aggregate bookings by date
+    const bookingsByDate = await booking.aggregate([
+      { $match: { providerId } },
+      {
+        $group: {
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+            day: { $dayOfMonth: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1, "_id.day": 1 } },
+    ]);
+
+    // Aggregate payment statuses
+    const paymentStatus = await booking.aggregate([
+      { $match: { providerId } },
+      {
+        $group: {
+          _id: "$paymentStatus",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return {
+      totalBookings,
+      bookingsByDate: {
+        labels: bookingsByDate.map(
+          (item) => `${item._id.year}-${item._id.month}-${item._id.day}`
+        ),
+        data: bookingsByDate.map((item) => item.count),
+      },
+      paymentStatus: {
+        labels: paymentStatus.map((item) => item._id),
+        data: paymentStatus.map((item) => item.count),
+      },
+    };
+  } catch (error) {
+    console.error("Error aggregating dashboard data:", error);
+    throw new Error("Failed to aggregate dashboard data");
+  }
 };
-
 
 export const fetchDataWithDate = async (startDate: Date, endDate: Date) => {
   // Fetch bookings within the date range

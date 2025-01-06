@@ -42,13 +42,38 @@ align-items: center;
   font-size: 1em;
   cursor: pointer;
 }
+.DefaultButton2{
+  background-color: #F8F4ED;
+  border-radius: 19px;
+  color: var(--text-color);
+align-items: center;
+  border: 1px solid #493518;
+  font-size: 1em;
+  cursor: pointer;
+}
 
 .DefaultButton:hover {
   background-color: var(--secondary-color)
   
 }
-
-
+.DefaultButton2:hover {
+  background-color: var(--text-color);
+  color: white;
+  
+}
+.DefaultDropDown{
+  background-color: #F8F4ED;
+  border-radius: 19px;
+  color: var(--text-color);
+align-items: center;
+  border: 1px solid #493518;
+  font-size: 0.5em;
+  cursor: pointer;
+}
+.DefaultDropDown:hover{
+  background-color: var(--text-color);
+  color: white;
+}
 .dropdown-item:hover {
   background-color: transparent !important;
   color: var(--text-color) !important; 

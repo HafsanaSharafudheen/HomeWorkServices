@@ -109,8 +109,8 @@ const AdminUsers = () => {
   </div>
   <div className="dropdown mt-2">
     <button
-      className="btn btn-primary dropdown-toggle"
-      type="button"
+                className="DefaultDropDown btn-sm btn dropdown-toggle"
+                type="button"
       id="filterDropdown"
       data-bs-toggle="dropdown"
       aria-expanded="false"
@@ -171,39 +171,39 @@ const AdminUsers = () => {
               alt={user.fullName}
               className="user-image"
             />
-            <span>{user.fullName}</span>
+            <p>{user.fullName}</p>
           </div>
         </td>
         <td>
-          <div className="contact-icons">
+          <div className="contactIcons">
             <FaPhone className="text-primary me-2"/>
-            <span>{user.phone}</span>
+            <p>{user.phone}</p>
           </div>
-          <div className="contact-icons">
+          <div className="contactIcons">
           <FaWhatsapp className="text-success me-2" />
-          <span>{user.whatsappNumber}</span>
+          <p>{user.whatsappNumber}</p>
           </div>
-          <div className="contact-icons">
+          <div className="contactIcons">
           <FaEnvelope className="text-warning me-2" />
-          <span>{user.email}</span>
+          <p>{user.email}</p>
           </div>
         </td>
         <td>
-          <div className="contact-icons">
+          <div className="contactIcons">
           <FaMapMarkerAlt className="text-danger me-2" />
 
-          <span>
-              {user.address.city}, {user.address.district}
-            </span>
+          <p>
+              {user.address.city}, <br></br>{user.address.district} ,<br></br> {user.address.pin}
+            </p>
           </div>
-          <p>PIN: {user.address.pin}</p>
+         
         </td>
       
 
 
 <td>
   {user?.isBlocked ? (
-    <button className="btn btn-unblock"
+    <button className="btn-unblock"
      
       onClick={() => handleUnblockUser(user._id)}
     >
@@ -211,7 +211,7 @@ const AdminUsers = () => {
     </button>
   ) : (
     <button
-      className="btn btn-block"
+      className="btn-block"
       onClick={() => handleBlockUser(user._id)}
     >
       <FaBan /> Block
@@ -234,7 +234,7 @@ const AdminUsers = () => {
 
          <div className="pagination d-flex align-items-center justify-content-center">
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-sm btn-primary mx-2"
             disabled={currentPage === 1}
             onClick={handlePrevPage}
           >
@@ -242,7 +242,7 @@ const AdminUsers = () => {
           </button>
           <span className="mx-3">{currentPage}</span>
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-sm btn-primary mx-2"
             disabled={currentPage >= Math.ceil(totalUsers / usersPerPage)}
             onClick={handleNextPage}
           >

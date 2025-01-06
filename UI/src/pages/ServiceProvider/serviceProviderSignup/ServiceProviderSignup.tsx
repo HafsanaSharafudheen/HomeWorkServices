@@ -35,6 +35,7 @@ function ServiceProviderSignup() {
   });
 
   const [formError, setFormError] = useState<string>("");
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const [passwordConditions, setPasswordConditions] = useState({
     length: false,
@@ -45,7 +46,7 @@ function ServiceProviderSignup() {
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const { loading } = useSelector((state: RootState) => state.user);
+  const [loading,setLoading]=useState(false);
 
   const navigate = useNavigate();
 
@@ -200,25 +201,122 @@ function ServiceProviderSignup() {
       );
     }
   };
-
+  const handleValidation = () => {
+    const errors: Record<string, string> = {};
+  
+    // Full Name
+    if (!formData.fullName) {
+      errors.fullName = "Full Name is required.";
+    } else if (!/^[a-zA-Z\s]+$/.test(formData.fullName)) {
+      errors.fullName = "Full Name must not contain numbers or special characters.";
+    }  
+    // Email
+    if (!formData.email) errors.email = "Email is required.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Enter a valid email address.";
+    }
+  
+    // Contact Number
+    if (!formData.contactNumber) errors.contactNumber = "Contact Number is required.";
+    else if (!/^\d{10}$/.test(formData.contactNumber)) {
+      errors.contactNumber = "Enter a valid 10-digit contact number.";
+    }
+  
+    // WhatsApp Number
+    if (!formData.whatsappNumber) errors.whatsappNumber = "WhatsApp Number is required.";
+    else if (!/^\d{10}$/.test(formData.whatsappNumber)) {
+      errors.whatsappNumber = "Enter a valid 10-digit WhatsApp number.";
+    }
+  
+    // Address
+    if (!formData.address.city) errors["address.city"] = "City is required.";
+    if (!formData.address.district) errors["address.district"] = "District is required.";
+    if (!formData.address.pin) {
+      errors["address.pin"] = "PIN Code is required.";
+    } else if (!/^\d{6}$/.test(formData.address.pin)) {
+      errors["address.pin"] = "Enter a valid 6-digit PIN code.";
+    }
+  
+    // Service Category
+    if (!formData.serviceCategory) errors.serviceCategory = "Service Category is required.";
+  
+    // Languages
+    if (formData.languages.length === 0) errors.languages = "Select at least one language.";
+  
+    // Education
+    if (!formData.education.institute) {
+      errors["education.institute"] = "Institute name is required.";
+    }
+    
+    if (!formData.education.year || formData.education.year < 1900 || formData.education.year > new Date().getFullYear()) {
+      errors["education.year"] = "Enter a valid year of completion.";
+    }
+    
+    // Years of Experience
+    if (!formData.yearsOfExperience || formData.yearsOfExperience <= 0)
+      errors.yearsOfExperience = "Years of Experience is required.";
+  
+    // Service Charge
+    if (!formData.serviceCharge || formData.serviceCharge <= 0)
+      errors.serviceCharge = "Service Charge is required.";
+    if (!formData.serviceCategory) {
+      errors.serviceCategory = "Service Category is required.";
+    }
+    
+    if (!formData.workingHours.start) {
+      errors.workingHoursStart = "Working hours start time is required.";
+    }
+    
+    if (!formData.workingHours.end) {
+      errors.workingHoursEnd = "Working hours end time is required.";
+    }
+    
+    if (
+      formData.workingHours.start &&
+      formData.workingHours.end &&
+      formData.workingHours.start >= formData.workingHours.end
+    ) {
+      errors.workingHoursEnd = "End time must be later than start time.";
+    }
+    
+  
+    // Password (Only for Signup Mode)
+    if (mode !== "edit") {
+      if (!formData.password) errors.password = "Password is required.";
+      else if (
+        !(
+          formData.password.length >= 6 &&
+          /[A-Z]/.test(formData.password) &&
+          /[a-z]/.test(formData.password) &&
+          /\d/.test(formData.password) &&
+          /[!@#$%^&*(),.?":{}|<>]/.test(formData.password)
+        )
+      ) {
+        errors.password =
+          "Password must be at least 6 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.";
+      }
+      if (!Object.values(passwordConditions).every(Boolean)) {
+        errors.password = `
+          Password must meet the following conditions`
+      }
+  
+      if (!formData.confirmPassword)
+        errors.confirmPassword = "Confirm Password is required.";
+      else if (formData.password !== formData.confirmPassword)
+        errors.confirmPassword = "Passwords do not match.";
+    }
+  
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(signupStart());
+    setLoading(true)
 
-    if (
-      !formData.fullName ||
-      !formData.serviceCharge ||
-      !formData.email ||
-      !formData.contactNumber ||
-      !formData.whatsappNumber ||
-      !formData.serviceCategory ||
-      !formData.confirmPassword ||
-      !formData.yearsOfExperience ||
-      !formData.password ||
-      !formData.workingHours.start ||
-      !formData.workingHours.end
-    ) {
-      setFormError("All fields are required.");
+    if (!handleValidation()) {
+     
       return;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -230,19 +328,33 @@ function ServiceProviderSignup() {
       const response = await axios.post("/providerSignup", formData);
       if (response.status === 201) {
         dispatch(signupSuccess(response.data));
+        setLoading(false);
         navigate("/login");
       }
     } catch (error: any) {
-      setFormError(
-        error.response?.data?.message || "Operation failed. Please try again."
-      );
+      setLoading(false);
+    
+      if (error.response?.data?.error?.includes("WhatsApp number already exists")) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          whatsappNumber: "WhatsApp number already exists. Please use a different WhatsApp number.",
+        }));
+      }
+    
+      else if (error.response?.data?.error?.includes("duplicate key error") &&
+      error.response?.data?.error?.includes("email")) {
+    // Specific error for duplicate email
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      email: "Email already exists. Please use a different email.",
+    })) 
+  }
+    
       dispatch(
-        signupFailure(
-          error.response?.data?.message || "Operation failed."
-        )
+        signupFailure(error.response?.data?.message || "Operation failed.")
       );
     }
-  };
+  }    
 
   return (
     <div
@@ -257,12 +369,12 @@ function ServiceProviderSignup() {
     >
       <div className="blur-overlay"></div>
       <div className="form-SignupContainer container">
-        <h2 className="mb-4 text-center">
+        <h2 className="mb-4 headingStyle">
           {mode === "edit" ? "Edit Profile" : "Signup"}
         </h2>
         <Form onSubmit={handleSubmit}>
           {formError && (
-            <p className="text-danger text-center">{formError}</p>
+            <p className="errorMessageText">{formError}</p>
           )}
           {/* Full Name and Email */}
           <div className="row">
@@ -276,6 +388,9 @@ function ServiceProviderSignup() {
                   onChange={handleChange}
                 />
                 <Form.Label>Full Name</Form.Label>
+                {formErrors.fullName && (
+              <p  className="errorMessageText">{formErrors.fullName}</p>
+            )}
               </div>
             </div>
             <div className="col-md-6 mb-3">
@@ -288,6 +403,9 @@ function ServiceProviderSignup() {
                   onChange={handleChange}
                 />
                 <Form.Label>Email</Form.Label>
+                {formErrors.email && (
+              <p className="errorMessageText">{formErrors.email}</p>
+            )}
               </div>
             </div>
           </div>
@@ -304,6 +422,9 @@ function ServiceProviderSignup() {
                   onChange={handleChange}
                 />
                 <Form.Label>Phone Number</Form.Label>
+                {formErrors.contactNumber && (
+              <p className="errorMessageText">{formErrors.contactNumber}</p>
+            )}
               </div>
             </div>
             <div className="col-md-6 mb-3">
@@ -316,6 +437,9 @@ function ServiceProviderSignup() {
                   onChange={handleChange}
                 />
                 <Form.Label>WhatsApp Number</Form.Label>
+                {formErrors.whatsappNumber && (
+              <p className="errorMessageText">{formErrors.whatsappNumber}</p>
+            )}
               </div>
             </div>
           </div>
@@ -334,6 +458,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>City</Form.Label>
+                  {formErrors["address.city"] && (
+          <p className="errorMessageText">{formErrors["address.city"]}</p>
+        )}
                 </div>
               </div>
               <div className="col-md-4 mb-3">
@@ -346,6 +473,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>District</Form.Label>
+                  {formErrors["address.district"] && (
+          <p className="errorMessageText">{formErrors["address.district"]}</p>
+        )}
                 </div>
               </div>
               <div className="col-md-4 mb-3">
@@ -358,6 +488,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>PIN Code</Form.Label>
+                  {formErrors["address.pin"] && (
+          <p className="errorMessageText">{formErrors["address.pin"]}</p>
+        )}
                 </div>
               </div>
             </div>
@@ -379,6 +512,8 @@ function ServiceProviderSignup() {
                 />
               ))}
             </div>
+            {formErrors.languages && <p className="errorMessageText">{formErrors.languages}</p>}
+
           </Form.Group>
 
           {/* Education */}
@@ -395,6 +530,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>Institute</Form.Label>
+                  {formErrors["education.institute"] && (
+          <p className="errorMessageText">{formErrors["education.institute"]}</p>
+        )}
                 </div>
               </div>
               <div className="col-md-4 mb-3">
@@ -407,6 +545,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>Year of Completion</Form.Label>
+                  {formErrors["education.year"] && (
+          <p className="errorMessageText">{formErrors["education.year"]}</p>
+        )}
                 </div>
               </div>
               <div className="col-md-4 mb-3">
@@ -419,6 +560,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>Experience</Form.Label>
+                  {formErrors.yearsOfExperience && (
+              <p className="errorMessageText">{formErrors.yearsOfExperience}</p>
+            )}
                 </div>
               </div>
             </div>
@@ -438,6 +582,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>Start Time</Form.Label>
+                  {formErrors.workingHoursStart && (
+          <p className="errorMessageText">{formErrors.workingHoursStart}</p>
+        )}
                 </div>
               </div>
               <div className="col-md-3 mb-3">
@@ -450,6 +597,9 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>End Time</Form.Label>
+                  {formErrors.workingHoursEnd && (
+          <p className="errorMessageText">{formErrors.workingHoursEnd}</p>
+        )}
                 </div>
               </div>
             
@@ -466,6 +616,10 @@ function ServiceProviderSignup() {
                     onChange={handleChange}
                   />
                   <Form.Label>Service Charge</Form.Label>
+                  {formErrors.serviceCharge && (
+              <p className="errorMessageText">{formErrors.serviceCharge}</p>
+            )}
+                  
                 </div>
               </div>
               <div className="col-md-3 mb-3">
@@ -480,9 +634,13 @@ function ServiceProviderSignup() {
                   <option value="Electrician">Electrician</option>
                   <option value="Carpentry">Carpentry</option>
                 </Form.Select>
+                {formErrors.serviceCategory && (
+    <p className="errorMessageText">{formErrors.serviceCategory}</p>
+  )}
               </div>
+             
             </div>
-          
+           
             </Form.Group>
 
           {/* Password Fields */}
@@ -499,6 +657,9 @@ function ServiceProviderSignup() {
                     hidden={mode === "edit"}
                   />
                   <Form.Label>Password</Form.Label>
+                  {formErrors.password && (
+                  <p className="errorMessageText">{formErrors.password}</p>
+                )}
                 </div>
                 <ul className="passwordCriteria" hidden={mode==='edit'}>
                   <li style={{ color: passwordConditions.length ? "green" : "black" }}>
@@ -530,6 +691,9 @@ function ServiceProviderSignup() {
                     
                   />
                   <Form.Label>Confirm Password</Form.Label>
+                  {formErrors.confirmPassword && (
+                  <p className="errorMessageText">{formErrors.confirmPassword}</p>
+                )}
                 </div>
               </div>
             </div>
@@ -552,9 +716,9 @@ function ServiceProviderSignup() {
                 className="DefaultButton"
                 variant="primary"
                 type="submit"
-                disabled={loading}
-              >
-                {loading ? "Signing Up..." : "Sign Up"}
+                disabled={loading && Object.keys(formErrors).length === 0}
+                >
+               Sign Up
               </Button>
             )}
           </div>

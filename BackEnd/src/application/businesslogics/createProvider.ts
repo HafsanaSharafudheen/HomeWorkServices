@@ -7,8 +7,12 @@ const execute = async (userData: UserEntity): Promise<any> => {
   
 
   // Validate required fields
-  if (!userData.fullName || !userData.email || !userData.password) {
+  if (!userData.fullName || !userData.email || !userData.password || !userData.whatsappNumber) {
     throw new Error("Missing required fields");
+  }
+  const existingUser = await providerRepository.findProviderByWhatsappNumber(userData.whatsappNumber);
+  if (existingUser) {
+    throw new Error("WhatsApp number already exists. Please use a different WhatsApp number.");
   }
 
   // Hash the password

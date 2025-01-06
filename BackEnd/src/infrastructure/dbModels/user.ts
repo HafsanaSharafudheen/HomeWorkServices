@@ -23,7 +23,7 @@ const userSchema: Schema = new Schema({
     district: { type: String },
   },
   password: { type: String, required: true },
-  whatsappNumber: { type: Number, required: true },
+  whatsappNumber: { type: Number, required: true,unique:true },
   isAdmin: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
 

@@ -108,10 +108,10 @@ const AdminDashboard: React.FC = () => {
   return (
     <div className="dashboardContainer">
       <div className="row">
-        <div className="col-md-4">
+        <div className="col-md-3">
           <SideBar />
         </div>
-        <div className="col-md-8 mainContent">
+        <div className="col-md-9 mainContent">
           <div className="header d-flex justify-content-between align-items-center">
             <h1>Admin Dashboard</h1>
            

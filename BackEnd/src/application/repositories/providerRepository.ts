@@ -56,4 +56,7 @@ export const findAllDiys= async(providerId:string)=>{
 return result
 }
 
-export default { saveUser };
+const findProviderByWhatsappNumber=async(whatsappNumber:string) => {
+  return Provider.findOne({ "whatsappNumber":whatsappNumber });
+}
+export default { saveUser,findProviderByWhatsappNumber };

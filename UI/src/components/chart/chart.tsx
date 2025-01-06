@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Row, Col, Form, Button } from "react-bootstrap";
+import { Card,  Form } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
 import axios from "../../axios/axios";
 import {
@@ -144,7 +144,7 @@ function Chart() {
     <div className="card smallCardStyle">
       <div className="card-body text-center">
         <h6 className="card-title">Pending</h6>
-        <h3 className="card-text">{dashboardData.paymentStatus.data[0]}</h3>
+        <h3 className="card-text">{dashboardData.paymentStatus.data[0]||0}</h3>
       </div>
     </div>
   </div>
@@ -154,7 +154,7 @@ function Chart() {
     <div className="card smallCardStyle">
       <div className="card-body text-center">
         <h6 className="card-title">Completed</h6>
-        <h3 className="card-text">{dashboardData.paymentStatus.data[1]}</h3>
+        <h3 className="card-text">{dashboardData.paymentStatus.data[1]||0}</h3>
       </div>
     </div>
   </div>

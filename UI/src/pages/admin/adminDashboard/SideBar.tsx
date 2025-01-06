@@ -7,6 +7,8 @@ import {
   FaUsers,
   FaCogs,
   FaTags,
+  FaChevronLeft,
+  FaBars,
 } from "react-icons/fa";
 import "./AdminDashboard.css";
 
@@ -23,8 +25,8 @@ const SideBar: React.FC = () => {
             className="collapse-toggle"
             onClick={() => setIsCollapsed(!isCollapsed)}
           >
-            ☰
-          </button>
+          <FaBars />
+            </button>
         </div>
         <ul className="nav-links">
           <li

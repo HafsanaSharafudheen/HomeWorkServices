@@ -23,11 +23,17 @@ const execute = async (userData: {
   if (!address.city || !address.district || !address.pin) {
     throw new Error("Address must include city, district, and pin.");
   }
-
+  // Check if the email already exists
   const existingUser = await userRepository.findUserByEmail(email);
   if (existingUser) {
     throw new Error("Email already exists. Please use a different email.");
   }
+  // Check if the WhatsApp number already exists
+  const existingUserByWhatsappNumber = await userRepository.findUserByWhatsappNumber(whatsappNumber);
+  if (existingUserByWhatsappNumber) {
+    throw new Error("WhatsApp number already exists. Please use a different WhatsApp number.");
+  }
+
   // Hash the user's password
   const hashPassword = async (password: string): Promise<string> => {
     return bcrypt.hash(password, 10);

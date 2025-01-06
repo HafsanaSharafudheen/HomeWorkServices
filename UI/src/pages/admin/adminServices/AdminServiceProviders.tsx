@@ -123,7 +123,7 @@ const AdminServiceProviders = () => {
             {/* Filter Dropdown */}
             <div className="dropdown">
               <button
-                className="btn btn-primary dropdown-toggle"
+                className="DefaultDropDown btn-sm btn dropdown-toggle"
                 type="button"
                 id="filterDropdown"
                 data-bs-toggle="dropdown"
@@ -155,9 +155,9 @@ const AdminServiceProviders = () => {
         </div>
 
         {/* Table */}
-        <div className="responsive-table">
-          <table className="table table-bordered table-striped">
-            <thead className="thead-dark">
+        <div className="table-responsive ">
+          <table className="providersTable table">
+            <thead>
               <tr>
                 <th>Full Name</th>
                 <th>Email</th>
@@ -181,25 +181,26 @@ const AdminServiceProviders = () => {
                       {provider.address.pin || "N/A"}
                     </td>
                     <td>
-                      <button
-                        className="btn btn-edit me-2"
-                        onClick={() => handleEditProvider(provider._id)}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="btn btn-delete"
-                        onClick={() => handleDeleteProvider(provider._id)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </td>
+  <button
+    className="DefaultButton2"
+    onClick={() => handleEditProvider(provider._id)}
+  >
+    <FaEdit />
+  </button>
+  <button
+    className="DefaultButton2"
+    onClick={() => handleDeleteProvider(provider._id)}
+  >
+    <FaTrash />
+  </button>
+</td>
+
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="text-center">
-                    No providers found.
+        <td colSpan={3} className="text-center noProviders">
+        No providers found.
                   </td>
                 </tr>
               )}
@@ -210,7 +211,7 @@ const AdminServiceProviders = () => {
         {/* Pagination */}
         <div className="pagination d-flex align-items-center justify-content-center">
           <button
-            className={`btn btn-primary mx-2`}
+            className={`btn btn-sm btn-primary mx-2`}
             disabled={currentPage === 1}
             onClick={handlePrevPage}
           >
@@ -218,7 +219,7 @@ const AdminServiceProviders = () => {
           </button>
           <span className="mx-3">{currentPage}</span>
           <button
-            className={`btn btn-primary mx-2`}
+            className={`btn btn-sm btn-primary mx-2`}
             disabled={
               currentPage === Math.ceil(filteredProviders.length / rowsPerPage)
             }
