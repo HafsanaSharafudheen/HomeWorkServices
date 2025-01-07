@@ -4,35 +4,26 @@ import { DIY } from "../../../types/diy";
 import ServiceSidebar from "../ServiceSidebar";
 import ServiceNavbar from "../ServiceNavbar";
 import imagePath from "../../../assets/diy.jpg";
-import { FaPlusCircle, FaRegImage, FaVideo } from "react-icons/fa";
+import { FaPlusCircle, FaRegImage, FaTimesCircle, FaVideo } from "react-icons/fa";
 import './diyForm.css'
 import axios from "../../../axios/axios";
 import PreviousDIY from "../../../components/diy/PreviousDIY";
- export const DIYForm: React.FC = () => {
 
 
-  const [formData, setFormData] = useState<{
-    ditTitle: string;
-    purpose: string;
-    materialsRequired: string[];
-    steps: { title: string; description: string }[];
-    category: string;
-    safetyTips: string;
-    additionalNotes: string;
-    photos: File[] | string[];
-    videos: File[] | string[];
-  }>({
-    ditTitle: "",
-    purpose: "",
-    materialsRequired: [],
-    steps: [{ title: "", description: "" }],
-    category: "",
-    safetyTips: "",
-    additionalNotes: "",
-    photos: [],
-    videos: [],
-  });
-
+  export const DIYForm: React.FC = () => {
+    const [formData, setFormData] = useState<Omit<DIY, "_id" | "providerId">>({
+      ditTitle: "",
+      purpose: "",
+      materialsRequired: [],
+      steps: [{ title: "", description: "" }],
+      category: "",
+      safetyTips: [],
+      additionalNotes: "",
+      photos: [],
+      vedios: [],
+    });
+  
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
    
 
@@ -50,19 +41,76 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
     updatedSteps[index][field] = value;
     setFormData({ ...formData, steps: updatedSteps });
   };
+  const validateDIYForm = (formData: Omit<DIY, "_id" | "providerId">): boolean => {
+    const validationErrors: Record<string, string> = {};
+  
+    // Title Validation
+    if (!formData.ditTitle.trim()) {
+      validationErrors.ditTitle = "Title is required.";
+    }
+  
+    // Purpose Validation
+    if (!formData.purpose.trim()) {
+      validationErrors.purpose = "Purpose/Overview is required.";
+    }
+  
+    // Materials Required Validation
+    if (formData.materialsRequired.length === 0) {
+      validationErrors.materialsRequired = "At least one material is required.";
+    }
+  
+    // Steps Validation
+    formData.steps.forEach((step, index) => {
+      if (!step.title.trim()) {
+        validationErrors[`steps.${index}.title`] = `Step ${index + 1} title is required.`;
+      }
+      if (!step.description.trim()) {
+        validationErrors[`steps.${index}.description`] = `Step ${index + 1} description is required.`;
+      }
+    });
+  
+    // Category Validation
+    if (!formData.category.trim()) {
+      validationErrors.category = "Category is required.";
+    }
+  
+    // Safety Tips Validation
+    if (formData.safetyTips.length === 0) {
+      validationErrors.safetyTips = "At least one safety tip is required.";
+    }
+ // Trim the additionalNotes
 
+
+// Check if additionalNotes is empty
+if (!formData.additionalNotes.trim()) {
+  validationErrors.additionalNotes = "Additional notes are required.";
+} else if (formData.additionalNotes.trim().length < 25) {
+  // Check if the length of additionalNotes is less than 25
+  validationErrors.additionalNotes = "Additional notes must be at least 25 characters long.";
+}
+
+
+  
+    // Update errors state
+    setErrors(validationErrors);
+  
+    // Return true if no errors
+    return Object.keys(validationErrors).length === 0;
+  };
+  
+
+  const handleRemoveStep = (index: number) => {
+    const updatedSteps = formData.steps.filter((_, stepIndex) => stepIndex !== index);
+    setFormData({ ...formData, steps: updatedSteps });
+  };
   const handleSubmit = async (e: React.FormEvent) => {
-    
     e.preventDefault(); // Prevent default form submission
-    console.log("Submit button clicked! Form data: ", formData); // Debugging log
 
-    if (!formData.ditTitle || !formData.purpose || !formData.category) {
-      alert("Please fill out all required fields!");
-      return;
+    if (!validateDIYForm(formData)) {
+      return; // Stop if validation fails
     }
 
     try {
-      console.log("Submitting form data...");
       await axios.post("/createDIY", formData);
       alert("DIY Tip submitted successfully!");
       setFormData({
@@ -71,17 +119,17 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
         materialsRequired: [],
         steps: [{ title: "", description: "" }],
         category: "",
-        safetyTips: "",
+        safetyTips: [],
         additionalNotes: "",
         photos: [],
-        videos: [],
+        vedios: [],
       });
+      setErrors({}); // Clear errors after successful submission
     } catch (error) {
       console.error("Error submitting DIY:", error);
       alert("Failed to submit DIY Tip. Please try again.");
     }
   };
-
 
   return (
     <div>
@@ -95,16 +143,18 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
             <div className="card text-white div-bg-image-1">
             
               <div className="card-img-overlay d-flex flex-column justify-content-center text-center">
-                <h5 className="cardTitle mt-5">Share Your DIY Tips and Explore Others</h5>
+                <h6 className="cardTitle mt-5">Share Your DIY Tips and Explore Others</h6>
                 <p className="cardText">Contribute your knowledge or get inspired by creative and practical DIY solutions shared by others!</p>
               </div>
             </div>
 
           </div>
+<div className="formContainer">
+
 
           <form onSubmit={handleSubmit} className="p-4 shadow rounded bg-light">
             <h1 className="headingStyle">Submit Your DIY Tip</h1>
-            <h5 className="text-primary mb-4">1. Title and Purpose</h5>
+            <h6 className="text-primary">1. Title and Purpose</h6>
             <div className="row g-4">
               <div className="col-md-6">
                 <label className="form-label fw-bold">Title</label>
@@ -115,6 +165,8 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                   onChange={(e) => setFormData({ ...formData, ditTitle: e.target.value })}
                   placeholder="Enter the title"
                 />
+                  {errors.ditTitle && <p className="errorMessage">{errors.ditTitle}</p>}
+
               </div>
               <div className="col-md-6">
                 <label className="form-label fw-bold">Materials Required</label>
@@ -130,6 +182,9 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                   }
                   placeholder="List materials required"
                 />
+ {errors.materialsRequired && (
+                <p className="errorMessage">{errors.materialsRequired}</p>
+              )}
               </div>
               <div className="col-md-12">
                 <label className="form-label fw-bold">Purpose/Overview</label>
@@ -140,49 +195,69 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                   placeholder="Briefly describe the purpose"
                   rows={3}
                 ></textarea>
+              {errors.purpose && <p className="errorMessage">{errors.purpose}</p>}
+
               </div>
             </div>
 
-            <h5 className="text-primary">2. Step-by-Step Instructions</h5>
+            <h6 className="text-primary mt-3">2. Step-by-Step Instructions</h6>
             {formData.steps.map((step, index) => (
-              <div key={index} className="row g-3 mb-3 align-items-center">
-                <div className="col-md-5">
-                  <label className="form-label fw-bold">Step Title</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={step.title}
-                    onChange={(e) => handleStepChange(index, "title", e.target.value)}
-                    placeholder={`Step ${index + 1} Title`}
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label fw-bold">Step Description</label>
-                  <textarea
-                    className="form-control"
-                    value={step.description}
-                    onChange={(e) =>
-                      handleStepChange(index, "description", e.target.value)
-                    }
-                    placeholder={`Step ${index + 1} Description`}
-                  ></textarea>
-                </div>
-                <div className="col-md-1">
-                  {index === formData.steps.length - 1 && (
-                    <button
-                      type="button"
-                      className="btn btn-link text-primary"
-                      onClick={handleAddStep}
-                      style={{ fontSize: "20px" }}
-                    >
-                      <FaPlusCircle />
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+  <div key={index} className="row g-3 align-items-center">
+    <div className="col-md-5">
+      <label className="form-label fw-bold">Step Title</label>
+      <input
+        type="text"
+        className="form-control"
+        value={step.title}
+        onChange={(e) => handleStepChange(index, "title", e.target.value)}
+        placeholder={`Step ${index + 1} Title`}
+      />
+      {errors[`steps.${index}.title`] && (
+        <p className="errorMessage">{errors[`steps.${index}.title`]}</p>
+      )}
+    </div>
+    <div className="col-md-5">
+      <label className="form-label fw-bold">Step Description</label>
+      <textarea
+        className="form-control"
+        value={step.description}
+        onChange={(e) =>
+          handleStepChange(index, "description", e.target.value)
+        }
+        placeholder={`Step ${index + 1} Description`}
+      ></textarea>
+      {errors[`steps.${index}.description`] && (
+        <p className="errorMessage">{errors[`steps.${index}.description`]}</p>
+      )}
+    </div>
+    <div className="col-md-2 d-flex align-items-center">
+      {/* Remove Button */}
+      {index !== 0 && (
+        <button
+          type="button"
+          className="btn btn-link text-danger"
+          onClick={() => handleRemoveStep(index)}
+          style={{ fontSize: "15px" }}
+        >
+          <FaTimesCircle />
+        </button>
+      )}
+    </div>
+  </div>
+))}
 
-            <h5 className="text-primary">3. Tags/Category</h5>
+<div className="text-center">
+  <button
+    type="button"
+    className="btn btn-link text-primary"
+    onClick={handleAddStep}
+    style={{ fontSize: "10px" }}
+  >
+    <FaPlusCircle /> Add Step
+  </button>
+</div>
+
+            <h6 className="text-primary">3. Tags/Category</h6>
             <div className="row g-4">
               <div className="col-md-6">
                 <label className="form-label fw-bold">Select Category</label>
@@ -199,6 +274,8 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                   <option value="Appliance Maintenance">Appliance Maintenance</option>
                   <option value="Beauty Tips">Beauty Tips</option>
                 </select>
+                {errors.category && <p className="errorMessage">{errors.category}</p>}
+
               </div>
               <div className="col-md-6">
                 <label className="form-label fw-bold">Safety Tips</label>
@@ -214,8 +291,10 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                   placeholder="Add safety precautions"
                   rows={3}
                 ></textarea>
+                                {errors.safetyTips && <p className="errorMessage">{errors.safetyTips}</p>}
+
               </div>
-              <div className="col-md-12">
+              <div className="col-md-12 mb-4">
                 <label className="form-label fw-bold">Additional Notes</label>
                 <textarea
                   className="form-control"
@@ -226,6 +305,8 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                   placeholder="Add any additional notes"
                   rows={3}
                 ></textarea>
+  {errors.additionalNotes && <p className="errorMessage">{errors.additionalNotes}</p>}
+
               </div>
             </div>
 
@@ -236,10 +317,8 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
                 style={{
                   backgroundColor: "#8B5E3C",
                   color: "white",
-                  padding: "10px 20px",
                   borderRadius: "8px",
-                  fontWeight: "bold",
-                  fontSize: "16px",
+                  fontSize: "12px",
                   border: "none",
                 }}
               >
@@ -248,7 +327,7 @@ import PreviousDIY from "../../../components/diy/PreviousDIY";
             </div>
           </form>
 
-
+          </div>
         <div>
           <PreviousDIY/>
         </div>

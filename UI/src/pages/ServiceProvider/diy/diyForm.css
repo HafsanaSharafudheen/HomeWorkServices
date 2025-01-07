@@ -14,5 +14,16 @@
   height: 300px;
 
 }
- 
+.errorMessage{
+  font-size: 10px;
+  color: red;
+}
+.formContainer label{
+  font-size: 10px;
+}
+
+.form-control::placeholder {
+  font-size: 12px;
+  color: #888;
+}
   

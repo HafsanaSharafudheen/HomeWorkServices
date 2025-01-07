@@ -357,7 +357,13 @@ const Signup: React.FC = () => {
             <Button className="DefaultButton" type="submit">{user ? "Edit Profile" : "Sign Up"}</Button>
           </div>
         </Form>
-      </div>
+      
+      <div className="text-center">
+            <a href="/login" className="text-muted" style={{fontSize:"12px"}}>
+             Already Have an account? <span className="text-primary">Login</span>
+            </a>
+          </div>
+          </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 
   
   export interface DIY {
-    _id: string;
+    _id?: string;
     ditTitle: string;
     purpose: string;
     materialsRequired: string[];

@@ -38,8 +38,8 @@ span:hover{
   color: var(--text-color);
 align-items: center;
   border: 1px solid #493518;
-  padding: 10px 20px;
-  font-size: 1em;
+  padding: 10px 10px;
+  font-size: 0.8rem;
   cursor: pointer;
 }
 .DefaultButton2{
@@ -150,10 +150,11 @@ align-items: center;
   --animate-duration: 2s;
 }
 .serachButton{
-  background-color: var(--primary-color);
+  background-color: var(--border-color);
+border: none;
 }
 .serachButton:hover{
-  background-color: var(--border-color);
+  background-color: var(--secondary-color);
 }
 .headingStyle {
   font-weight: 500; 
@@ -172,3 +173,19 @@ align-items: center;
   font-size: 16px;
   border: none;
  }
+ .forgotPage-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  background-color: #f8f9fa; /* Optional background color */
+}
+
+.forgot-container {
+  background: white; /* Optional background for the form box */
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  max-width: 400px; /* Optional fixed width */
+  width: 100%; /* Ensures responsiveness */
+}

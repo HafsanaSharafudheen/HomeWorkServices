@@ -13,7 +13,7 @@ const Header: React.FC = () => {
       <Navbar expand="sm">
           {/* Logo Section */}
           <Navbar.Brand href="/" className="d-flex align-items-center">
-            <img src={logo} alt="Logo" style={{ height: "150px" }} />
+            <img src={logo} alt="Logo" style={{ height: "100px" }} />
           </Navbar.Brand>
 
           {/* Toggle Icon */}

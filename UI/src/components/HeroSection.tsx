@@ -9,13 +9,13 @@ const HeroSection: React.FC = () => {
 
 const navigate=useNavigate()
 ;  return (
-    <div className="container mt-5">
+    <div className="container">
       <div className="row align-items-center">
         {/* Left Column */}
         <div className="col-md-6">
-          <h1 className="animate__animated animate__fadeInLeft">
+          <h3 className="animate__animated animate__fadeInLeft">
             Find Reliable Home Services <br /> Anytime, Anywhere
-          </h1>
+          </h3>
 
           <p className="mt-3 text-muted animate__animated animate__fadeInRight">
             Convenient, trusted services at your doorstep—exactly when you need them. We make home services easy for you. Whether it's a repair, installation, or maintenance task, we bring expert help directly to your door. You can book trusted professionals anytime, wherever you need work done quickly and at your convenience, all with just a few clicks.

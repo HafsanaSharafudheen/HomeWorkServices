@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 import "./Login.css";
 import image from "../../assets/blackTools.jpeg";
 import axios from "../../axios/axios";
@@ -136,17 +136,29 @@ function Login() {
             />
             <Form.Label>Password</Form.Label>
           </div>
+          <div className="text-end mt-3">
+  <Link to="/forgot-password" className="text-primary" style={{ fontSize: "12px" }}>
+    Forgot your password?
+  </Link>
+</div>
+
           <div className="text-center">
   <Button className="DefaultButton" variant="primary" type="submit">
     Login
   </Button>
 </div>
 
-          <div className="text-center mt-3">
-            <a href="/signup" className="text-muted">
-              Not a member? <span className="text-primary">Sign up</span>
-            </a>
-          </div>
+<div className="text-center mt-3">
+  <Link
+    to={{
+      pathname: "/signup",
+      state: { user },
+    }}
+    className="text-muted"style={{fontSize:"12px"}}
+  >
+    Not a member? <span className="text-primary">Sign up</span>
+  </Link>
+</div>
         </Form>
       </div>
     </div>

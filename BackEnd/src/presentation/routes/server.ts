@@ -45,6 +45,8 @@ app.use(cors({
 app.use(bodyParser.json());
 
 app.post("/signup", signupController.handleSignup);
+app.post('/forgot-password',loginController.forgotPassword)
+app.post('/reset-password/:token', loginController.resetPassword);
 
 app.post("/login", loginController.handleLogin);
 app.post("/providerSignup", providerSignupController.handleSignup);

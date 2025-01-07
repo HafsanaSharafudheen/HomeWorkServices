@@ -19,6 +19,8 @@ import Bookings from './pages/UserBookings/Bookings';
 import AdminBookings from './pages/admin/adminBookings/adminBookings';
 import ProviderBookings from './pages/ServiceProvider/ProviderBookings/ProviderBookings';
 import DiyForm from './pages/ServiceProvider/diy/diyForm';
+import ForgotPassword from './components/forgotPassword/ForgotPassword';
+import ResetPassword from './components/forgotPassword/ResetPassword';
 
 
 const App = () => {
@@ -27,6 +29,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
         <Route path="/admin" element={<Login />} />
         <Route path='/adminDashboard' element={<AdminDashboard />} />
         <Route path="/adminCategories" element={<Category />} />

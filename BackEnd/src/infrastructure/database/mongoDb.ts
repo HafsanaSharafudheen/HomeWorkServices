@@ -3,7 +3,7 @@ import mongoose, { ConnectOptions } from 'mongoose';
 const connectDB = async (): Promise<void> => {
     console.log("connectDB started");
     try {
-        const uri = "mongodb+srv://hafsanasharafudheen:p40JNtEcUWgtbhbX@cluster0.aii1ptx.mongodb.net/homework";        
+         const uri=process.env.DB_URL||"";
           const options: ConnectOptions = {}; 
 
         await mongoose.connect(uri, options);

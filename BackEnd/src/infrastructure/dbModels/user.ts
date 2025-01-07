@@ -10,6 +10,8 @@ export interface IUser extends Document {
   whatsappNumber: number;
   isAdmin: boolean;
   isBlocked: boolean;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: number;
 
 }
 
@@ -26,7 +28,8 @@ const userSchema: Schema = new Schema({
   whatsappNumber: { type: Number, required: true,unique:true },
   isAdmin: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
-
+  resetPasswordToken: { type: String }, 
+  resetPasswordExpires: { type: Number }, 
 });
 
 // Export the User model
