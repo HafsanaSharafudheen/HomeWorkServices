@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Navbar, Container, Nav, NavDropdown, Offcanvas, Form, Button } from "react-bootstrap";
-import "../App.css";
+import "../assets/css/App.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import logo from "../assets/logo.png";

@@ -75,8 +75,14 @@ const ServicesDetails: React.FC = () => {
       const response = await axios.get(
         `/providers?serviceCategory=${serviceName}`
       );
-      setProviders(response.data.providers);
-      setFilteredProviders(response.data.providers);
+      console.log(response.data)
+      const providersWithRatings = response.data.providers.map((provider) => ({
+        ...provider,
+        averageRating: provider.averageRating || 0, // Default to 0 if no reviews
+      }));
+  
+      setProviders(providersWithRatings);
+      setFilteredProviders(providersWithRatings);
     } catch (error) {
       setError("Error fetching providers");
     } finally {
@@ -115,9 +121,8 @@ const ServicesDetails: React.FC = () => {
     } else if (selectedFilter === "ratings") {
       const [min, max] = option.split("-");
       sortedProviders = providers.filter((provider) => {
-        const rating = provider.rating;
-        if (!rating) return false;
-        return rating >= parseFloat(min) && rating < parseFloat(max);
+        const averageRating = provider.averageRating || 0; // Use averageRating field
+        return averageRating >= parseFloat(min) && averageRating < parseFloat(max);
       });
     }
 

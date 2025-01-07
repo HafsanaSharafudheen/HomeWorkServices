@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import "./ProviderCard.css";
 import defaultImage from "../../assets/person.jpg";
-import { FaClock, FaGraduationCap, FaLanguage, FaWrench, FaMoneyBillWave, FaMapMarkerAlt, FaBriefcase } from "react-icons/fa";
+import {
+  FaClock,
+  FaGraduationCap,
+  FaLanguage,
+  FaWrench,
+  FaMoneyBillWave,
+  FaMapMarkerAlt,
+  FaBriefcase} from "react-icons/fa";
 import { Provider } from "../../types/provider";
 import ServiceDetailsSidebar from "../ServiceDetailsSidebar/ServiceDetailsSidebar";
+import StarRating from '../StarRating';
 
 const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,6 +19,7 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
 
   return (
     <div className="col-md-12 mb-4">
@@ -63,6 +72,11 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
                 <FaMapMarkerAlt className="icon" />
                 {provider.address.district}, {provider.address.city}
               </p>
+              <StarRating
+                rating={provider.averageRating || 0}
+                showRatingText={true}
+              />
+
               <button className="btn btn-link" onClick={toggleSidebar}>
                 View Details
               </button>

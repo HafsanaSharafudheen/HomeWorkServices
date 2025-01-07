@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import "./ServiceDetailsSidebar.css";
@@ -11,6 +11,7 @@ import axios from "../../axios/axios";
 import Swal from "sweetalert2"; 
 import { useNavigate } from "react-router-dom";
 import { RootState } from '../../../Redux/store';
+import StarRating from '../StarRating';
 
 const timeSlots = [
   { start: "9:00 AM", end: "11:00 AM" },
@@ -173,13 +174,36 @@ const navigate=useNavigate()
             </div>
           </div>
         )}
-        {selectedTab === "feedback" && (
-          <div className="tab-pane active">
-            <h5>Customer Feedback</h5>
-            <p>No reviews yet.</p>
+      {selectedTab === "feedback" && (
+          <div style={{fontSize:"12px"}}>
+            <h6>Customer Feedback</h6>
+            
+       <div className="provider-rating mt-3">
+        <p>
+          <StarRating
+            rating={provider.averageRating || 0}
+            totalReviews={provider.totalReviews || 0}
+            showRatingText={true}
+          />
+        </p>
+      </div> 
+            {provider.reviews.length > 0 ? (
+              provider.reviews.map((review) => (
+                <div key={review._id} className="review-card">
+                  <p>
+                    <strong>{review.userDetails?.fullName || "Anonymous"}</strong>
+                  </p>
+                  <StarRating rating={review.ratings} showRatingText={false} />
+                  <p>{review.message}</p>
+                </div>
+              ))
+            ) : (
+              <p>No reviews yet.</p>
+            )}
           </div>
         )}
       </div>
+
     </div>
   );
 };

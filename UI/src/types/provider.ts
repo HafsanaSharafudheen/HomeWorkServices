@@ -1,8 +1,13 @@
+import { Review } from "./review";
+
 export interface Provider {
   _id ?:string;
   fullName: string; 
   email: string;
+  averageRating?:number;
+  totalReviews?:number;
   password: string; 
+  reviews:Review[];
   confirmPassword: string;
   contactNumber: string; 
   whatsappNumber: string; 

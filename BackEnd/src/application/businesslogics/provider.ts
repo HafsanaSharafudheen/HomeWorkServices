@@ -29,11 +29,60 @@ const updateProviderProfile = async (
 
 
 const findAllProvidersByCategory = async ( serviceCategory: string ): Promise<any> => {
-  const providers = await Provider.find({
-    serviceCategory: { $regex: new RegExp(serviceCategory, "i") }
-  });
-  console.log("findaLlPeroviders by category", providers);
- 
+  // const providers = await Provider.find({
+  //   serviceCategory: { $regex: new RegExp(serviceCategory, "i") }
+  const providers = await Provider.aggregate([
+    {
+      $match: {
+        serviceCategory: { $regex: new RegExp(serviceCategory, "i") }, // Match service category
+      },
+    },
+    {
+      $lookup: {
+        from: "reviews", // Join with reviews collection
+        let: { providerId: "$_id" }, // Pass provider's `_id` to the pipeline
+        pipeline: [
+          {
+            $addFields: {
+              providerId: { $toObjectId: "$providerId" }, // Convert providerId to ObjectId
+            },
+          },
+          {
+            $match: {
+              $expr: { $eq: ["$providerId", "$$providerId"] }, // Match providerId in reviews
+            },
+          },
+          {
+            $addFields: {
+              userId: { $toObjectId: "$userId" }, // Convert userId to ObjectId for matching
+            },
+          },
+          {
+            $lookup: {
+              from: "users", // Join with users collection
+              localField: "userId", // userId in reviews
+              foreignField: "_id", // _id in users
+              as: "userDetails", // Alias for the joined user data
+            },
+          },
+          {
+            $unwind: {
+              path: "$userDetails", // Flatten the user details array
+            },
+          },
+        ],
+        as: "reviews", 
+      },
+    },
+    {
+      $addFields: {
+        averageRating: { $ifNull: [{ $avg: "$reviews.ratings" }, 0] }, // Default to 0 if no ratings
+        totalReviews: { $size: "$reviews" }, // Count total reviews
+      },
+    },
+  ]);
+  
+  console.log("Providers with all fields and reviews:", providers);
   return providers;
 };
 
