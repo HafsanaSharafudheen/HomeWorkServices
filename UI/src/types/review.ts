@@ -10,5 +10,5 @@ export interface Review  {
     workVideo?: string; 
     createdAt?: Date;
     updatedAt?: Date;
-    userDetails:User
+    userDetails:User[]
   }

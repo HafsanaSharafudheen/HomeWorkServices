@@ -189,3 +189,14 @@ border: none;
   max-width: 400px; /* Optional fixed width */
   width: 100%; /* Ensures responsiveness */
 }
+
+.alert-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  width: 50%; 
+  max-width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

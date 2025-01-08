@@ -20,7 +20,7 @@ const Signup: React.FC = () => {
     confirmPassword: "",
     whatsappNumber: "",
   });
-
+  
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [passwordConditions, setPasswordConditions] = useState({
     length: false,
@@ -156,11 +156,12 @@ const Signup: React.FC = () => {
       } else {
         const response = await axios.post("/signup", formData);
         if (response.status === 201) {
-          navigate("/login");
+          localStorage.setItem("successMessage", response.data.message);
+            navigate("/login"); 
         }
       }
     } catch (error: any) {
-      setFormErrors({ general: error.response?.data?.message || "Operation failed. Please try again." });
+      setFormErrors({ general: error.response?.data?.message });
     }
   };
 
@@ -176,6 +177,7 @@ const Signup: React.FC = () => {
       <div className="blur-overlay"></div>
       <div className="form-container p-2">
         <h2 className="text-center">{user ? "Edit Profile" : "Sign Up"}</h2>
+
         <Form className="signup-form p-3" onSubmit={handleSubmit}>
           {formErrors.general && <p className="errorMessageText text-center">{formErrors.general}</p>}
 
@@ -364,6 +366,8 @@ const Signup: React.FC = () => {
             </a>
           </div>
           </div>
+
+          
     </div>
   );
 };

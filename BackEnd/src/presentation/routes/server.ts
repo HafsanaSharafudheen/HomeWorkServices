@@ -43,6 +43,7 @@ app.use(cors({
   }));
 
 app.use(bodyParser.json());
+app.get('/testimonials',fetchTestimonials )
 
 app.post("/signup", signupController.handleSignup);
 app.post('/forgot-password',loginController.forgotPassword)
@@ -74,9 +75,9 @@ app.get('/dashboardDataWithDate',fetchDashboardDataWithDate)
 app.patch('/updateBookingStatus',updateStatus)
 app.post('/createDIY',createNewDIY)
 app.get('/DiysByProvider',findAllDiysByProvider)
-app.get('/testimonials',fetchTestimonials )
 app.patch("/block/:id", userActions.blockUser);
 app.patch("/unblock/:id", userActions.unblockUser);
+
 
 app.use(errorMiddleware);
 
