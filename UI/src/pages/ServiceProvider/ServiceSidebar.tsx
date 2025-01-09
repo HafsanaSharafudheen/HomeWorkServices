@@ -16,7 +16,7 @@ const ServiceSidebar = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/messages" className="nav-link d-flex align-items-center">
+          <NavLink to="/providerChats" className="nav-link d-flex align-items-center">
             <FaEnvelope className="me-2" /> Messages
           </NavLink>
         </li>

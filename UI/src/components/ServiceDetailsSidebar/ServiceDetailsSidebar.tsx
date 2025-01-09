@@ -36,6 +36,15 @@ const navigate=useNavigate()
   };
 
   const handleRequest = async() => {
+    if (!provider.isAvailable) {
+      Swal.fire(
+        "Provider Unavailable",
+        "The provider is currently unavailable. Please select another provider.",
+        "warning"
+      );
+      return;
+    }
+  
     if (!user) {
       // Save current data in localStorage
       localStorage.setItem(

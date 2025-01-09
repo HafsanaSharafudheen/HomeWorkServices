@@ -39,7 +39,7 @@ const Header: React.FC = () => {
               <Nav.Link as={Link} to="/">
                 <span className="DefaultFontColor">Home</span>
               </Nav.Link>
-              <Nav.Link
+              {/* <Nav.Link
   onClick={() => {
     const section = document.getElementById('serviceSection');
     if (section) {
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
   }}
 >
   <span className="DefaultFontColor">Services</span>
-</Nav.Link>
+</Nav.Link> */}
 
               {user && (
                 <NavDropdown
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
                   <NavDropdown.Item as={Link} to="/YourBookings">
                     <span className="DefaultFontColor">Your Bookings</span>
                   </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/messages">
+                  <NavDropdown.Item as={Link} to="/YourChats">
                     <span className="DefaultFontColor">Messages</span>
                   </NavDropdown.Item>
                 </NavDropdown>

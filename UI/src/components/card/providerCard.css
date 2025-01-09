@@ -6,27 +6,16 @@
   font-size: 14px;
   color: var(--text-color);
 }
-
 .icon {
   margin-right: 10px;
   font-size: 18px;
   color: var(--primary-color);
 }
-
-.availability-label {
-  padding: 5px 10px;
-  border-radius: 5px;
-  width: fit-content;
-  margin-left: 80px;
-}
-
 .available {
-  background-color: green;
-  color: white;
+  color: green;
 }
-
 .not-available {
-border: 1px solid red;  color: red;
+  color: red;
 }
 .service-charges span{
   color: red;

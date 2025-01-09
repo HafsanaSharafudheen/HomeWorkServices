@@ -1,7 +1,8 @@
+import path from "path";
 import { updateUserProfile } from "../../../application/businesslogics/user/updateUserProfile";
+import User from '../../../infrastructure/dbModels/user';
 
-
-const UserProfileUpdate = async (req: any, res: any): Promise<void> => {
+ export const UserProfileUpdate = async (req: any, res: any): Promise<void> => {
   try {
     const userId = req.user.id;
 
@@ -21,4 +22,40 @@ const UserProfileUpdate = async (req: any, res: any): Promise<void> => {
   }
 };
 
-export default UserProfileUpdate;
+export const uploadProfilePictureOfUser = async (req: any, res: any): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+
+    if (!req.file) {
+      res.status(400).send({ error: 'No file uploaded' });
+      return;
+    }
+    console.log(req.file, 'requestfile.....1');
+
+    const filePath = `/uploads/${req.file.filename}`;
+    console.log(filePath, 'filePaaaath2');
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePicture: filePath },
+      { new: true } 
+    );
+    console.log('File saved at:', path.join(__dirname, 'uploads', req.file.filename));
+
+    console.log(updatedUser, 'updatedUserrrrrr3');
+
+    if (!updatedUser) {
+      res.status(404).send({ error: 'User not found' });
+      return;
+    }
+
+    res.status(200).send({
+      message: 'Profile picture uploaded successfully',
+      filePath,
+    });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).send({ error: 'An error occurred while uploading the profile picture' });
+  }
+};
+export default {UserProfileUpdate,uploadProfilePictureOfUser};

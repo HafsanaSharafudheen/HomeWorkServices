@@ -12,6 +12,7 @@ export interface IUser extends Document {
   isBlocked: boolean;
   resetPasswordToken?: string;
   resetPasswordExpires?: number;
+  profilePicture:string;
 
 }
 
@@ -30,6 +31,7 @@ const userSchema: Schema = new Schema({
   isBlocked: { type: Boolean, default: false },
   resetPasswordToken: { type: String }, 
   resetPasswordExpires: { type: Number }, 
+  profilePicture:{type: String},
 });
 
 // Export the User model

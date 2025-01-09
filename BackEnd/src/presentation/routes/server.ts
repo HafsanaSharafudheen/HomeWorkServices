@@ -5,6 +5,8 @@ import cors from 'cors'
 import loginController from "../../presentation/controllers/loginController";
 import errorMiddleware from "../middleware/errorMiddleware";
 import dotenv from "dotenv";
+import http from "http";
+
 import cookieParser from 'cookie-parser';
 
 import providerSignupController from "../../presentation/controllers/providerSignupController";
@@ -22,18 +24,27 @@ import { SaveReview } from "../controllers/user/saveReviewFromUser";
 import { getReview } from "../controllers/user/reviewDetails";
 import fetchBookings from "../controllers/admin/fetchBookings";
 import { fetchDashboardData } from "../controllers/admin/fetchDashboardData";
-import UserProfileUpdate from "../controllers/user/userProfileUpdate";
 import { fetchServiceProviderDashboardData, fetchDashboardDataWithDate } from '../controllers/providers/fetchServiceProviderDashboardData';
 import fetchProviderBookings from "../controllers/providers/fetchProviderBookings";
 import updateStatus from "../controllers/providers/bookingStstusUpdate";
 import { createNewDIY, findAllDiysByProvider } from "../controllers/providers/createNewDIY";
 import fetchTestimonials from "../controllers/user/fetchTestimonials ";
 import userActions from "../controllers/admin/userActions";
+import initSocketIO from '../../infrastructure/services/socketServer';
+import { saveChatMessage, fetchUsersChatHistory, fetchProvidersChatHistory, fetchChatHistory } from '../controllers/user/chatsController';
+import { uploadProfilePictureOfUser, UserProfileUpdate } from "../controllers/user/userProfileUpdate";
+import upload from "../middleware/multer";
+import path from "path";
 dotenv.config();
 const app = express();
+const server = http.createServer(app);
+const io = initSocketIO(server);
+
 app.use(express.json());
 
 app.use(cookieParser());
+app.use('/uploads', express.static( 'uploads'));
+
 
 
 app.use(cors({
@@ -44,6 +55,8 @@ app.use(cors({
 
 app.use(bodyParser.json());
 app.get('/testimonials',fetchTestimonials )
+
+
 
 app.post("/signup", signupController.handleSignup);
 app.post('/forgot-password',loginController.forgotPassword)
@@ -77,7 +90,12 @@ app.post('/createDIY',createNewDIY)
 app.get('/DiysByProvider',findAllDiysByProvider)
 app.patch("/block/:id", userActions.blockUser);
 app.patch("/unblock/:id", userActions.unblockUser);
+app.post('/upload-profile-picture', upload.single('profilePicture'),uploadProfilePictureOfUser)
 
+app.get('/providerChatList',fetchProvidersChatHistory);
+app.get('/userChatList',fetchUsersChatHistory)
+app.get('/chatHistory',fetchChatHistory)
+app.post('/saveChatMessage',saveChatMessage)
 
 app.use(errorMiddleware);
 

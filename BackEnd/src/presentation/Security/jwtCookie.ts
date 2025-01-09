@@ -16,10 +16,10 @@ export const setJwtCookie = (userId: string, res: Response): void => {
   }
 
   const token = jwt.sign({ id: userId }, jwtSecret, { expiresIn: '10h' }); 
-
+console.log(token,"ttttttttt")
   const cookieOptions: CookieOptions = {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: 'strict',
     maxAge: 30 * 24 * 60 * 60 * 1000 
   };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ProviderCard.css";
 import defaultImage from "../../assets/person.jpg";
 import {
@@ -8,18 +8,30 @@ import {
   FaWrench,
   FaMoneyBillWave,
   FaMapMarkerAlt,
-  FaBriefcase} from "react-icons/fa";
+  FaBriefcase,
+ 
+  FaCommentAlt} from "react-icons/fa";
 import { Provider } from "../../types/provider";
 import ServiceDetailsSidebar from "../ServiceDetailsSidebar/ServiceDetailsSidebar";
 import StarRating from '../StarRating';
+import { useNavigate } from "react-router-dom";
 
 const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+const navigate=useNavigate()
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
+  const redirectToChat = (providerId: string, providerName: string) => {
+    navigate("/messages", {
+      state: { 
+        providerId: providerId,
+        participantName: providerName,
+        isProvider: false,
+      }
+          });
+  };
+  
 
   return (
     <div className="col-md-12 mb-4">
@@ -38,6 +50,17 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
           >
             {provider.isAvailable ? "Available" : "Not Available"}
           </p>
+          <button
+  className="chat-button"
+  onClick={() =>
+    provider._id && provider.fullName && redirectToChat(provider._id, provider.fullName)
+  }
+>
+  <FaCommentAlt size={10} style={{ marginRight: "5px" }} />
+  Let's Chat
+</button>
+
+
         </div>
 
         {/* Right Side: Provider Details */}
@@ -86,6 +109,7 @@ const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
       </div>
       <hr />
       {isSidebarOpen && <ServiceDetailsSidebar provider={provider} onClose={toggleSidebar} />}
+     
     </div>
   );
 };

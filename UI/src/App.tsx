@@ -21,6 +21,8 @@ import ProviderBookings from './pages/ServiceProvider/ProviderBookings/ProviderB
 import DiyForm from './pages/ServiceProvider/diy/diyForm';
 import ForgotPassword from './components/forgotPassword/ForgotPassword';
 import ResetPassword from './components/forgotPassword/ResetPassword';
+import Chat from './components/chat/Chat';
+import ChatList from './components/ChatList/ChatList';
 
 
 const App = () => {
@@ -31,7 +33,10 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-
+        <Route path="/messages" element={<Chat />} />
+        <Route path="/YourChats" element={<ChatList isProvider={false} />} />
+        <Route path="/providerChats" element={<ChatList isProvider={true} />} />
+        
         <Route path="/admin" element={<Login />} />
         <Route path='/adminDashboard' element={<AdminDashboard />} />
         <Route path="/adminCategories" element={<Category />} />
