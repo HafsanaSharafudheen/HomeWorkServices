@@ -11,5 +11,6 @@
     confirmPassword: string;
     profilePicture?:string
     isBlocked?: boolean;
+    isAdmin?: boolean;
   }
   

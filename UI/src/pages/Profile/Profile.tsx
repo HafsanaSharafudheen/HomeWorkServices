@@ -44,6 +44,8 @@ function Profile() {
 
       const formData = new FormData();
       formData.append('profilePicture', selectedFile);
+      formData.append('entityType', 'user');
+
 
       try {
         const response = await axios.post('/upload-profile-picture', formData, {
@@ -71,11 +73,7 @@ function Profile() {
 
   // Handle logout
   const handleLogout = async () => {
-    try {
-      await axios.post('/logout');
-    } catch (error) {
-      console.error('Logout API error:', error);
-    }
+   
 
     dispatch(logout());
     localStorage.clear();

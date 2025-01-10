@@ -169,5 +169,11 @@ export const updateUserBlockStatus = async (userId:string, isBlocked:boolean) =>
 };
 
 
+export const fetchAdminProfileDetails =async(adminId:string) => {
+  const objectId = new mongoose.Types.ObjectId(adminId);
+
+  const adminDetails = await User.findOne({ _id: objectId });
+  return adminDetails;
+}
 
 export default { findAllProviders,findAllUsers,findAllBookings,getDashboardDetails,updateUserBlockStatus };

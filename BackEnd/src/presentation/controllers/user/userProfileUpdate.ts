@@ -1,6 +1,7 @@
 import path from "path";
 import { updateUserProfile } from "../../../application/businesslogics/user/updateUserProfile";
 import User from '../../../infrastructure/dbModels/user';
+import { updateProfilePicture } from '../../../application/businesslogics/profilePicture';
 
  export const UserProfileUpdate = async (req: any, res: any): Promise<void> => {
   try {
@@ -24,8 +25,8 @@ import User from '../../../infrastructure/dbModels/user';
 
 export const uploadProfilePictureOfUser = async (req: any, res: any): Promise<void> => {
   try {
-    const userId = req.user?.id;
-
+    const entityId = req.user?.id;
+    const entityType  = req.body.entityType;
     if (!req.file) {
       res.status(400).send({ error: 'No file uploaded' });
       return;
@@ -35,20 +36,11 @@ export const uploadProfilePictureOfUser = async (req: any, res: any): Promise<vo
     const filePath = `/uploads/${req.file.filename}`;
     console.log(filePath, 'filePaaaath2');
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profilePicture: filePath },
-      { new: true } 
-    );
-    console.log('File saved at:', path.join(__dirname, 'uploads', req.file.filename));
-
-    console.log(updatedUser, 'updatedUserrrrrr3');
-
-    if (!updatedUser) {
-      res.status(404).send({ error: 'User not found' });
+    const updatedEntity = await updateProfilePicture(entityType, entityId, filePath);
+    if (!updatedEntity) {
+      res.status(404).send({ error: `${entityType} not found` });
       return;
     }
-
     res.status(200).send({
       message: 'Profile picture uploaded successfully',
       filePath,
@@ -58,4 +50,6 @@ export const uploadProfilePictureOfUser = async (req: any, res: any): Promise<vo
     res.status(500).send({ error: 'An error occurred while uploading the profile picture' });
   }
 };
+
+
 export default {UserProfileUpdate,uploadProfilePictureOfUser};

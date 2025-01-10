@@ -9,16 +9,19 @@ import defaultImage from "../../../assets/person.jpg";
 
 // Import icons
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSetting } from "react-icons/ai";
-import { FaGraduationCap } from "react-icons/fa";
+import { FaGraduationCap, FaSignOutAlt } from 'react-icons/fa';
 import { MdCategory } from "react-icons/md";
 import { AiOutlineClockCircle, AiOutlineWhatsApp } from "react-icons/ai";
 
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../../../Redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 function ServiceProfile() {
   const [profile, setProfile] = useState<Provider | null>(null);
   const navigate = useNavigate();
   const [profileId, setProfileId] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchProfileDetails();
@@ -57,6 +60,45 @@ function ServiceProfile() {
     } catch (error) {
       console.error("Error updating availability status:", error);
       alert("Failed to update availability status");
+    }
+  };
+   // Handle logout
+   const handleLogout = async () => {
+   
+
+    dispatch(logout());
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login', { replace: true });
+  };
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const selectedFile = event.target.files[0];
+
+
+      const formData = new FormData();
+      formData.append('profilePicture', selectedFile);
+      formData.append('entityType', 'provider');
+
+      try {
+        const response = await axios.post('/upload-profile-picture', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        alert(response.data.message);
+
+        // Update the user state with the new profile picture
+        setProfile((prevUser) => {
+          if (prevUser) {
+            return { ...prevUser, profilePicture: response.data.filePath };
+          }
+          return prevUser;
+        });
+      } catch (error: any) {
+        alert(error.response?.data?.error || 'An error occurred while uploading');
+      }
     }
   };
 
@@ -123,33 +165,68 @@ function ServiceProfile() {
       )}
     </div>
 
-    <div className="col-md-6">
-      <h2>Hi {profile?.fullName}</h2>
+    <div className="col-md-6 text-center">
+    <div className="profile-container">
+  {profile && (
+    <>
+      <h2 className="profile-name">{profile.fullName}</h2>
+
+      {/* Clickable Profile Image */}
       <img
-        src={profile?.profileImage || defaultImage}
-        alt="Profile"
         className="profile-img"
-      />
-      <button
-        className={`btn-availability ${
-          profile?.isAvailable ? "available" : "not-available"
-        }`}
-        onClick={toggleAvailability}
-      >
-        {profile?.isAvailable ? "Available" : "Not Available"}
-      </button>
-      <Button
-        variant="link"
-        className="editProfileLink"
-        onClick={() =>
-          navigate("/serviceProviderSignup", {
-            state: { mode: "edit", profileId: profileId?.toString() },
-          })
+        src={
+          profile.profilePicture
+            ? `${import.meta.env.VITE_API_BASEURL}${profile.profilePicture}`
+            : defaultImage
         }
-      >
-        Edit Profile
-      </Button>
-    </div>
+        alt="Profile"
+        onClick={() => document.getElementById("fileInput")?.click()} // Trigger file input on image click
+      />
+      <input
+        type="file"
+        id="fileInput"
+        style={{ display: "none" }}
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+      <div className="button-container">
+        <button
+          className={`btn-availability ${
+            profile.isAvailable ? "available" : "not-available"
+          }`}
+          onClick={toggleAvailability}
+        >
+          {profile.isAvailable ? "Available" : "Not Available"}
+        </button>
+        <div className="action-links">
+  <Button
+    variant="link"
+    className="editProfileLink"
+    onClick={() =>
+      navigate("/serviceProviderSignup", {
+        state: { mode: "edit", profileId: profileId?.toString() },
+      })
+    }
+  >
+    Edit Profile
+  </Button>
+  <Button
+    variant="link"
+    className="editProfileLink"
+    onClick={handleLogout}
+   
+  >
+    Logout
+  </Button>
+</div>
+
+      </div>
+    </>
+  )}
+</div>
+
+</div>
+
   </div>
 </div>
 

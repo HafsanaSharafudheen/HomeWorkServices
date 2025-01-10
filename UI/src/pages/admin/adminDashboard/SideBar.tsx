@@ -9,6 +9,7 @@ import {
   FaTags,
   FaChevronLeft,
   FaBars,
+  FaUser,
 } from "react-icons/fa";
 import "./AdminDashboard.css";
 
@@ -83,6 +84,17 @@ const SideBar: React.FC = () => {
           >
             <FaTags className="nav-icon" />
             {!isCollapsed && <span className="nav-text">Categories</span>}
+          </li>
+          <li
+            onClick={() => navigate("/adminProfile")}
+            className="nav-item"
+            {...(isCollapsed && {
+              "data-tooltip-id": "sidebar-tooltip",
+              "data-tooltip-content": "Bookings",
+            })}
+          >
+            <FaUser className="nav-icon" />
+            {!isCollapsed && <span className="nav-text">Profile</span>}
           </li>
         </ul>
         {isCollapsed && (

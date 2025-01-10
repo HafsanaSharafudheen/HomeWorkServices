@@ -35,6 +35,7 @@ import { saveChatMessage, fetchUsersChatHistory, fetchProvidersChatHistory, fetc
 import { uploadProfilePictureOfUser, UserProfileUpdate } from "../controllers/user/userProfileUpdate";
 import upload from "../middleware/multer";
 import path from "path";
+import { fetchAdminDetails } from "../controllers/admin/fetchProfile";
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -96,7 +97,7 @@ app.get('/providerChatList',fetchProvidersChatHistory);
 app.get('/userChatList',fetchUsersChatHistory)
 app.get('/chatHistory',fetchChatHistory)
 app.post('/saveChatMessage',saveChatMessage)
-
+app.get('/adminDetails',fetchAdminDetails)
 app.use(errorMiddleware);
 
 

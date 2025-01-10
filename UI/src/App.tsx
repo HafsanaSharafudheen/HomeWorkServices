@@ -23,6 +23,7 @@ import ForgotPassword from './components/forgotPassword/ForgotPassword';
 import ResetPassword from './components/forgotPassword/ResetPassword';
 import Chat from './components/chat/Chat';
 import ChatList from './components/ChatList/ChatList';
+import AdminProfile from './pages/admin/adminProfile/adminProfile';
 
 
 const App = () => {
@@ -41,6 +42,8 @@ const App = () => {
         <Route path='/adminDashboard' element={<AdminDashboard />} />
         <Route path="/adminCategories" element={<Category />} />
         <Route path="/adminUsers" element={<AdminUsers />} />
+        <Route path="/adminProfile" element={<AdminProfile />} />
+
         <Route path="/adminBookings" element={<AdminBookings />} />
         <Route path="/adminServiceProviders" element={<AdminServiceProviders />} />
         <Route path="/signup" element={<Signup />} />

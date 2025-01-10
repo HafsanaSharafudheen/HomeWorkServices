@@ -28,4 +28,6 @@ export interface Provider {
   };
   isAdmin?: boolean; 
   isAvailable?: boolean; 
+  profilePicture?:string
+
 }

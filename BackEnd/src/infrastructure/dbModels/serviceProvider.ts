@@ -28,6 +28,8 @@ export interface IProvider extends Document {
   createdAt: Date;
   updatedAt: Date;
   updatedBy?: string;
+  profilePicture?:string
+
 }
 const providerSchema: Schema = new Schema({
   fullName: { type: String, required: true },
@@ -55,6 +57,8 @@ const providerSchema: Schema = new Schema({
     institute: { type: String },
     year: { type: Number },
   },
+  profilePicture:{type:String},
+
   confirmPassword: { type: String },
   isAdmin: { type: Boolean, default: false },
   updatedBy: { type: String },
