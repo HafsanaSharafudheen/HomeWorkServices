@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Booking } from "../../types/booking";
 import ReviewComponent from "../review/ReviewComponent";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import {
   FaUser,
   FaClock,

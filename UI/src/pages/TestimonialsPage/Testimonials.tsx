@@ -3,7 +3,7 @@ import TestimonialSlider from '../../components/TestimonialSlider';
 import TestimonialsCard from '../../components/TestimonialsCard';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 
 function Testimonials() {
   const [testimonials, setTestimonials] = useState([]);

@@ -33,8 +33,7 @@ const navigate=useNavigate()
   };
   
 
-  return (
-    <div className="col-md-12 mb-4">
+  return (<>
       <div className="provider-card d-flex align-items-center p-3">
         {/* Left Side: Profile Image */}
         <div className="col-md-4 text-center">
@@ -109,8 +108,7 @@ const navigate=useNavigate()
       </div>
       <hr />
       {isSidebarOpen && <ServiceDetailsSidebar provider={provider} onClose={toggleSidebar} />}
-     
-    </div>
+      </>
   );
 };
 

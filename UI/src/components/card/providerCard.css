@@ -6,7 +6,7 @@
   font-size: 14px;
   color: var(--text-color);
 }
-.icon {
+.provider-details .icon {
   margin-right: 10px;
   font-size: 18px;
   color: var(--primary-color);
@@ -19,4 +19,8 @@
 }
 .service-charges span{
   color: red;
+}
+.provider-image{
+  width: 100px;;
+  height: 100px;
 }

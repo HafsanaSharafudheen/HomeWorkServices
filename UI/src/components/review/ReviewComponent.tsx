@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaStar, FaCloudUploadAlt } from "react-icons/fa";
 import "./ReviewComponent.css"; // CSS styling
 import { Review } from "../../types/review";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 
 interface ReviewProps {
     bookingId: string;

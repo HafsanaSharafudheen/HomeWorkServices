@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 const ResetPassword = () => {
   const { token } = useParams();
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/u
 import { useNavigate, Link } from 'react-router-dom';
 import "./Login.css";
 import image from "../../assets/images/blackTools.jpeg";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import { RootState } from '../../../Redux/store';
 import Swal from 'sweetalert2';
 

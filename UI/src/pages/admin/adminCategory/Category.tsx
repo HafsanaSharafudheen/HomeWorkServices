@@ -5,7 +5,7 @@ import CategoryCard from "../../../components/CategoryCard/CategoryCard";
 import { CategoryModel } from "../../../types/category";
 import { FaImage, FaTimes } from "react-icons/fa";
 import { Form } from "react-bootstrap";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 
 const Category = () => {
   const [categories, setCategories] = useState<CategoryModel[]>([]);

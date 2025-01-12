@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ServiceSidebar from "../serviceSidebar";
 import ServiceNavbar from "../ServiceNavbar";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import {  Button } from "react-bootstrap";
 import { Provider } from "../../../types/provider";
 import "./serviceProfile.css";

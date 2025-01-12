@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import socket from '../../utilities/socket'; // Import the socket instance
+
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import { ChatType } from "../../types/chat";
 import { BiCheckDouble } from "react-icons/bi"; // Import double tick icon
 import './Chat.css'
-const socket = io("http://localhost:3000");
+
 
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<ChatType[]>([]);
-  const [message, setMessage] = useState("");
+  const [input, setInput] = useState("");
   const location = useLocation();
   const { providerId, participantName, isProvider } = location.state || {};
   const user = useSelector((state: RootState) => state.user.user);
@@ -48,18 +49,18 @@ const Chat: React.FC = () => {
   }, [providerId, isProvider, userId]);
 
   const sendMessage = () => {
-    if (message.trim()) {
+    if (input.trim()) {
       const messageData = {
-        sender: isProvider ? providerId : userId,
-        receiver: isProvider ? userId : providerId,
-        message,
+        sender:  userId,
+        receiver: providerId,
+        message:input,
         createdAt: new Date().toISOString(),
         read: false, // Default to unread
       };
 
       socket.emit("sendMessage", messageData);
       setMessages((prev) => [...prev, messageData]);
-      setMessage("");
+      setInput("");
 
       axios.post("/saveChatMessage", messageData);
     }
@@ -80,7 +81,7 @@ const Chat: React.FC = () => {
           <div
             key={index}
             className={`chat-message ${
-              msg.sender === userId ? "user" : "provider"
+              msg.sender === userId ? "logged-in-user" : "other-user"
             }`}
           >
             <p>{msg.message}</p>
@@ -100,8 +101,8 @@ const Chat: React.FC = () => {
       <div className="chat-footer">
         <input
           type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message"
         />
         <button onClick={sendMessage}>Send</button>

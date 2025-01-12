@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import Header from "../Header";
 import Footer from "../Footer";
 import "./ChatList.css";
 import { ChatType } from "../../types/chat";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
 
 const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
   const [fromProvider, setFromProvider] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const loggedInUserId = user?.id;
 
   useEffect(() => {
     const fetchChatList = async () => {
@@ -19,12 +24,19 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
         const response = await axios.get<{ chats: ChatType[]; fromProvider: boolean }>(endpoint);
 
         // Group chats by receiver ID
-        const groupedChats = Object.values(
-          response.data.chats.reduce((acc: Record<string, ChatType>, chat: ChatType) => {
-            acc[chat.receiver] = chat; // Keep the latest message for each receiver
-            return acc;
-          }, {})
+        let groupedChats = Array.from(
+          response.data.chats.reduce((map, chat) => {
+            // Sort receiver and sender to make the key order consistent
+            const [field1, field2] = [chat.receiver, chat.sender].sort();
+            const key = `${field1}_${field2}`; // Unique key (consistent order)
+            map.set(key, chat); // Store chat for each unique pair
+            return map;
+          }, new Map()).values() // Convert Map values to an array
         );
+        
+        
+
+        //groupedChats = groupedChats.filter(chat=> chat.sender != loggedInUserId);
 
         setChatList(groupedChats);
         setFromProvider(response.data.fromProvider); // Set the fromProvider flag dynamically
@@ -50,7 +62,13 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
         {chatList.length ? (
           <ul className="chat-list">
             {chatList.map(({ senderDetails, receiverDetails, message, createdAt }) => {
-              const participantDetails = fromProvider ? senderDetails : receiverDetails;
+              const isLoggedInUserisAReceiver = receiverDetails._id == loggedInUserId ? true : false;
+              const participantDetails = isLoggedInUserisAReceiver ?  senderDetails : receiverDetails;
+              if (!participantDetails) {
+                console.warn("Participant details are missing for chat:");
+                return null;
+              }
+
               return (
                 <li
                 key={participantDetails?._id }
@@ -63,11 +81,11 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
               >
               
                   <div className="chat-participant">
-                    <img
+                    {/* <img
                       src={participantDetails.profilePicture || "default-profile.png"}
                       alt={participantDetails.fullName}
                       className="chat-participant-image"
-                    />
+                    /> */}
                     <div className="chat-participant-info">
                       <h4>{participantDetails.fullName}</h4>
                       <p className="last-message">{message}</p>

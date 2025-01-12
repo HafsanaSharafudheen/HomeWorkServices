@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import Swal from "sweetalert2";
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");

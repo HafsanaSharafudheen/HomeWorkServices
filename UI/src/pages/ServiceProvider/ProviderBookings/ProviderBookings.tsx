@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ServiceNavbar from '../ServiceNavbar';
 import ServiceSidebar from '../ServiceSidebar';
-import axios from '../../../axios/axios';
+import axios from '../../../utilities/axios';
 import { Booking } from '../../../types/booking';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../Redux/store';

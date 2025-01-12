@@ -4,7 +4,7 @@ import image from "../../../assets/images/blackTools.jpeg";
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useDispatch} from "react-redux";
 import { AppDispatch } from "../../../../Redux/store";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import {
   signupFailure,
   signupStart,

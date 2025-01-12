@@ -7,7 +7,7 @@ interface AuthenticatedRequest extends Request {
 
 export const verifyToken = (req: AuthenticatedRequest, res: any, next: NextFunction): void => {
   const token: string | undefined = req.cookies && req.cookies.access_token;
-  console.log(req.cookies,"requestcokkies")
+ // console.log(req.cookies,"requestcokkies")
   if (!token) {
     return res.status(401).json({ message: "You need to login" });
   }
@@ -19,7 +19,7 @@ export const verifyToken = (req: AuthenticatedRequest, res: any, next: NextFunct
     }
     console.log('Token verified successfully');
     req.user = user;
-    console.log(req.user,"request user after the verifictaion")
+  //  console.log(req.user,"request user after the verifictaion")
     next();
   });
 };

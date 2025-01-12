@@ -30,7 +30,6 @@ import updateStatus from "../controllers/providers/bookingStstusUpdate";
 import { createNewDIY, findAllDiysByProvider } from "../controllers/providers/createNewDIY";
 import fetchTestimonials from "../controllers/user/fetchTestimonials ";
 import userActions from "../controllers/admin/userActions";
-import initSocketIO from '../../infrastructure/services/socketServer';
 import { saveChatMessage, fetchUsersChatHistory, fetchProvidersChatHistory, fetchChatHistory } from '../controllers/user/chatsController';
 import { uploadProfilePictureOfUser, UserProfileUpdate } from "../controllers/user/userProfileUpdate";
 import upload from "../middleware/multer";
@@ -41,7 +40,6 @@ import { fetchAllServices } from "../controllers/services/fetchAllServices";
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
-const io = initSocketIO(server);
 
 app.use(express.json());
 
@@ -57,6 +55,10 @@ app.use(cors({
   }));
 
 app.use(bodyParser.json());
+
+import initSocketIO from '../../infrastructure/services/socketServer';
+initSocketIO(server);
+
 app.get('/testimonials',fetchTestimonials )
 
 
@@ -69,7 +71,7 @@ app.post("/login", loginController.handleLogin);
 app.post("/providerSignup", providerSignupController.handleSignup);
 app.get('/fetchUsers',fetchUsers);
 app.get('/fetchProviders',fetchServiceProviders);
-app.use(verifyToken);
+//app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
 app.post('/updateProfile',ServiceProfileUpdate)
@@ -108,4 +110,4 @@ app.use(errorMiddleware);
 
 
 
-export default app;
+export { app, server};

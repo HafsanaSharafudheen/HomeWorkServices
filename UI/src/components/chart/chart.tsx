@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card,  Form } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import {
   Chart as ChartJS,
   CategoryScale,

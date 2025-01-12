@@ -5,7 +5,7 @@ import ServiceProvider from "../components/ServiceProvider/ServiceProvider";
 import TestimonialSlider from "../components/TestimonialSlider";
 import ServicesCards from "../components/servicesCards/ServicesCards";
 
-import axios from "../axios/axios";
+import axios from "../utilities/axios";
 import { useState, useEffect } from 'react';
 
 import { Review } from '../types/review';

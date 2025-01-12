@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import "./adminBookings.css";
 import SideBar from "../adminDashboard/SideBar";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import { FaFilter, FaUsers } from "react-icons/fa";
 import { Booking } from "../../../types/booking";
 

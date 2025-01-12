@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "../adminDashboard/SideBar";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import { Provider } from "../../../types/provider";
 import { FaEdit, FaTrash, FaFilter, FaUsers } from "react-icons/fa";
 import "./AdminServiceProvider.css";

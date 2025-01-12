@@ -7,7 +7,7 @@ import { Provider } from "../../types/provider";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import Swal from "sweetalert2"; 
 import { useNavigate } from "react-router-dom";
 import { RootState } from '../../../Redux/store';

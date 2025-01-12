@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Redux/store";
-import axios from '../../axios/axios';
+import axios from '../../utilities/axios';
 import { DIY } from '../../types/diy';
 import './PreviousDiy.css'
 import { FaEdit } from 'react-icons/fa';

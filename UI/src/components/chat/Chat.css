@@ -39,14 +39,14 @@
   font-size: 0.9rem;
 }
 
-.chat-message.user {
+.chat-message.logged-in-user {
   background-color: #d1e7dd;
   margin-left: auto;
   align-self: flex-end;
   color: #0f5132;
 }
 
-.chat-message.provider {
+.chat-message.other-user {
   background-color: #f8d7da;
   align-self: flex-start;
   color: #842029;

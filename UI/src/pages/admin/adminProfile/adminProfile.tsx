@@ -6,7 +6,7 @@ import "./AdminProfile.css";
 import { logout } from "../../../../Redux/user/userSlice";
 import SideBar from "../adminDashboard/SideBar";
 import { User } from "../../../types/user";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 
 
 

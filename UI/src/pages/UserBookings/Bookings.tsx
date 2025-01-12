@@ -3,7 +3,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import "./Bookings.css";
 import BookingCard from "../../components/bookingCard/BookingCard";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 import Profile from "../Profile/Profile";
 
 function Bookings() {

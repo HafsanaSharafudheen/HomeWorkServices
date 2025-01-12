@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import "./adminDashboard.css";
 import {  FaUsers, FaClipboardList, FaBuilding } from "react-icons/fa";
 import { Bar, Pie } from "react-chartjs-2";

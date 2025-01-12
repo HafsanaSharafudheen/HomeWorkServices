@@ -6,7 +6,7 @@ import ServiceNavbar from "../ServiceNavbar";
 import imagePath from "../../../assets/diy.jpg";
 import { FaPlusCircle, FaRegImage, FaTimesCircle, FaVideo } from "react-icons/fa";
 import './diyForm.css'
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import PreviousDIY from "../../../components/diy/PreviousDIY";
 
 

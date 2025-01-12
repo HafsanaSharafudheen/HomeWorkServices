@@ -1,12 +1,15 @@
-import { Server, Socket } from "socket.io";
+import { Server as SocketIOServer, Socket } from 'socket.io';
+
 import { Server as HttpServer } from "http";
 
 // Initialize Socket.IO Server
-const initSocketIO = (httpServer: HttpServer): Server => {
-  const io = new Server(httpServer, {
+const initSocketIO = (httpServer: HttpServer): SocketIOServer => {
+  const io = new SocketIOServer(httpServer, {
     cors: {
-      origin: process.env.FRONTEND_URL,
-      methods: ["GET", "POST"],
+      origin: true, // Allow any origin
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true, // Allow cookies
+
     },
   });
 
@@ -24,6 +27,7 @@ const initSocketIO = (httpServer: HttpServer): Server => {
     });
   });
 
+  
   return io;
 };
 

@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import "./adminUsers.css";
 import SideBar from "../adminDashboard/SideBar";
-import axios from "../../../axios/axios";
+import axios from "../../../utilities/axios";
 import { User } from "../../../types/user";
 import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFilter, FaUsers, FaEdit, FaTrash, FaBan, FaCheck } from 'react-icons/fa';
 

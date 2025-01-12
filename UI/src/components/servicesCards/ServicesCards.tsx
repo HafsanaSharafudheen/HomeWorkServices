@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./ServicesCards.css";
 import { useNavigate } from "react-router-dom";
-import axios from "../../axios/axios";
+import axios from "../../utilities/axios";
 
 const ServicesCards: React.FC = () => {
   const [servicesData, setServicesData] = useState([]);
