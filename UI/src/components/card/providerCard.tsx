@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ProviderCard.css";
-import defaultImage from "../../assets/person.jpg";
+import defaultImage from "../../assets/images/DefaultImage.avif";
 import {
   FaClock,
   FaGraduationCap,

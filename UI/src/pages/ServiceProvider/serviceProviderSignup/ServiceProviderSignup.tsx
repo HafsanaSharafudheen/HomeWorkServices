@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import image from "../../../assets/blackTools.jpeg";
+import image from "../../../assets/images/blackTools.jpeg";
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../Redux/store";
+import { useDispatch} from "react-redux";
+import { AppDispatch } from "../../../../Redux/store";
 import axios from "../../../axios/axios";
 import {
   signupFailure,

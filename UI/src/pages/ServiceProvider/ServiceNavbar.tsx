@@ -1,8 +1,7 @@
 import './serviceProvider.css'
-import logo from '../../assets/logo.png'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
-
+import logo from '../../assets/images/logo.png'
 const ServiceNavbar = () => {
   const user = useSelector((state: RootState) => state.user.user);
 

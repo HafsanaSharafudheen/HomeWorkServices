@@ -1,10 +1,4 @@
-/* Container styles */
-.admin-profile-container {
-    margin: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Admin profile details */
+
   .admin-profile {
     padding: 20px;
     background-color: #f9f9f9;
@@ -20,8 +14,8 @@
   
   .admin-email,
   .admin-role,
-  .admin-contact,
-  .last-login {
+  .admin-contact
+  {
     font-size: 16px;
     margin-bottom: 8px;
     color: #555;
@@ -30,22 +24,5 @@
   /* Actions */
   .admin-actions {
     margin-top: 20px;
-  }
-  
-  .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .btn-primary {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0056b3;
   }
   

@@ -54,9 +54,7 @@ function Profile() {
           },
         });
 
-        alert(response.data.message);
 
-        // Update the user state with the new profile picture
         setUser((prevUser) => {
           if (prevUser) {
             return { ...prevUser, profilePicture: response.data.filePath };

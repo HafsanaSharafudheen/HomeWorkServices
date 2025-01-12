@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
 import Provider from '../../infrastructure/dbModels/serviceProvider';
-import User from '../../infrastructure/dbModels/user';
+import User from '../../infrastructure/dbModels/user'
+import Category, { ICategory } from '../../infrastructure/dbModels/category';
+
 import Booking from "../../infrastructure/dbModels/booking";
 import mongoose from 'mongoose';
 
@@ -176,4 +178,29 @@ export const fetchAdminProfileDetails =async(adminId:string) => {
   return adminDetails;
 }
 
-export default { findAllProviders,findAllUsers,findAllBookings,getDashboardDetails,updateUserBlockStatus };
+export const addNewCategory = async (
+  categoryName: string,
+  categoryImage: string
+): Promise<ICategory> => {
+  try {
+    const newCategory = await Category.create({
+      categoryName,
+      categoryImage,
+    });
+
+    console.log("Category created:", newCategory);
+    return newCategory;
+  } catch (error: any) {
+    console.error("Error creating category:", error.message);
+    throw new Error("Failed to create category.");
+  }
+};
+export const fetchAllAdminSideCategories = async () => {
+  return Category.find(); 
+};
+
+
+
+export default { findAllProviders,
+  findAllUsers,findAllBookings,fetchAllAdminSideCategories,
+  getDashboardDetails,updateUserBlockStatus,addNewCategory, };

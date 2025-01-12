@@ -3,7 +3,7 @@ import { Navbar, Container, Nav, NavDropdown, Offcanvas, Form, Button } from "re
 import "../assets/css/App.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
-import logo from "../assets/logo.png";
+import logo from "../assets/images/logo.png";
 
 const Header: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);

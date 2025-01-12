@@ -1,7 +1,7 @@
 import './ServiceProvider.css';
-import increaseEarnings from '../../assets/Earnings.jpg';
-import productivity from '../../assets/worker-walking-along-gears-different-sizes_1156-608.avif';
-import enhanceSkill from '../../assets/enhancing.avif';
+import increaseEarnings from '../../assets/images/Earnings.jpg';
+import productivity from '../../assets/images/worker-walking-along-gears-different-sizes_1156-608.avif';
+import enhanceSkill from '../../assets/images/enhancing.avif';
 import { useNavigate } from 'react-router-dom';
 
 const ServiceProvider = () => {

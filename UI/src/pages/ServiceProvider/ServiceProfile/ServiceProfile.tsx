@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import ServiceSidebar from "../serviceSidebar";
 import ServiceNavbar from "../ServiceNavbar";
 import axios from "../../../axios/axios";
-import { Modal, Button } from "react-bootstrap";
+import {  Button } from "react-bootstrap";
 import { Provider } from "../../../types/provider";
 import "./serviceProfile.css";
-import defaultImage from "../../../assets/person.jpg";
+import defaultImage from "../../../assets/images/DefaultImage.avif";
 
 // Import icons
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSetting } from "react-icons/ai";

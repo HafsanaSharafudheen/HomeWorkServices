@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
 import { useNavigate, Link } from 'react-router-dom';
 import "./Login.css";
-import image from "../../assets/blackTools.jpeg";
+import image from "../../assets/images/blackTools.jpeg";
 import axios from "../../axios/axios";
 import { RootState } from '../../../Redux/store';
 import Swal from 'sweetalert2';

@@ -1,0 +1,19 @@
+.category-image {
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    font-size: 12px;
+    color: black;
+  }
+  .category-card .card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .category-card .card:hover {
+    transform: translateY(-10px); /* Moves the card up */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Adds a shadow for a pop-out effect */
+  }
+  

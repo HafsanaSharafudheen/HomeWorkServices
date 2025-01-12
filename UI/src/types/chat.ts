@@ -10,6 +10,9 @@ export interface ChatType {
     reciever:string;
     message:string;
     createdAt: string;
-    updatedAt: string;
+    updatedAt: Date;
+    read?: boolean;
+    readAt?: Date;
+    fromProvider:boolean;
   }
   

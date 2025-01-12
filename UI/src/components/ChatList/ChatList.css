@@ -1,5 +1,6 @@
 .chat-list-container {
     padding: 20px;
+    height: 100vh;
     background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -27,7 +28,7 @@
   
   .chat-list-item:hover {
     transform: scale(1.02);
-    background-color: var(--border-color);
+    background-color:#c69756;
   }
   
   .chat-participant {

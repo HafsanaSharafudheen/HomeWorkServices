@@ -48,13 +48,16 @@ const AdminProfile: React.FC = () => {
       <div className="col-lg-9 col-md-8 col-sm-12">
         <div className="admin-profile">
           <h2 className="admin-name">{adminDetails?.fullName }</h2>
-          <p className="admin-email">{adminDetails?.email }</p>
+          <p className="admin-email">Email:{adminDetails?.email }</p>
           <p className="admin-role">Role: {adminDetails?.isAdmin ?"Admin" :"User"}</p>
           <p className="admin-contact">Contact: {adminDetails?.phone || "N/A"}</p>
           <p className="admin-contact">WhatsApp Number: {adminDetails?.whatsappNumber || "N/A"}</p>
+          <p className="admin-contact">Address: {adminDetails?.address.district},{adminDetails?.address.city}
+            , {adminDetails?.address.pin}
+          </p>
 
           <div className="admin-actions">
-            <button className="btn btn-primary" onClick={handleLogout}>
+            <button className="DefaultButton2" onClick={handleLogout}>
               Logout
             </button>
           </div>

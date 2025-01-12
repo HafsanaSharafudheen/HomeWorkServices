@@ -4,16 +4,15 @@ import Chat from '../../../infrastructure/dbModels/chat';
 
 export const fetchProvidersChatHistory = async (req: any, res: Response) => {
   try {
-    const providerId = req.query; 
-    const userId=req.user.id
+    const providerId=req.user.id
     console.log("Provider ID:", providerId);
 
     const chats = await Chat.aggregate([
       {
         $match: {
           $or: [
-            { sender: userId, receiver: providerId },
-            { sender: providerId, receiver: userId },
+            { receiver: providerId },
+            { sender: providerId },
           ],
         },
       },
@@ -114,7 +113,7 @@ export const fetchProvidersChatHistory = async (req: any, res: Response) => {
       },
     ]);
 
-    res.status(200).json({ success: true, chats });
+    res.status(200).json({ success: true, chats:chats,fromProvider:true });
   } catch (error) {
     console.error("Error fetching provider's chat history:", error);
     res.status(500).json({ success: false, message: "Failed to fetch provider's chat history" });
@@ -264,10 +263,10 @@ export const saveChatMessage = async (req: any, res: any) => {
 
 export const fetchChatHistory = async (req:any, res:any) => {
   try {
-    const participantId = req.query.participantId;
+    const providerId = req.query.providerId;
     const userId = req.user.id;
 
-    if (!participantId) {
+    if (!providerId) {
       return res.status(400).json({ error: "Participant ID is required" });
     }
 
@@ -275,8 +274,8 @@ export const fetchChatHistory = async (req:any, res:any) => {
       {
         $match: {
           $or: [
-            { sender: userId, receiver: participantId },
-            { sender: participantId, receiver: userId },
+            { sender: userId, receiver: providerId },
+            { sender: providerId, receiver: userId },
           ],
         },
       },

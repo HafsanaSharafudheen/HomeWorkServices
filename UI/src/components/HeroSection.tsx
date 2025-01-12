@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "../assets/css/App.css";
-import HeroImage from '../assets/HeroImage.jpg';
+import HeroImage from '../assets/images/HeroImage.jpg';
 import { RootState } from '../../Redux/store';
 import { useSelector } from "react-redux";
 

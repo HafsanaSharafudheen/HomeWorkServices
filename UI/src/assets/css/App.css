@@ -38,8 +38,8 @@ span:hover{
   color: var(--text-color);
 align-items: center;
   border: 1px solid #493518;
-  padding: 10px 10px;
-  font-size: 0.8rem;
+  padding: 10px 20px;
+  font-size: 0.9rem;
   cursor: pointer;
 }
 .DefaultButton2{
