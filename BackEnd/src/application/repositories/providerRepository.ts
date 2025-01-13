@@ -47,7 +47,8 @@ export const dataFetching = async (providerId: string) => {
   }
 };
 
-export const saveDIYToDB = async (diyData: IDIY) => {
+export const saveDIYToDB = async (diyData: Partial<IDIY>) => {
+  
   const diy = new Diy(diyData);
   return await diy.save();
 };

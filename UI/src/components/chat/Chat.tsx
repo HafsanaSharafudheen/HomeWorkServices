@@ -14,34 +14,60 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<ChatType[]>([]);
   const [input, setInput] = useState("");
   const location = useLocation();
-  const { providerId, participantName, isProvider } = location.state || {};
+  const { providerId, participantName, isProvider,markAsRead } = location.state || {};
   const user = useSelector((state: RootState) => state.user.user);
 
   const userId = user?.id;
 
   useEffect(() => {
+   
+
     const fetchChatHistory = async () => {
       try {
         const response = await axios.get(
           `/chatHistory?providerId=${providerId}&isProvider=${isProvider}`
         );
         setMessages(response.data.messages);
+         await markMessagesAsRead();
 
-        // Mark all messages as read
-        await axios.post("/markAsRead", {
-          sender: providerId,
-          receiver: userId,
-        });
+        
       } catch (error) {
         console.error("Error fetching chat history:", error);
       }
     };
 
+    
+    const markMessagesAsRead = async () => {
+      try {
+        await axios.post("/markAsRead", {
+          sender: providerId,
+          receiver: userId,
+        });
+  
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.sender === providerId ? { ...msg, read: true } : msg
+          )
+        );
+      } catch (error) {
+        console.error("Error marking messages as read:", error);
+      }
+    };
+  
+
     fetchChatHistory();
+
 
     socket.on("receiveMessage", (data: ChatType) => {
       setMessages((prev) => [...prev, data]);
-    });
+
+    // Mark the received message as read if this chat is active
+      if (data.sender === providerId) {
+        markMessagesAsRead();
+      }
+    }
+    );
+
 
     return () => {
       socket.off("receiveMessage");
@@ -59,7 +85,6 @@ const Chat: React.FC = () => {
       };
 
       socket.emit("sendMessage", messageData);
-      setMessages((prev) => [...prev, messageData]);
       setInput("");
 
       axios.post("/saveChatMessage", messageData);
@@ -85,16 +110,13 @@ const Chat: React.FC = () => {
             }`}
           >
             <p>{msg.message}</p>
-            <span className="messageTime">
-              {formatTime(msg.createdAt)}
-              {msg.sender === userId && (
-                <BiCheckDouble
-                  className={`double-tick ${
-                    msg.read ? "double-tick-read" : "double-tick-unread"
-                  }`}
-                />
-              )}
-            </span>
+            <span className="messageTime">{formatTime(msg.createdAt)}</span>
+      {msg.sender === userId && (
+        <BiCheckDouble
+          className={msg.read ? "double-tick-read" : "double-tick-unread"}
+        />
+      )}
+
           </div>
         ))}
       </div>

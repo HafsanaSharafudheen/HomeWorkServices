@@ -12,7 +12,7 @@
     category: string;
     safetyTips: string[];
     additionalNotes: string;
-    photos: string[];
-    vedios: string[];
+    photos: File[];
+    vedios: File[];
     providerId:string
   };

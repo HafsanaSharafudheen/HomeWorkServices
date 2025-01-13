@@ -13,7 +13,9 @@ export interface IDIY extends Document {
   additionalNotes: string;
   photos: string[];
   vedios: string[];
-  providerId:string
+  providerId:string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const DIYSchema: Schema = new Schema({
@@ -32,6 +34,6 @@ const DIYSchema: Schema = new Schema({
   additionalNotes: { type: String, required: false },
   photos: { type: [String], required: false },
   vedios: { type: [String], required: false },
-});
+},{timestamps:true});
 
 export default mongoose.model<IDIY>("DIY", DIYSchema);

@@ -2,11 +2,10 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 
 import { Server as HttpServer } from "http";
 
-// Initialize Socket.IO Server
 const initSocketIO = (httpServer: HttpServer): SocketIOServer => {
   const io = new SocketIOServer(httpServer, {
     cors: {
-      origin: true, // Allow any origin
+      origin: true, 
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true, // Allow cookies
 

@@ -1,5 +1,4 @@
 import multer from 'multer';
-console.log('1...............multer')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -12,13 +11,11 @@ const storage = multer.diskStorage({
     cb(null, file.originalname + '-' + Date.now() + ext);
   },
 });
-console.log('2...............multer')
-
+console.log("multerReached")
 // Create the Multer instance with the specified storage configuration
 const upload = multer({
   storage: storage
 });
-console.log('3...............multer')
 
 
 export default upload;

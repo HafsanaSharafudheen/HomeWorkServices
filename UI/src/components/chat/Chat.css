@@ -30,6 +30,9 @@
   font-size: 20px;
   margin-left: 20px;
 }
+.double-tick-read{
+  color: rgb(9, 159, 235)
+}
 /* Chat Messages */
 .chat-message {
   max-width: 70%;

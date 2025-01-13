@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Chat from '../../../infrastructure/dbModels/chat';
 
 
@@ -123,8 +123,10 @@ export const fetchProvidersChatHistory = async (req: any, res: Response) => {
 
 export const fetchUsersChatHistory = async (req: any, res: Response) => {
   try {
-   
+  
     const userId = req.user.id;
+  console.log(req.user,"this is the request user")
+  
 console.log(userId,'uuuuuuuuuuuuuuu')
     const chats = await Chat.aggregate([
       {
@@ -379,6 +381,8 @@ export const fetchChatHistory = async (req:any, res:any) => {
           sender: 1,
           receiver: 1,
           message: 1,
+          read: 1,
+
           createdAt: 1,
           senderDetails: 1,
           receiverDetails: 1,
@@ -396,3 +400,27 @@ export const fetchChatHistory = async (req:any, res:any) => {
   }
 };
 
+export const markMessageAsRead = async (req: any, res: any, next: NextFunction) => {
+  try {
+    const { sender, receiver } = req.body;
+
+    if (!sender || !receiver) {
+      return res.status(400).json({ error: "Sender and Receiver are required" });
+    }
+
+    const updatedMessages = await Chat.updateMany(
+      { sender, receiver, read: false },
+      { $set: { read: true } }
+    );
+
+    return res.status(200).json({
+      message: "Messages marked as read successfully",
+      markAsRead:true,
+      updatedCount: updatedMessages.modifiedCount,
+    });
+  } catch (error) {
+    console.error("Error marking messages as read:", error);
+    next(error);
+  }
+};
+export default markMessageAsRead

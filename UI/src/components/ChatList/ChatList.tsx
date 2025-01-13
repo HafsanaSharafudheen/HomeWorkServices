@@ -7,6 +7,9 @@ import "./ChatList.css";
 import { ChatType } from "../../types/chat";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
+import ServiceSidebar from "../../pages/ServiceProvider/serviceSidebar";
+import ServiceHeading from "../../pages/ServiceProvider/ServiceProviderDashboard/ServiceHeader";
+import ServiceNavbar from "../../pages/ServiceProvider/ServiceNavbar";
 
 const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
@@ -24,22 +27,17 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
         const response = await axios.get<{ chats: ChatType[]; fromProvider: boolean }>(endpoint);
 
         // Group chats by receiver ID
-        let groupedChats = Array.from(
+        const groupedChats = Array.from(
           response.data.chats.reduce((map, chat) => {
-            // Sort receiver and sender to make the key order consistent
             const [field1, field2] = [chat.receiver, chat.sender].sort();
-            const key = `${field1}_${field2}`; // Unique key (consistent order)
-            map.set(key, chat); // Store chat for each unique pair
+            const key = `${field1}_${field2}`;
+            map.set(key, chat);
             return map;
-          }, new Map()).values() // Convert Map values to an array
+          }, new Map()).values()
         );
-        
-        
-
-        //groupedChats = groupedChats.filter(chat=> chat.sender != loggedInUserId);
 
         setChatList(groupedChats);
-        setFromProvider(response.data.fromProvider); // Set the fromProvider flag dynamically
+        setFromProvider(response.data.fromProvider);
       } catch (error) {
         console.error("Error fetching chat list:", error);
       }
@@ -48,65 +46,102 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
     fetchChatList();
   }, [isProvider]);
 
-  const handleChatClick = (id: string, fullName: string) => {
-    navigate("/messages", {
-      state: { providerId: id, participantName: fullName, isProvider },
-    });
+  const handleChatClick = async (id: string, fullName: string) => {
+    try {
+      const markAsRead = await markMessagesAsRead(id, loggedInUserId); 
+      navigate("/messages", {
+        state: { providerId: id, participantName: fullName, isProvider, markAsRead },
+      });
+    } catch (error) {
+      console.error("Error handling chat click:", error);
+    }
+  };
+  
+ const markMessagesAsRead = async (providerId:string,userId:string) => {
+      try {
+        const response=await axios.post("/markAsRead", {
+          sender: providerId,
+          receiver: userId,
+        });
+  return response.data.markAsRead;
+       
+        
+      } catch (error) {
+        console.error("Error marking messages as read:", error);
+      }
+    };
+  
+  const renderChatList = () => {
+    return chatList.length ? (
+      <ul className="chat-list">
+        {chatList.map(({ senderDetails, receiverDetails, message, createdAt }) => {
+          const isLoggedInUserReceiver = receiverDetails._id === loggedInUserId;
+          const participantDetails = isLoggedInUserReceiver
+            ? senderDetails
+            : receiverDetails;
+
+          if (!participantDetails) {
+            console.warn("Participant details are missing for chat:");
+            return null;
+          }
+
+          return (
+            <li
+              key={participantDetails._id}
+              className="chat-list-item"
+              onClick={() =>
+                participantDetails._id && participantDetails.fullName
+                  ? handleChatClick(participantDetails._id, participantDetails.fullName)
+                  : console.warn("Participant details are incomplete")
+              }
+            >
+              <div className="chat-participant">
+                <div className="chat-participant-info">
+                  <h4>{participantDetails.fullName}</h4>
+                  <p className="last-message">{message}</p>
+                </div>
+                <p className="message-time">
+                  {new Date(createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <p>No chats available</p>
+    );
   };
 
   return (
-    <>
-      <Header />
-      <div className="chat-list-container">
-        <h3>{isProvider ? "Your Users" : "Your Providers"}</h3>
-        {chatList.length ? (
-          <ul className="chat-list">
-            {chatList.map(({ senderDetails, receiverDetails, message, createdAt }) => {
-              const isLoggedInUserisAReceiver = receiverDetails._id == loggedInUserId ? true : false;
-              const participantDetails = isLoggedInUserisAReceiver ?  senderDetails : receiverDetails;
-              if (!participantDetails) {
-                console.warn("Participant details are missing for chat:");
-                return null;
-              }
-
-              return (
-                <li
-                key={participantDetails?._id }
-                className="chat-list-item"
-                onClick={() =>
-                  participantDetails?._id && participantDetails?.fullName
-                    ? handleChatClick(participantDetails._id, participantDetails.fullName)
-                    : console.warn("Participant details are incomplete")
-                }
-              >
-              
-                  <div className="chat-participant">
-                    {/* <img
-                      src={participantDetails.profilePicture || "default-profile.png"}
-                      alt={participantDetails.fullName}
-                      className="chat-participant-image"
-                    /> */}
-                    <div className="chat-participant-info">
-                      <h4>{participantDetails.fullName}</h4>
-                      <p className="last-message">{message}</p>
-                    </div>
-                    <p className="message-time">
-                      {new Date(createdAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p>No chats available</p>
-        )}
-      </div>
-      <Footer />
-    </>
+    <div className="chat-list-page">
+      {isProvider ? (
+        <div className="row">
+        <ServiceNavbar />
+        <div className="col-md-4">
+            <ServiceSidebar />
+          </div>
+          <div className="col-md-8">
+            <div className="chat-list-container provider-view">
+              <h3>Your Users</h3>
+              {renderChatList()}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Header />
+          <div className="chat-list-container user-view">
+            <h3>Your Providers</h3>
+            {renderChatList()}
+          </div>
+          <Footer />
+        </>
+      )}
+    </div>
   );
 };
 

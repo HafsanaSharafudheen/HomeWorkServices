@@ -24,6 +24,9 @@ import ResetPassword from './components/forgotPassword/ResetPassword';
 import Chat from './components/chat/Chat';
 import ChatList from './components/ChatList/ChatList';
 import AdminProfile from './pages/admin/adminProfile/adminProfile';
+import pageNotFound from './components/PageNotFound/PageNotFound';
+import PageNotFound from './components/PageNotFound/PageNotFound';
+import DiyPage from './pages/DIYPage/DiyPage';
 
 
 const App = () => {
@@ -57,6 +60,9 @@ const App = () => {
         <Route path="/diyhub" element={<DiyForm />} />
         <Route path="/adminDashboard" element={<AdminDashboard />} />
         <Route path='/ServiceProfile' element={<ServiceProfile />} />
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="/DIY" element={<DiyPage />} />
+
       </Routes>
     </Router>
   );

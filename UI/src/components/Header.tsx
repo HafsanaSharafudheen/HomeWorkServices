@@ -39,6 +39,9 @@ const Header: React.FC = () => {
               <Nav.Link as={Link} to="/">
                 <span className="DefaultFontColor">Home</span>
               </Nav.Link>
+              <Nav.Link as={Link} to="/DIY">
+                <span className="DefaultFontColor">DIY</span>
+              </Nav.Link>
               {/* <Nav.Link
   onClick={() => {
     const section = document.getElementById('serviceSection');

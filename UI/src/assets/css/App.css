@@ -220,3 +220,27 @@ border: none;
 .chat-button:active {
   transform: scale(0.95);
 }
+
+.diy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.diy-component {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-gallery img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.video-gallery video {
+  width: 100%;
+  border-radius: 4px;
+}

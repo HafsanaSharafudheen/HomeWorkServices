@@ -6,6 +6,30 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
   }
+  .chat-list-container.provider-view {
+    background-color: #f8f9fa; /* Light blue for providers */
+    color: #000; /* Text color for provider view */
+  }
+  
+  .chat-list-container.user-view {
+    background-color: var(--background-color);
+    color: #000; 
+  }
+  
+  .chat-list-item.provider-view {
+    background-color: #e6f7ff;
+    border: 1px solid #a4d3ee;
+  }
+  
+  .chat-list-item.user-view {
+    background-color: #fffacd; /* Softer yellow for user items */
+    border: 1px solid #ffe4b5;
+  }
+  
+  .chat-list-item:hover {
+    transform: scale(1.02);
+    transition: 0.2s ease;
+  }
   
   .chat-list {
     list-style: none;
@@ -68,5 +92,14 @@
     color: #fff;
     margin-left: 10px;
     align-self: flex-start;
+  }
+  
+  .unread-badge {
+    background-color: red;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 50%;
+    margin-left: 0.5rem;
   }
   

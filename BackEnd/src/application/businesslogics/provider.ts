@@ -237,7 +237,7 @@ export const updateBookingStatusByProvider=async(bookingId:string)=>{
     throw error; 
   }
 }
-export const createDIYService = async (diyData: IDIY) => {
+export const createDIYService = async (diyData:Partial<IDIY>) => {
   return await saveDIYToDB(diyData);
 };
 export const searchDIYS=async(providerId:string)=>{

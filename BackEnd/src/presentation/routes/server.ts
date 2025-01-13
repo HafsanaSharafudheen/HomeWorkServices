@@ -33,6 +33,8 @@ import userActions from "../controllers/admin/userActions";
 import { saveChatMessage, fetchUsersChatHistory, fetchProvidersChatHistory, fetchChatHistory } from '../controllers/user/chatsController';
 import { uploadProfilePictureOfUser, UserProfileUpdate } from "../controllers/user/userProfileUpdate";
 import upload from "../middleware/multer";
+import { markMessageAsRead } from "../controllers/user/chatsController";
+
 import path from "path";
 import { fetchAdminDetails } from "../controllers/admin/fetchProfile";
 import adminAddCategories from "../controllers/admin/adminAddCategories";
@@ -57,6 +59,8 @@ app.use(cors({
 app.use(bodyParser.json());
 
 import initSocketIO from '../../infrastructure/services/socketServer';
+import fetchAllDiys from "../controllers/user/fetchAllDiys";
+import fetchAllcategories from "../controllers/user/fetchAllcategories";
 initSocketIO(server);
 
 app.get('/testimonials',fetchTestimonials )
@@ -71,7 +75,7 @@ app.post("/login", loginController.handleLogin);
 app.post("/providerSignup", providerSignupController.handleSignup);
 app.get('/fetchUsers',fetchUsers);
 app.get('/fetchProviders',fetchServiceProviders);
-//app.use(verifyToken);
+app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
 app.post('/updateProfile',ServiceProfileUpdate)
@@ -91,19 +95,22 @@ app.get('/adminDashboardData',fetchDashboardData)
 app.get('/ServiceProviderDashboardData',fetchServiceProviderDashboardData)
 app.get('/dashboardDataWithDate',fetchDashboardDataWithDate)
 app.patch('/updateBookingStatus',updateStatus)
-app.post('/createDIY',createNewDIY)
+app.post('/createDIY', upload.fields([
+  { name: "photos", maxCount: 10 },
+  { name: "videos", maxCount: 5 },]),createNewDIY)
 app.get('/DiysByProvider',findAllDiysByProvider)
 app.patch("/block/:id", userActions.blockUser);
 app.patch("/unblock/:id", userActions.unblockUser);
 app.post('/upload-profile-picture', upload.single('profilePicture'),uploadProfilePictureOfUser)
-
+app.get('/fetchCategories',fetchAllcategories)
 app.get('/providerChatList',fetchProvidersChatHistory);
 app.get('/allServices',fetchAllServices);
-
+app.get('/all-diys',fetchAllDiys)
 app.get('/userChatList',fetchUsersChatHistory)
 app.get('/chatHistory',fetchChatHistory)
 app.post('/saveChatMessage',saveChatMessage)
 app.get('/adminDetails',fetchAdminDetails)
+app.post('/markAsRead', markMessageAsRead )
 app.get('/AdminCategories',adminAddCategories.fetchAllCategories)
 app.post('/addCategories', upload.single('categoryImage'),adminAddCategories.addCategory)
 app.use(errorMiddleware);
