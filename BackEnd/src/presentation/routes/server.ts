@@ -75,6 +75,8 @@ app.post("/login", loginController.handleLogin);
 app.post("/providerSignup", providerSignupController.handleSignup);
 app.get('/fetchUsers',fetchUsers);
 app.get('/fetchProviders',fetchServiceProviders);
+app.get('/all-diys',fetchAllDiys)
+
 app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
@@ -105,7 +107,6 @@ app.post('/upload-profile-picture', upload.single('profilePicture'),uploadProfil
 app.get('/fetchCategories',fetchAllcategories)
 app.get('/providerChatList',fetchProvidersChatHistory);
 app.get('/allServices',fetchAllServices);
-app.get('/all-diys',fetchAllDiys)
 app.get('/userChatList',fetchUsersChatHistory)
 app.get('/chatHistory',fetchChatHistory)
 app.post('/saveChatMessage',saveChatMessage)

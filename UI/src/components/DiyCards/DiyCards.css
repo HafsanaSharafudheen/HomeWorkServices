@@ -1,0 +1,38 @@
+.diy-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  .diy-show {
+    width: 18rem;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .diy-show:hover {
+    transform: scale(1.05);
+  }
+  
+  .diy-show-img {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .show-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  .show-text {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+ 

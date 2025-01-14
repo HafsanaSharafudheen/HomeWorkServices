@@ -1,3 +1,4 @@
+import { Provider } from "./provider";
 
   
   export interface DIY {
@@ -14,5 +15,6 @@
     additionalNotes: string;
     photos: File[];
     vedios: File[];
-    providerId:string
+    providerId:string;
+    providerDetails:Provider
   };

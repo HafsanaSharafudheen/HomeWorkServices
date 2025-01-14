@@ -1,0 +1,105 @@
+/* Container styling */
+.diy-container {
+    margin-top: 2rem;
+  }
+  
+  /* Profile Section */
+  .diy-profile-img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .diy-provider-details h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .diy-provider-details h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  
+  .diy-provider-details p {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
+  .mainImage {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    margin: auto;           
+    border-radius: 10px;   
+  }
+  
+  
+  
+  
+  /* DIY Details Section */
+  .diy-details h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .diy-details p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  /* Image Gallery */
+  .diy-image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .diy-image-gallery img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .diy-image-gallery img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Video Gallery */
+  .diy-video-gallery {
+    margin-top: 1.5rem;
+  }
+  
+  .diy-video-gallery video {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .diy-video-gallery video:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Section Titles */
+  .diy-section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  

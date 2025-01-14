@@ -27,6 +27,7 @@ import AdminProfile from './pages/admin/adminProfile/adminProfile';
 import pageNotFound from './components/PageNotFound/PageNotFound';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import DiyPage from './pages/DIYPage/DiyPage';
+import DiyDetails from './pages/DiyDetails/DiyDetails';
 
 
 const App = () => {
@@ -62,6 +63,8 @@ const App = () => {
         <Route path='/ServiceProfile' element={<ServiceProfile />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="/DIY" element={<DiyPage />} />
+        <Route path="/diyDetails" element={<DiyDetails/>} />
+
 
       </Routes>
     </Router>
