@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+
 import "./ServiceDetailsSidebar.css";
 import { FaTimes } from "react-icons/fa";
 import { Provider } from "../../types/provider";
@@ -24,15 +25,50 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
   const [selectedTab, setSelectedTab] = useState<string>("slots");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
+  const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+
   const user = useSelector((state: RootState) => state.user.user);
 
 const navigate=useNavigate()
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-  };
+const handleDateChange = (date: Date) => {
+  const selectedDate = new Date(date);
+  selectedDate.setHours(0, 0, 0, 0); // Set to midnight in local time
+
+  // Convert to UTC for consistency
+  const utcDate = new Date(
+    Date.UTC(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+  );
+
+  setSelectedDate(utcDate);
+  console.log("Selected Date (Frontend, UTC):", utcDate);
+};
+
+
+  useEffect(() => {
+    const fetchBookedSlots = async () => {
+      if (!selectedDate) return;
+      const formattedDate = selectedDate.toISOString().split("T")[0];
+      try {
+        const response = await axios.get(`/bookingsSlot`, {
+          params: {
+            providerId: provider._id,
+            selectedDate: formattedDate,
+          },
+        });
+        setBookedSlots(response.data.bookings.map((booking: any) => booking.selectedTime));
+      } catch (error) {
+        console.error("Error fetching booked slots:", error);
+      }
+    };
+
+    fetchBookedSlots();
+  }, [selectedDate, provider._id]);
+
 
   const handleTimeSlotSelect = (timeSlot: string) => {
-    setSelectedTimeSlot(timeSlot);
+    if (!bookedSlots.includes(timeSlot)) {
+      setSelectedTimeSlot(timeSlot);
+    }
   };
 
   const handleRequest = async() => {
@@ -82,8 +118,9 @@ const navigate=useNavigate()
       try {
         const response = await axios.post("/booking",
         {   providerId: provider._id,
-            selectedDate: selectedDate.toISOString(),
-            selectedTimeSlot: selectedTimeSlot,
+            selectedDate: selectedDate,
+            amount:provider.serviceCharge,
+            selectedTime: selectedTimeSlot,
         });
   
         if (response.status === 201) {
@@ -147,21 +184,29 @@ const navigate=useNavigate()
               <Calendar value={selectedDate} onChange={handleDateChange} />
             </div>
             {selectedDate && (
-              <div className="time-slots-container mt-3">
-                <div className="row">
-                  {timeSlots.map((slot, index) => (
-                    <div
-                      key={index}
-                      className={`col-md-6 time-slot ${
-                        selectedTimeSlot === `${slot.start} - ${slot.end}` ? "selected" : ""
-                      }`}
-                      onClick={() => handleTimeSlotSelect(`${slot.start} - ${slot.end}`)}
-                    >
-                      {slot.start} - {slot.end}
-                    </div>
-                  ))}
-                </div>
-              </div>
+             <div className="time-slots-container mt-3">
+             <div className="row">
+               {timeSlots.map((slot, index) => {
+                 const slotLabel = `${slot.start} - ${slot.end}`;
+                 const isBooked = bookedSlots.includes(slotLabel);
+                 const isSelected = selectedTimeSlot === slotLabel;
+           
+                 return (
+                   <div
+                     key={index}
+                     className={`col-md-6 time-slot ${
+                       isBooked ? "disabled" : isSelected ? "selected" : ""
+                     }`}
+                     onClick={() => !isBooked && handleTimeSlotSelect(slotLabel)}
+                   >
+                     {slot.start} - {slot.end}
+                   
+                   </div>
+                 );
+               })}
+             </div>
+           </div>
+           
             )}
             {selectedDate && selectedTimeSlot && (
               <div className="selected-info mt-3">

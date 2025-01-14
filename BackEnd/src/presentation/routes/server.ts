@@ -61,6 +61,9 @@ app.use(bodyParser.json());
 import initSocketIO from '../../infrastructure/services/socketServer';
 import fetchAllDiys from "../controllers/user/fetchAllDiys";
 import fetchAllcategories from "../controllers/user/fetchAllcategories";
+import { getUserBookingsbyTime } from "../controllers/booking/fetchBookingsByDate";
+import { deleteFromUser } from "../controllers/user/DeleteBooking";
+import { capturePayPalOrder, capturePayPalOrder2, createPayPalOrder, createPayPalOrder2 } from "../../infrastructure/services/payemntService";
 initSocketIO(server);
 
 app.get('/testimonials',fetchTestimonials )
@@ -114,6 +117,15 @@ app.get('/adminDetails',fetchAdminDetails)
 app.post('/markAsRead', markMessageAsRead )
 app.get('/AdminCategories',adminAddCategories.fetchAllCategories)
 app.post('/addCategories', upload.single('categoryImage'),adminAddCategories.addCategory)
+app.get('/bookingsSlot',getUserBookingsbyTime)
+app.delete('/deleteBooking',deleteFromUser)
+
+
+
+//payemnt
+app.post("/createPayPalOrder", createPayPalOrder2);
+app.post("/capturePayPalOrder", capturePayPalOrder2);
+
 app.use(errorMiddleware);
 
 

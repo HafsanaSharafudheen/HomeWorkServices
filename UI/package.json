@@ -12,9 +12,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.7.0",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.3.0",
-    "axios": "^1.7.8",
+    "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "mdb-react-ui-kit": "^9.0.0",
     "react": "^18.3.1",

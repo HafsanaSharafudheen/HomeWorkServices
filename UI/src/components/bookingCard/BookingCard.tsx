@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Booking } from "../../types/booking";
 import ReviewComponent from "../review/ReviewComponent";
-import axios from "../../utilities/axios";
+import { PayPalButtons } from "@paypal/react-paypal-js";
+
 import {
   FaUser,
   FaClock,
@@ -13,9 +14,12 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import "./BookingCard.css";
+import Swal from "sweetalert2";
+import axios from "../../utilities/axios";
 
 interface BookingProps {
   booking: Booking;
+  fetchBookings: () => void;
 }
 
 interface ReviewDetails {
@@ -23,11 +27,77 @@ interface ReviewDetails {
   message: string;
 }
 
-const BookingCard: React.FC<BookingProps> = ({ booking }) => {
+const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
   const provider = booking.providerDetails?.[0];
   const [showReview, setShowReview] = useState<boolean>(false);
   const [reviewDetails, setReviewDetails] = useState<ReviewDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleCancelBooking = async (bookingId: string) => {
+    if (!bookingId) {
+      Swal.fire("Error", "Booking ID is required.", "error");
+      return;
+    }
+  
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to cancel this booking?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, cancel it!",
+      cancelButtonText: "No, keep it",
+    });
+  
+    if (confirm.isConfirmed) {
+      try {
+        const response = await axios.delete(`/deleteBooking`, {
+          params: { bookingId },
+        });        if (response.status === 200) {
+          Swal.fire("Success", "Booking successfully canceled.", "success");
+  
+          // Optionally, update your UI or fetch bookings again
+          fetchBookings();
+        }
+      } catch (error) {
+        console.error("Error canceling booking:", error);
+        Swal.fire("Error", "Failed to cancel booking. Please try again.", "error");
+      }
+    }
+  };
+
+  const handlePayment = async (bookingId: string,amount:number) => {
+    try {
+      // Create PayPal order
+      const createOrderResponse = await axios.post("/createPayPalOrder", {
+        bookingId:bookingId,
+        amount: amount
+      });
+  
+      const orderID = createOrderResponse.data.orderID;
+  
+      // Redirect to PayPal for user approval
+      const approveUrl = `https://www.sandbox.paypal.com/checkoutnow?token=${orderID}`;
+      window.location.href = approveUrl;
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+      Swal.fire("Error", "Failed to initiate payment. Please try again.", "error");
+    }
+  };
+  const createOrder = async (bookingId: string,amount:number) => {
+    const response = await axios.post("/createPayPalOrder",{
+      bookingId:bookingId,
+      amount: amount
+    });
+    return response.data.id;
+  };
+
+  const onApprove = async (bookingId: string, data: any) => {
+    const response = await axios.post("/capturePayPalOrder", {
+      orderId: data.orderID,
+    });
+    console.log("Payment Captured:", response.data);
+  };
+  
 
   // Fetch review details for the bookingId
   useEffect(() => {
@@ -98,8 +168,32 @@ const BookingCard: React.FC<BookingProps> = ({ booking }) => {
       <div className="text-center">
         {booking.payment.status === "pending" && (
           <>
-            <button className="btn btn-danger me-2">Cancel Booking</button>
-            <button className="btn btn-success">Pay Now</button>
+<button
+  className="btn btn-danger me-2"
+  onClick={() => handleCancelBooking(booking._id)}
+>
+  Cancel Booking
+</button>
+            <button className="btn btn-success"
+              onClick={() => handlePayment(booking._id,booking.payment.amount)}
+>Pay Now</button>
+
+     
+<PayPalButtons
+  style={{ layout: "vertical" }}
+  createOrder={async (data, actions) => {
+    console.log("createOrder called");
+    return createOrder(booking._id, booking.payment.amount);
+  }}
+  onApprove={async (data, actions) => {
+    console.log("onApprove called");
+    return onApprove(booking._id, data);
+  }}
+  onError={(err) => console.error("Payment Error:", err)}
+/>
+
+
+
           </>
         )}
 

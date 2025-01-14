@@ -8,16 +8,16 @@ import Profile from "../Profile/Profile";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
-
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get("/bookingDetails");
+      setBookings(response.data.bookings);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  };
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get("/bookingDetails");
-        setBookings(response.data.bookings);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
+   
 
     fetchBookings();
   }, []);
@@ -45,7 +45,7 @@ function Bookings() {
 
             <div className="bookingsGrid">
               {bookings.map((booking) => (
-                <BookingCard key={booking.id} booking={booking} />
+                <BookingCard key={booking.id} booking={booking}  fetchBookings={fetchBookings}/>
               ))}
             </div>
           </div>
