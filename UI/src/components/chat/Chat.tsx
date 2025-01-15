@@ -20,8 +20,7 @@ const Chat: React.FC = () => {
   const userId = user?.id;
 
   useEffect(() => {
-   
-
+  
     const fetchChatHistory = async () => {
       try {
         const response = await axios.get(
@@ -59,22 +58,54 @@ const Chat: React.FC = () => {
 
 
     socket.on("receiveMessage", (data: ChatType) => {
-      setMessages((prev) => [...prev, data]);
-
-    // Mark the received message as read if this chat is active
-      if (data.sender === providerId) {
-        markMessagesAsRead();
+      
+      if(data.receiver == userId){ 
+        setMessages((prev) => [...prev, data]);
       }
-    }
+      // Mark the received message as read if this chat is active
+      // if (data.sender === providerId) {
+      //   markMessagesAsRead();
+      // }
+      if(data.receiver == userId){
+        socket.emit("messageRead", { messageId: data._id, readerId: data.sender });
+      }
+      }
     );
 
+    socket.on("messageReadAck", (data: { messageId: string; readerId: string }) => {
+      console.log("messageReadAck", data);
+      
+      if(data.readerId == userId){
+        console.log(messages)
+
+        console.log('messageReadAck---- read show')
+      setMessages((prevMessages) =>
+          prevMessages.map((message) =>
+            message._id === data.messageId
+              ? {
+                  ...message,
+                  read: true, // Set isRead to true
+                  //readBy: [...(message.readBy || []), data.readerId], // Update the readBy array
+                }
+              : message
+          )
+        );
+        console.log(messages)
+     }
+      
+      
+    });
+
+    
 
     return () => {
       socket.off("receiveMessage");
     };
-  }, [providerId, isProvider, userId]);
+  }, [providerId, isProvider, userId, messages]);
 
   const sendMessage = () => {
+
+    const uniqueId = crypto.randomUUID();
     if (input.trim()) {
       const messageData = {
         sender:  userId,
@@ -84,12 +115,19 @@ const Chat: React.FC = () => {
         read: false, // Default to unread
       };
 
+
       socket.emit("sendMessage", messageData);
       setInput("");
-
       axios.post("/saveChatMessage", messageData);
+
+      messageData._id = uniqueId.toString();
+      setMessages((prevMessages) => [...prevMessages, messageData]);
+      
+      console.log("AFTER SET",messages)
     }
   };
+
+
 
   const formatTime = (isoString: string) => {
     const date = new Date(isoString);

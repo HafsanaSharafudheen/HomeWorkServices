@@ -7,7 +7,7 @@ export interface ChatType {
     receiverDetails:User|Provider;
     senderDetails:User|Provider;
     fullName:string;
-    reciever:string;
+    receiver:string;
     message:string;
     createdAt: string;
     updatedAt: Date;
