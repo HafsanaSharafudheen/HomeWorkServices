@@ -63,7 +63,8 @@ import fetchAllDiys from "../controllers/user/fetchAllDiys";
 import fetchAllcategories from "../controllers/user/fetchAllcategories";
 import { getUserBookingsbyTime } from "../controllers/booking/fetchBookingsByDate";
 import { deleteFromUser } from "../controllers/user/DeleteBooking";
-import { capturePayPalOrder, capturePayPalOrder2, createPayPalOrder, createPayPalOrder2 } from "../../infrastructure/services/payemntService";
+import { razorpayBooking } from "../controllers/booking/payementCOntroller";
+import { workingProgressUpdate } from "../controllers/booking/workingProgressUpdate";
 initSocketIO(server);
 
 app.get('/testimonials',fetchTestimonials )
@@ -93,7 +94,16 @@ app.post('/updateAvailability', updateAvailability);
 app.post('/booking', createBooking);
 app.get('/bookingDetails',getUserBookings)
 app.get('/fetchUserDetails',getUserDetails)
-app.post('/reviews',SaveReview)
+
+app.post(
+  "/reviews",
+  upload.fields([
+    { name: "workImage", maxCount: 10 },
+    { name: "workVideo", maxCount: 5 },
+  ]),
+  SaveReview
+);
+
 app.get('/fetchAllBookings',fetchBookings)
 app.get('/getReviewDetails',getReview)
 app.get('/adminDashboardData',fetchDashboardData)
@@ -117,14 +127,17 @@ app.get('/adminDetails',fetchAdminDetails)
 app.post('/markAsRead', markMessageAsRead )
 app.get('/AdminCategories',adminAddCategories.fetchAllCategories)
 app.post('/addCategories', upload.single('categoryImage'),adminAddCategories.addCategory)
+
+app.post('/updateWorkDetails', upload.fields([
+  { name: "photos", maxCount: 10 },
+  { name: "videos", maxCount: 5 },]),workingProgressUpdate)
+
 app.get('/bookingsSlot',getUserBookingsbyTime)
 app.delete('/deleteBooking',deleteFromUser)
+// payment
+app.post('/razorpay',razorpayBooking )
+app.post('/updateBookingDetails',updateStatus)
 
-
-
-//payemnt
-app.post("/createPayPalOrder", createPayPalOrder2);
-app.post("/capturePayPalOrder", capturePayPalOrder2);
 
 app.use(errorMiddleware);
 

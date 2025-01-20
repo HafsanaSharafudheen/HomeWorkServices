@@ -57,10 +57,11 @@ const Chat: React.FC = () => {
     fetchChatHistory();
 
 
-    socket.on("receiveMessage", (data: ChatType) => {
+    socket.on("receiveMessage", async (data: ChatType) => {
       
       if(data.receiver == userId){ 
         setMessages((prev) => [...prev, data]);
+        await markMessagesAsRead();
       }
       // Mark the received message as read if this chat is active
       // if (data.sender === providerId) {
@@ -72,24 +73,27 @@ const Chat: React.FC = () => {
       }
     );
 
-    socket.on("messageReadAck", (data: { messageId: string; readerId: string }) => {
+    socket.on("messageReadAck", async (data: { messageId: string; readerId: string }) => {
       console.log("messageReadAck", data);
       
       if(data.readerId == userId){
         console.log(messages)
 
         console.log('messageReadAck---- read show')
-      setMessages((prevMessages) =>
-          prevMessages.map((message) =>
-            message._id === data.messageId
-              ? {
-                  ...message,
-                  read: true, // Set isRead to true
-                  //readBy: [...(message.readBy || []), data.readerId], // Update the readBy array
-                }
-              : message
-          )
-        );
+
+        await fetchChatHistory();
+
+      // setMessages((prevMessages) =>
+      //     prevMessages.map((message) =>
+      //       message._id === data.messageId
+      //         ? {
+      //             ...message,
+      //             read: true, // Set isRead to true
+      //             //readBy: [...(message.readBy || []), data.readerId], // Update the readBy array
+      //           }
+      //         : message
+      //     )
+      //   );
         console.log(messages)
      }
       
@@ -100,8 +104,9 @@ const Chat: React.FC = () => {
 
     return () => {
       socket.off("receiveMessage");
+      socket.off("messageReadAck");
     };
-  }, [providerId, isProvider, userId, messages]);
+  }, [providerId, isProvider, userId]);
 
   const sendMessage = () => {
 
@@ -116,13 +121,13 @@ const Chat: React.FC = () => {
       };
 
 
-      socket.emit("sendMessage", messageData);
       setInput("");
       axios.post("/saveChatMessage", messageData);
 
       messageData._id = uniqueId.toString();
       setMessages((prevMessages) => [...prevMessages, messageData]);
-      
+      socket.emit("sendMessage", messageData);
+
       console.log("AFTER SET",messages)
     }
   };

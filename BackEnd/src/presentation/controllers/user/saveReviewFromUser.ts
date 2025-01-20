@@ -1,27 +1,24 @@
 import { Request, Response } from "express";
 import { saveReviewDetails } from "../../../application/businesslogics/user/saveReviewFromUser";
 
-export const SaveReview = async (req: any, res: any) => {
+export const SaveReview = async (req:any, res:any) => {
   try {
-    const userId = req.user.id;
-
     const { bookingId, providerId, ratings, message } = req.body;
-
-    const workImage = req.file ? req.file.path : null;
+    const workImage = req.files["workImage"]?.map((file:any) => file.path) || [];
+    const workVideo = req.files["workVideo"]?.map((file:any) => file.path) || [];
 
     if (!bookingId || !providerId || !ratings || !message) {
-      return res
-        .status(400)
-        .json({ message: "All fields are required to submit a review." });
+      return res.status(400).json({ message: "All fields are required." });
     }
 
     const reviewData = {
       bookingId,
       providerId,
-      userId,
-      workImage,
+      userId: req.user.id,
       ratings: parseInt(ratings, 10),
       message,
+      workImage,
+      workVideo,
       createdAt: new Date(),
     };
 
@@ -33,8 +30,8 @@ export const SaveReview = async (req: any, res: any) => {
     });
   } catch (error) {
     console.error("Error saving review:", error);
-    return res.status(500).json({
-      message: "Failed to save the review. Please try again later.",
-    });
+    return res
+      .status(500)
+      .json({ message: "Failed to save the review. Try again later." });
   }
 };

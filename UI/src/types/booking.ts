@@ -16,5 +16,12 @@ export interface Booking {
     };
     providerDetails?: Provider[]
     userDetails?:User[];
-  }
+    workingUpdates: {
+      title: string;
+      description: string;
+      photos: string[];
+      videos: string[];
+      time: Date;
+    }[];
+    }
   

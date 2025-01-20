@@ -13,6 +13,13 @@ export interface IBooking extends Document {
     releasedDate?: Date;
     status: string;
   };
+  workingUpdates: {
+    title: string;
+    description: string;
+    photos: string[];
+    videos: string[];
+    time: Date;
+  }[];
 }
 
 const bookingSchema: Schema = new Schema({
@@ -31,6 +38,15 @@ const bookingSchema: Schema = new Schema({
     releasedDate: { type: Date },
     status: { type: String, required: true },
   },
+  workingUpdates: [
+    {
+      title: { type: String, required: true },
+      description: { type: String, required: true },
+      photos: { type: [String], default: [] },
+      videos: { type: [String], default: [] },
+      time: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 export default mongoose.model<IBooking>("Booking", bookingSchema);

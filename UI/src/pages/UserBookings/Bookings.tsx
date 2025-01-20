@@ -45,7 +45,7 @@ function Bookings() {
 
             <div className="bookingsGrid">
               {bookings.map((booking) => (
-                <BookingCard key={booking.id} booking={booking}  fetchBookings={fetchBookings}/>
+                <BookingCard key={booking?._id} booking={booking}  fetchBookings={fetchBookings}/>
               ))}
             </div>
           </div>

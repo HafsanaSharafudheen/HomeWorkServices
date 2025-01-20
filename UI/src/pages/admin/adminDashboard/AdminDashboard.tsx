@@ -15,10 +15,16 @@ import {
 } from "chart.js";
 import SideBar from "./SideBar";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { RootState } from "../../../../Redux/store";
+import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
+
 const AdminDashboard: React.FC = () => {
+  const user = useSelector((state: RootState) => state.user.user);
+const navigate=useNavigate()
   const [timeData, setTimeData] = useState({
     labels: [],
     datasets: [
@@ -53,6 +59,11 @@ const AdminDashboard: React.FC = () => {
       },
     ],
   });
+  useEffect(()=>{
+if(user===null){
+  navigate('/login')
+}
+  })
 
   const fetchData = async () => {
     try {
@@ -104,6 +115,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  
 
   return (
     <div className="dashboardContainer">

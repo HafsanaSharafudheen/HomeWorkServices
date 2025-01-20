@@ -225,11 +225,11 @@ export const findAllBookingsData = async (providerId: string) => {
   }
 }
 
-export const updateBookingStatusByProvider=async(bookingId:string)=>{
+export const updateBookingStatusByProvider=async(bookingId:string,status:string)=>{
   try {
     await booking.findOneAndUpdate(
       { _id: bookingId }, 
-      { $set: { status: "completed" } }, 
+      { $set: { status: status } }, 
     );
     console.log(`Booking with ID ${bookingId} status updated to accepted.`);
   } catch (error) {

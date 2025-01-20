@@ -8,12 +8,13 @@ import { ChatType } from "../../types/chat";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 import ServiceSidebar from "../../pages/ServiceProvider/serviceSidebar";
-import ServiceHeading from "../../pages/ServiceProvider/ServiceProviderDashboard/ServiceHeader";
 import ServiceNavbar from "../../pages/ServiceProvider/ServiceNavbar";
+import socket from "../../utilities/socket";
 
 const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
   const [fromProvider, setFromProvider] = useState<boolean>(false);
+  
 
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
@@ -21,12 +22,12 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const loggedInUserId = user?.id;
 
   useEffect(() => {
+
     const fetchChatList = async () => {
       try {
         const endpoint = isProvider ? `/providerChatList` : `/userChatList`;
         const response = await axios.get<{ chats: ChatType[]; fromProvider: boolean }>(endpoint);
 
-        // Group chats by receiver ID
         const groupedChats = Array.from(
           response.data.chats.reduce((map, chat) => {
             const [field1, field2] = [chat.receiver, chat.sender].sort();
@@ -44,11 +45,37 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
     };
 
     fetchChatList();
-  }, [isProvider]);
+
+    
+    // socket.on("receiveMessage", (data: ChatType) => {
+    //   if (data.receiver === loggedInUserId) {
+    //     const senderName = data.senderDetails?.fullName || "Unknown";
+    //   //  setNotification({ senderName, message: data.message });
+
+    //     const recentChat = chatList.find((chat) => chat.sender === data.sender);
+    //     if (recentChat) {
+    //       setChatList((prevChatList) =>
+    //         prevChatList.map((chat) =>
+    //           chat.sender === data.sender
+    //             ? { ...chat, message: data.message, createdAt: data.createdAt }
+    //             : chat
+    //         )
+    //       );
+    //     } else {
+    //       setChatList((prev) => [...prev, data]);
+    //     }
+    //   }
+    // });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+    
+  }, [loggedInUserId, isProvider]);
 
   const handleChatClick = async (id: string, fullName: string) => {
     try {
-      const markAsRead = await markMessagesAsRead(id, loggedInUserId); 
+      const markAsRead = await markMessagesAsRead(id, loggedInUserId);
       navigate("/messages", {
         state: { providerId: id, participantName: fullName, isProvider, markAsRead },
       });
@@ -56,29 +83,25 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
       console.error("Error handling chat click:", error);
     }
   };
-  
- const markMessagesAsRead = async (providerId:string,userId:string) => {
-      try {
-        const response=await axios.post("/markAsRead", {
-          sender: providerId,
-          receiver: userId,
-        });
-  return response.data.markAsRead;
-       
-        
-      } catch (error) {
-        console.error("Error marking messages as read:", error);
-      }
-    };
-  
+
+  const markMessagesAsRead = async (providerId: string, userId: string) => {
+    try {
+      const response = await axios.post("/markAsRead", {
+        sender: providerId,
+        receiver: userId,
+      });
+      return response.data.markAsRead;
+    } catch (error) {
+      console.error("Error marking messages as read:", error);
+    }
+  };
+
   const renderChatList = () => {
     return chatList.length ? (
       <ul className="chat-list">
         {chatList.map(({ senderDetails, receiverDetails, message, createdAt }) => {
           const isLoggedInUserReceiver = receiverDetails._id === loggedInUserId;
-          const participantDetails = isLoggedInUserReceiver
-            ? senderDetails
-            : receiverDetails;
+          const participantDetails = isLoggedInUserReceiver ? senderDetails : receiverDetails;
 
           if (!participantDetails) {
             console.warn("Participant details are missing for chat:");
@@ -116,12 +139,16 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
     );
   };
 
+ 
+   
+
+
   return (
     <div className="chat-list-page">
       {isProvider ? (
         <div className="row">
-        <ServiceNavbar />
-        <div className="col-md-4">
+          <ServiceNavbar />
+          <div className="col-md-4">
             <ServiceSidebar />
           </div>
           <div className="col-md-8">

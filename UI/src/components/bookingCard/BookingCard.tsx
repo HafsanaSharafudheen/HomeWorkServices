@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Booking } from "../../types/booking";
 import ReviewComponent from "../review/ReviewComponent";
-import { PayPalButtons } from "@paypal/react-paypal-js";
 
 import {
   FaUser,
@@ -15,6 +14,9 @@ import {
 } from "react-icons/fa";
 import "./BookingCard.css";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
+import { useNavigate } from "react-router-dom";
 import axios from "../../utilities/axios";
 
 interface BookingProps {
@@ -22,9 +24,13 @@ interface BookingProps {
   fetchBookings: () => void;
 }
 
+
+
 interface ReviewDetails {
   ratings: number;
   message: string;
+  workImage:string[];
+  workVideo:string[];
 }
 
 const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
@@ -32,6 +38,8 @@ const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
   const [showReview, setShowReview] = useState<boolean>(false);
   const [reviewDetails, setReviewDetails] = useState<ReviewDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+const navigate=useNavigate()
+  const user = useSelector((state: RootState) => state.user.user);
 
   const handleCancelBooking = async (bookingId: string) => {
     if (!bookingId) {
@@ -65,40 +73,73 @@ const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
     }
   };
 
-  const handlePayment = async (bookingId: string,amount:number) => {
+
+
+  
+  const handlePayment = async (bookingId: string, amount: number) => {
+    console.log("Amount:", amount);
+
+    console.log(bookingId,"bookinnnnnnnnnnnn",amount,'...amount')
     try {
-      // Create PayPal order
-      const createOrderResponse = await axios.post("/createPayPalOrder", {
+      if (!bookingId) {
+        throw new Error("Booking ID is missing.");
+      }
+      
+  
+      const paymentData = {
+        amount:amount,
+        currency: "INR",
         bookingId:bookingId,
-        amount: amount
-      });
+      };
   
-      const orderID = createOrderResponse.data.orderID;
+      const response = await axios.post("/razorpay", paymentData);
   
-      // Redirect to PayPal for user approval
-      const approveUrl = `https://www.sandbox.paypal.com/checkoutnow?token=${orderID}`;
-      window.location.href = approveUrl;
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: amount * 100, // Convert to paise
+        currency: "INR",
+        name: "HomeWorks",
+        description: "Booking Service Fee",
+        order_id: response.data.order.id,
+        prefill: {
+          name: user?.fullName || "Customer",
+          email: user?.email || "example@example.com",
+        },
+        handler: async (paymentResponse: any) => {
+          try {
+            await axios.post("/updateBookingDetails", {
+              bookingId,
+              paymentResponse,
+            });
+            Swal.fire("Success", "Payment completed successfully.", "success");
+            navigate(`/bookingConfirmation?bookingId=${bookingId}`);
+          } catch (error) {
+            console.error("Error updating booking details:", error);
+            Swal.fire("Error", "Failed to update booking details.", "error");
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            Swal.fire("Cancelled", "Payment process was cancelled.", "info");
+          },
+        },
+      };
+  
+      // Use `any` to bypass TypeScript's type checking for `window`
+      const Razorpay = (window as any).Razorpay;
+  
+      if (typeof Razorpay === "function") {
+        const rzp = new Razorpay(options);
+        rzp.open();
+      } else {
+        throw new Error("Razorpay is not available. Ensure the Razorpay script is loaded.");
+      }
     } catch (error) {
       console.error("Error initiating payment:", error);
       Swal.fire("Error", "Failed to initiate payment. Please try again.", "error");
     }
   };
-  const createOrder = async (bookingId: string,amount:number) => {
-    const response = await axios.post("/createPayPalOrder",{
-      bookingId:bookingId,
-      amount: amount
-    });
-    return response.data.id;
-  };
-
-  const onApprove = async (bookingId: string, data: any) => {
-    const response = await axios.post("/capturePayPalOrder", {
-      orderId: data.orderID,
-    });
-    console.log("Payment Captured:", response.data);
-  };
   
-
   // Fetch review details for the bookingId
   useEffect(() => {
     const fetchReviewDetails = async () => {
@@ -111,6 +152,8 @@ const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
           setReviewDetails({
             ratings: response.data.review.ratings,
             message: response.data.review.message,
+            workImage: response.data.review.workImage,
+            workVideo: response.data.review.workVideo,
           });
         }
       } catch (error) {
@@ -165,78 +208,123 @@ const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
         </div>
       )}
 
-      <div className="text-center">
-        {booking.payment.status === "pending" && (
-          <>
-<button
-  className="btn btn-danger me-2"
-  onClick={() => handleCancelBooking(booking._id)}
->
-  Cancel Booking
-</button>
-            <button className="btn btn-success"
-              onClick={() => handlePayment(booking._id,booking.payment.amount)}
->Pay Now</button>
+<div className="text-center">
+  {/* Pending Status */}
+  {booking.status === "pending" && (
+    <>
+      <p className="text-warning">
+        Please wait for the acceptance of the serviceman.
+      </p>
+      <button
+        className="btn btn-danger"
+        onClick={() => handleCancelBooking(booking._id)}
+      >
+        Cancel Booking
+      </button>
+    </>
+  )}
 
-     
-<PayPalButtons
-  style={{ layout: "vertical" }}
-  createOrder={async (data, actions) => {
-    console.log("createOrder called");
-    return createOrder(booking._id, booking.payment.amount);
-  }}
-  onApprove={async (data, actions) => {
-    console.log("onApprove called");
-    return onApprove(booking._id, data);
-  }}
-  onError={(err) => console.error("Payment Error:", err)}
-/>
+  {/* Accepted Status */}
+  {booking.status === "accepted" && booking.payment.status === "pending" && (
+    <>
+      <button
+        className="btn btn-danger me-2"
+        onClick={() => handleCancelBooking(booking._id)}
+      >
+        Cancel Booking
+      </button>
+      <button
+        className="btn btn-success"
+        onClick={() =>
+          handlePayment(booking._id as string, booking.providerDetails?.[0]?.serviceCharge || 0)
+        }
+      >
+        Pay Now
+      </button>
+    </>
+  )}
 
+  {/* Rejected Status */}
+  {booking.status === "rejected" && (
+    <div className="rejected-overlay">
+      <p className="text-danger">Booking Rejected</p>
+    </div>
+  )}
 
-
-          </>
-        )}
-
-        {loading ? (
-          <p>Loading review...</p>
-        ) : reviewDetails ? (
-          <div>
-            <div className="mb-2">
-              {/* Display Review Stars */}
-              {[1, 2, 3, 4, 5].map((star) => (
-                <FaStar
-                  key={star}
-                  className={`me-1 ${
-                    star <= reviewDetails.ratings ? "text-warning" : "text-secondary"
-                  }`}
-                />
-              ))}
-            </div>
-            <p className="text-muted mb-1">{reviewDetails.message}</p>
-            <button
-              className="btn btn-link p-0"
-              onClick={() => setShowReview(true)}
-            >
-              Update Review
-            </button>
-          </div>
-        ) : showReview ? (
-          <ReviewComponent
-            bookingId={booking._id || ""}
-            providerId={provider?._id || ""}
-            onClose={() => setShowReview(false)}
+  {/* Review Section */}
+  {loading ? (
+    <p>Loading review...</p>
+  ) : reviewDetails ? (
+    <div>
+      <div className="mb-2">
+        {/* Display Review Stars */}
+        {[1, 2, 3, 4, 5].map((star) => (
+          <FaStar
+            key={star}
+            className={`me-1 ${
+              star <= reviewDetails.ratings ? "text-warning" : "text-secondary"
+            }`}
           />
-        ) : (
-          booking.payment.status === "completed" && (
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowReview(true)}
-            >
-              Leave a Review
-            </button>
-          )
-        )}
+        ))}
       </div>
+      <p className="text-muted mb-1">{reviewDetails.message}</p>
+      {reviewDetails.workImage && reviewDetails.workImage.length > 0 && (
+  <div className="media-container">
+    <h6>Images:</h6>
+    <div className="media-grid">
+      {reviewDetails.workImage.map((image, index) => (
+        <img
+          key={index}
+          src={`${import.meta.env.VITE_API_BASEURL}/${image}`}
+          alt={`Work Image ${index + 1}`}
+          className="preview-image"
+        />
+      ))}
+    </div>
+  </div>
+)}
+
+{reviewDetails.workVideo && reviewDetails.workVideo.length > 0 && (
+  <div className="media-container">
+    <h6>Videos:</h6>
+    <div className="media-grid">
+      {reviewDetails.workVideo.map((video, index) => (
+        <video
+          key={index}
+          src={`${import.meta.env.VITE_API_BASEURL}/${video}`}
+          controls
+          className="preview-video"
+        />
+      ))}
+    </div>
+  </div>
+)}
+      <button
+        className="btn btn-link p-0"
+        onClick={() => setShowReview(true)}
+      >
+        Update Review
+      </button>
+    </div>
+  ) : showReview ? (
+    <ReviewComponent
+      bookingId={booking._id || ""}
+      fetchBookings={fetchBookings}   
+         providerId={provider?._id || ""}
+      onClose={() => setShowReview(false)}
+    />
+  ) : (
+    booking.payment.status === "completed" && (
+      <button
+        className="btn btn-primary"
+        onClick={() => setShowReview(true)}
+      >
+        Leave a Review
+      </button>
+    )
+  )}
+</div>
+
     </div>
   );
 };

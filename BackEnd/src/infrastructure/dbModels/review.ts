@@ -6,8 +6,8 @@ export interface IReview extends Document {
     bookingId:string;
   ratings: number;
   message: string;
-  workImage?: string | null;
-  workVideo?: string; 
+  workImage?: string[] | null;
+  workVideo?: string[]; 
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -40,11 +40,12 @@ const ReviewSchema: Schema = new Schema(
       required: true,
     },
     workImage: {
-      type: String,
+      type: [String],
     },
     workVideo: {
-      type: String, 
+      type: [String], 
     },
+    
   },
   {
     timestamps: true, 

@@ -29,14 +29,12 @@ const AdminProfile: React.FC = () => {
   };
 
   const handleLogout = async () => {
-    try {
+    
       dispatch(logout());
       localStorage.clear();
       sessionStorage.clear();
       navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Logout API error:", error);
-    }
+    
   };
 
   return (

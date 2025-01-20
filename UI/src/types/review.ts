@@ -6,9 +6,9 @@ export interface Review  {
       providerId:string;
     ratings: number;
     message: string;
-    workImage?: string; 
-    workVideo?: string; 
     createdAt?: Date;
     updatedAt?: Date;
-    userDetails:User[]
+    userDetails:User[];
+    workImage?:string[],
+    workVideo? : string[];
   }

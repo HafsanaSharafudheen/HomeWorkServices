@@ -11,12 +11,13 @@ import { useState, useEffect } from 'react';
 import { Review } from '../types/review';
 import { Alert, Spinner } from "react-bootstrap";
 
+
 const Home: React.FC = () => {
     const [testimonials, setTestimonials] = useState<Review[]>([]);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
+    
     useEffect(() => {
         const fetchTestimonials = async () => {
             try {
@@ -48,6 +49,8 @@ const Home: React.FC = () => {
         }
     }, []);
 
+  
+    
     return (
         <>
             {successMessage && (

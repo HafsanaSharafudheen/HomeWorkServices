@@ -3,8 +3,9 @@ import { updateBookingStatusByProvider } from "../../../application/businesslogi
 
 const updateStatus = async (req: any, res: any): Promise<void> => {
     const bookingId=req.body.bookingId;
+    const status=req.body.status;
   try {
-    const provider = await updateBookingStatusByProvider(bookingId);
+    const provider = await updateBookingStatusByProvider(bookingId,status);
 
 
     return res.status(200).json({ message: "Details of provider found", profile: provider });
