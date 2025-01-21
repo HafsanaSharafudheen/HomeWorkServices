@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../Redux/store";
 import { useNavigate } from "react-router-dom";
 import axios from "../../utilities/axios";
+import ReviewDisplay from "../ReviewDisplay/ReviewDisplay";
 
 interface BookingProps {
   booking: Booking;
@@ -45,6 +46,9 @@ const navigate=useNavigate()
     if (!bookingId) {
       Swal.fire("Error", "Booking ID is required.", "error");
       return;
+    }
+    if (!reviewDetails) {
+      return <p>No review available.</p>;
     }
   
     const confirm = await Swal.fire({
@@ -93,7 +97,9 @@ const navigate=useNavigate()
       };
   
       const response = await axios.post("/razorpay", paymentData);
-  
+      console.log("Backend response:", response.data);
+      console.log("Order ID being sent to Razorpay:", response.data.order.id);
+      
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: amount * 100, // Convert to paise
@@ -101,10 +107,7 @@ const navigate=useNavigate()
         name: "HomeWorks",
         description: "Booking Service Fee",
         order_id: response.data.order.id,
-        prefill: {
-          name: user?.fullName || "Customer",
-          email: user?.email || "example@example.com",
-        },
+      
         handler: async (paymentResponse: any) => {
           try {
             await axios.post("/updateBookingDetails", {
@@ -112,8 +115,14 @@ const navigate=useNavigate()
               paymentResponse,
             });
             Swal.fire("Success", "Payment completed successfully.", "success");
-            navigate(`/bookingConfirmation?bookingId=${bookingId}`);
-          } catch (error) {
+            navigate("/paymentConfirmation", {
+              state: {
+                bookingId,
+                providerId: provider?._id, 
+              },
+            });
+            
+                      } catch (error) {
             console.error("Error updating booking details:", error);
             Swal.fire("Error", "Failed to update booking details.", "error");
           }
@@ -125,7 +134,6 @@ const navigate=useNavigate()
         },
       };
   
-      // Use `any` to bypass TypeScript's type checking for `window`
       const Razorpay = (window as any).Razorpay;
   
       if (typeof Razorpay === "function") {
@@ -170,8 +178,10 @@ const navigate=useNavigate()
 
   return (
     <div className="card booking-card shadow-sm rounded border p-3 mb-4 mt-3">
-      <div>
-      <h6 className="text-success">{provider?.serviceCategory?.toUpperCase()}</h6>
+      <div className="row">
+        
+        <div className="col-md-6">
+        <h6 className="text-success">{provider?.serviceCategory?.toUpperCase()}</h6>
       <p>
           <FaCalendarAlt className="me-2 text-secondary" />
           {new Date(booking.selectedDate).toLocaleDateString()}
@@ -180,8 +190,7 @@ const navigate=useNavigate()
           <FaClock className="me-2 text-secondary" />
           {booking.selectedTime}
         </p>
-      </div>
-
+     
       {provider && (
         <div>
           <p style={{color:'Green',fontWeight:"500"}}>
@@ -207,8 +216,9 @@ const navigate=useNavigate()
           </p>
         </div>
       )}
-
-<div className="text-center">
+        </div>
+        <div className="col-md-6">
+        <div className="text-center">
   {/* Pending Status */}
   {booking.status === "pending" && (
     <>
@@ -251,79 +261,18 @@ const navigate=useNavigate()
     </div>
   )}
 
-  {/* Review Section */}
-  {loading ? (
-    <p>Loading review...</p>
-  ) : reviewDetails ? (
-    <div>
-      <div className="mb-2">
-        {/* Display Review Stars */}
-        {[1, 2, 3, 4, 5].map((star) => (
-          <FaStar
-            key={star}
-            className={`me-1 ${
-              star <= reviewDetails.ratings ? "text-warning" : "text-secondary"
-            }`}
-          />
-        ))}
-      </div>
-      <p className="text-muted mb-1">{reviewDetails.message}</p>
-      {reviewDetails.workImage && reviewDetails.workImage.length > 0 && (
-  <div className="media-container">
-    <h6>Images:</h6>
-    <div className="media-grid">
-      {reviewDetails.workImage.map((image, index) => (
-        <img
-          key={index}
-          src={`${import.meta.env.VITE_API_BASEURL}/${image}`}
-          alt={`Work Image ${index + 1}`}
-          className="preview-image"
-        />
-      ))}
-    </div>
-  </div>
-)}
 
-{reviewDetails.workVideo && reviewDetails.workVideo.length > 0 && (
-  <div className="media-container">
-    <h6>Videos:</h6>
-    <div className="media-grid">
-      {reviewDetails.workVideo.map((video, index) => (
-        <video
-          key={index}
-          src={`${import.meta.env.VITE_API_BASEURL}/${video}`}
-          controls
-          className="preview-video"
-        />
-      ))}
-    </div>
-  </div>
-)}
-      <button
-        className="btn btn-link p-0"
-        onClick={() => setShowReview(true)}
-      >
-        Update Review
-      </button>
-    </div>
-  ) : showReview ? (
-    <ReviewComponent
-      bookingId={booking._id || ""}
-      fetchBookings={fetchBookings}   
-         providerId={provider?._id || ""}
-      onClose={() => setShowReview(false)}
-    />
-  ) : (
-    booking.payment.status === "completed" && (
-      <button
-        className="btn btn-primary"
-        onClick={() => setShowReview(true)}
-      >
-        Leave a Review
-      </button>
-    )
-  )}
+
+
+<ReviewDisplay reviewDetails={reviewDetails} />
+
+      </div>
 </div>
+
+      </div>
+      
+   
+
 
     </div>
   );

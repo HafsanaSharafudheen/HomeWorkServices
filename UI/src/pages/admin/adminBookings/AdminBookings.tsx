@@ -1,8 +1,8 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./adminBookings.css";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../utilities/axios";
-import { FaFilter, FaUsers } from "react-icons/fa";
+import { FaFilter, FaUsers, FaCheckCircle } from "react-icons/fa";
 import { Booking } from "../../../types/booking";
 
 const AdminBookings = () => {
@@ -14,10 +14,8 @@ const AdminBookings = () => {
   const [filterType, setFilterType] = useState("");
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
-
-  const timeSlots = ["9-11 AM", "11-1 PM", "2-4 PM", "4-6 PM"];
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -28,16 +26,13 @@ const AdminBookings = () => {
         setBookings(bookingsData);
         setFilteredBookings(bookingsData);
 
-        //set for removes duplicate serviceCategory values.
-        // A clean array of unique and valid serviceCategory values.example:['Cleaning', 'Plumbing']
-
         const uniqueCategories = [
           ...new Set(
             bookingsData.map(
               (booking) => booking.providerDetails?.[0]?.serviceCategory
             )
           ),
-        ].filter((category) => category);//Filters out invalid or undefined categories.
+        ].filter((category) => category);
 
         setCategories(uniqueCategories as string[]);
       } catch (error) {
@@ -57,7 +52,9 @@ const AdminBookings = () => {
         (booking) =>
           booking.userDetails?.[0]?.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           booking.providerDetails?.[0]?.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.payment.method.toLowerCase().includes(searchTerm.toLowerCase())
+          booking.providerDetails?.[0]?.serviceCategory?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          booking.payment.method.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          new Date(booking.selectedDate).toLocaleDateString().includes(searchTerm)
       );
     }
 
@@ -70,14 +67,6 @@ const AdminBookings = () => {
       );
     }
 
-    // Sort by date (recent first)
-    if (filterType === "recent") {
-      filtered.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-    }
-
     // Filter by selected category
     if (selectedCategory) {
       filtered = filtered.filter(
@@ -86,34 +75,27 @@ const AdminBookings = () => {
       );
     }
 
-    // Filter by time slot
-    if (selectedTimeSlot) {
-      filtered = filtered.filter((booking) => {
-        const [start, end] = selectedTimeSlot
-          .split("-")
-          .map((time) => parseInt(time.replace(/[^0-9]/g, ""), 10));
-        const bookingHour = parseInt(
-          booking.selectedTime.split(":")[0],
-          10
-        );
-
-        return bookingHour >= start && bookingHour < end;
-      });
-    }
-
     // Filter by payment status
     if (paymentStatus) {
       filtered = filtered.filter(
         (booking) => booking.payment.status === paymentStatus
       );
     }
-
+    
     setFilteredBookings(filtered);
-  }, [searchTerm, filterType, selectedCategory, selectedTimeSlot, paymentStatus, bookings]);
+  }, [searchTerm, filterType, selectedCategory, paymentStatus, bookings]);
 
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
   const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
+
+  const handleViewDetails = (booking: Booking) => {
+    setSelectedBooking(booking);
+  };
+
+  const closeModal = () => {
+    setSelectedBooking(null);
+  };
 
   const handleNextPage = () => {
     if (currentPage < Math.ceil(filteredBookings.length / bookingsPerPage)) {
@@ -125,6 +107,10 @@ const AdminBookings = () => {
     if (currentPage > 1) {
       setCurrentPage((prevPage) => prevPage - 1);
     }
+  };
+
+  const handleTransferPayment = (bookingId: string) => {
+    console.log(`Transferring payment for booking ID: ${bookingId}`);
   };
 
   return (
@@ -143,139 +129,34 @@ const AdminBookings = () => {
           </div>
 
           <div className="d-flex align-items-center">
-            <div className="form-floating me-3">
-              <input
-                type="text"
-                id="searchInput"
-                placeholder="Search"
-                className="form-control"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <label htmlFor="searchInput">Search</label>
-            </div>
+            <input
+              type="text"
+              placeholder="Search by name, category, date, or status"
+              className="form-control me-3"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-            <div className="dropdown me-3">
-              <button
-                className=" btn btn-sm DefaultDropDown dropdown-toggle"
-                type="button"
-                id="categoryDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Category
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="categoryDropdown">
-                {categories.map((category) => (
-                  <li key={category}>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => setSelectedCategory(category)}
-                    >
-                      {category}
-                    </button>
-                  </li>
-                ))}
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setSelectedCategory("")}
-                  >
-                    Clear Category
-                  </button>
-                </li>
-              </ul>
-            </div>
+            <select
+              className="form-select me-3"
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
 
-            <div className="dropdown me-3">
-              <button
-                className="btn-sm btn DefaultDropDown dropdown-toggle"
-                type="button"
-                id="timeSlotDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Time Slot
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="timeSlotDropdown">
-                {timeSlots.map((slot) => (
-                  <li key={slot}>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => setSelectedTimeSlot(slot)}
-                    >
-                      {slot}
-                    </button>
-                  </li>
-                ))}
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setSelectedTimeSlot("")}
-                  >
-                    Clear Time Slot
-                  </button>
-                </li>
-              </ul>
-            </div>
-
-            <div className="dropdown">
-              <button
-                className="DefaultDropDown btn-sm btn dropdown-toggle"
-                type="button"
-                id="filterDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <FaFilter className="me-2" />
-                Filter
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="filterDropdown">
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setFilterType("alphabetical")}
-                  >
-                    Alphabetical Order
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setFilterType("recent")}
-                  >
-                    Recent First
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setPaymentStatus("completed")}
-                  >
-                    Completed Payments
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setPaymentStatus("pending")}
-                  >
-                    Pending Payments
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => {
-                      setFilterType("");
-                      setPaymentStatus("");
-                    }}
-                  >
-                    Clear Filters
-                  </button>
-                </li>
-              </ul>
-            </div>
+            <select
+              className="form-select"
+              onChange={(e) => setPaymentStatus(e.target.value)}
+            >
+              <option value="">All Payment Status</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+            </select>
           </div>
         </div>
 
@@ -286,40 +167,102 @@ const AdminBookings = () => {
                 <th>User</th>
                 <th>Provider</th>
                 <th>Category</th>
-                <th>Selected Date</th>
-                <th>Selected Time</th>
+                <th>Booking Date</th>
+                <th>Booked At</th>
+                <th>Working Status</th>
                 <th>Payment Status</th>
-                <th>Amount</th>
-                <th>Created At</th>
-                <th>Actions</th>
+                <th>Payment</th>
+                <th>view Details</th>
+
               </tr>
             </thead>
             <tbody>
               {currentBookings.length > 0 ? (
-                currentBookings.map((booking) => (
-                  <tr key={booking._id}>
-                    <td>{booking.userDetails?.[0]?.fullName || "N/A"}</td>
-                    <td>{booking.providerDetails?.[0]?.fullName || "N/A"}</td>
-                    <td>{booking.providerDetails?.[0]?.serviceCategory || "N/A"}</td>
-                    <td>{new Date(booking.selectedDate).toLocaleDateString()}</td>
-                    <td>{booking.selectedTime}</td>
-                    <td>{booking.payment.status === "completed" ? "Completed" : "Pending"}</td>
-                    <td>{booking.payment.amount}</td>
-                    <td>
-                      {booking.createdAt
-                        ? new Date(booking.createdAt).toLocaleDateString()
-                        : "N/A"}
+                currentBookings.map((booking) => {
+                  const paymentTime = booking.payment.time
+                    ? new Date(booking.payment.time)
+                    : null;
+                  const transferDate = paymentTime
+                    ? new Date(
+                        paymentTime.getTime() + 3 * 24 * 60 * 60 * 1000
+                      )
+                    : null;
+                  const canTransfer =
+                    paymentTime &&
+                    new Date().getTime() - paymentTime.getTime() >=
+                      3 * 24 * 60 * 60 * 1000;
+
+                  return (
+                    <tr key={booking._id}>
+                      <td>{booking.userDetails?.[0]?.fullName || "N/A"}</td>
+                      <td>{booking.providerDetails?.[0]?.fullName || "N/A"}</td>
+                      <td>{booking.providerDetails?.[0]?.serviceCategory || "N/A"}</td>
+                      <td>{new Date(booking.selectedDate).toLocaleDateString()}</td>
+                      <td>
+                        {booking.createdAt
+                          ? new Date(booking.createdAt).toLocaleDateString()
+                          : "N/A"}
+                      </td>
+                      <td>
+                        {booking.status === "completed" ? (
+                          <p className="text-success">Completed</p>
+                        ) : (
+                          <p className="text-warning">In Progress</p>
+                        )}
+                      </td>
+                      <td>
+                        {booking.payment.status === "completed" ? (
+                          <p>
+                            <FaCheckCircle className="me-1 text-success" />
+                            Payment Done on:{" "}
+                            {paymentTime?.toLocaleDateString() || "N/A"}
+                          </p>
+                        ) : (
+                          <p className="text-danger">Pending</p>
+                        )}
+                      </td>
+                      <td>
+                        {booking.payment.status === "completed" && transferDate ? (
+                          <div>
+                            <p className="text-danger">
+                              Eligible on: {transferDate.toLocaleDateString()}
+                            </p>
+                            {canTransfer ? (
+                              <button
+                                className="btn btn-success btn-sm"
+                                onClick={() => handleTransferPayment(booking._id)}
+                              >
+                                Transfer Payment
+                              </button>
+                            ) : (
+                              <p className="text-secondary">Not Eligible Yet</p>
+                            )}
+                          </div>
+                        ) : (
+                          <p className="text-secondary">No Transfer Date</p>
+                        )}
+                      </td>
+                      <td>
+                      <td>
+  <a
+    href="#"
+    className="text-primary"
+    onClick={(e) => {
+      e.preventDefault();
+      handleViewDetails(booking);
+    }}
+  >
+    View Details
+  </a>
+</td>
+
                     </td>
-                    <td>
-                      {booking.payment.status !== "completed" && (
-                        <button className="DefaultButton2">Transfer Payment</button>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
-                  <td colSpan={9} className="text-center">
+                  <td colSpan={8} className="text-center">
                     No bookings found.
                   </td>
                 </tr>
@@ -330,7 +273,7 @@ const AdminBookings = () => {
 
         <div className="pagination d-flex align-items-center justify-content-center">
           <button
-            className={`btn btn-sm btn-primary mx-2`}
+            className="btn btn-sm btn-primary mx-2"
             disabled={currentPage === 1}
             onClick={handlePrevPage}
           >
@@ -338,7 +281,7 @@ const AdminBookings = () => {
           </button>
           <span className="mx-3">{currentPage}</span>
           <button
-            className={`btn btn-sm btn-primary mx-2`}
+            className="btn btn-sm btn-primary mx-2"
             disabled={
               currentPage === Math.ceil(filteredBookings.length / bookingsPerPage)
             }
@@ -347,6 +290,102 @@ const AdminBookings = () => {
             Next
           </button>
         </div>
+        {selectedBooking && (
+  <div className="modal show d-block" style={{ background: "rgba(0,0,0,0.5)" }}>
+    <div className="modal-dialog modal-lg modal-dialog-scrollable">
+      <div className="modal-content p-2">
+      
+        <div className="modal-body p-3">
+          {/* Row for Booking Details and Payment Details */}
+          <div className="row">
+            {/* Booking Details */}
+            <div className="col-md-6">
+              <h6><strong>Booking Details:</strong></h6>
+              <ul className="list-unstyled">
+                <li><strong>User:</strong> {selectedBooking.userDetails?.[0]?.fullName || "N/A"}</li>
+                <li><strong>Provider:</strong> {selectedBooking.providerDetails?.[0]?.fullName || "N/A"}</li>
+                <li><strong>Category:</strong> {selectedBooking.providerDetails?.[0]?.serviceCategory || "N/A"}</li>
+                <li><strong>Booking Date:</strong> {new Date(selectedBooking.selectedDate).toLocaleDateString()}</li>
+                <li><strong>Booked At:</strong> {new Date(selectedBooking.createdAt).toLocaleDateString()}</li>
+              </ul>
+            </div>
+
+            {/* Payment Details */}
+            <div className="col-md-6">
+              <h6><strong>Payment Details:</strong></h6>
+              <ul className="list-unstyled">
+                <li><strong>Amount:</strong> ₹{selectedBooking.payment.amount}</li>
+                <li><strong>Paid At:</strong> {selectedBooking.payment.time ? new Date(selectedBooking.payment.time).toLocaleString() : "N/A"}</li>
+                <li><strong>Payment Method:</strong> {selectedBooking.payment.method || "N/A"}</li>
+                <li>
+                  <strong>Status:</strong>{" "}
+                  {selectedBooking.payment.status === "completed" ? (
+                    <span className="text-success">Completed</span>
+                  ) : (
+                    <span className="text-danger">Pending</span>
+                  )}
+                </li>
+              </ul>
+              {selectedBooking.payment.status === "completed" && (
+                <p className="text-danger">
+                  <strong>Eligible for Transfer On:</strong>{" "}
+                  {new Date(new Date(selectedBooking.payment.time).getTime() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Working Updates */}
+          <div>
+            <div className="row">
+              {selectedBooking.workingUpdates?.map((update, idx) => (
+                <div key={idx} className="col-md-3">
+                  <div className="card">
+                    <div className="card-body">
+                      <h6 className="card-title"><strong>{update.title}</strong></h6>
+                      <p className="card-text">{update.description}</p>
+                      <div className="row">
+                        {/* Photos */}
+                        {update.photos.map((photo, index) => (
+                          <div className="col-12" key={index}>
+                            <img
+                              src={`${import.meta.env.VITE_API_BASEURL}/${photo}`}
+                              alt={`Work Photo ${index + 1}`}
+                              className="img-thumbnail"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <div className="row">
+                        {/* Videos */}
+                        {update.videos.map((video, index) => (
+                          <div className="col-12" key={index}>
+                            <video
+                              src={`${import.meta.env.VITE_API_BASEURL}/${video}`}
+                              controls
+                              className="w-100 rounded"
+                            ></video>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button className="btn btn-secondary" onClick={closeModal}>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
       </div>
     </div>
   );

@@ -12,7 +12,8 @@ export interface IBooking extends Document {
     amount: number;
     releasedDate?: Date;
     status: string;
-  };
+    time?: Date | null;
+    };
   workingUpdates: {
     title: string;
     description: string;
@@ -37,7 +38,8 @@ const bookingSchema: Schema = new Schema({
     amount: { type: Number, required: true },
     releasedDate: { type: Date },
     status: { type: String, required: true },
-  },
+    time: { type: Date, default: null }, 
+    },
   workingUpdates: [
     {
       title: { type: String, required: true },

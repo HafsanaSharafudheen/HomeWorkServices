@@ -8,14 +8,13 @@ interface ReviewProps {
   bookingId: string;
   providerId: string;
   onClose: () => void;
-  fetchBookings: () => void;
 }
 
 const ReviewComponent: React.FC<ReviewProps> = ({
   bookingId,
   providerId,
   onClose,
-  fetchBookings,
+  
 }) => {
   const [rating, setRating] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
@@ -82,7 +81,7 @@ const ReviewComponent: React.FC<ReviewProps> = ({
         confirmButtonText: "OK",
       });
 
-      fetchBookings();
+      
       onClose();
     } catch (error) {
       console.error("Error submitting review:", error);

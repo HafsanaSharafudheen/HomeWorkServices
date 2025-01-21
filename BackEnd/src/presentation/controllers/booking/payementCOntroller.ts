@@ -31,7 +31,7 @@ export const razorpayBooking = async (req: any, res: any) => {
       });
   
       const options = {
-        amount: amount * 100, // Amount in paise
+        amount: amount *100,
         currency,
         receipt: `receipt_${bookingId}`,
       };
@@ -44,6 +44,7 @@ export const razorpayBooking = async (req: any, res: any) => {
           $set: {
             "payment.status": "completed",
             "payment.method": "online",
+            "payment.time":new Date()
           },
         },
         { new: true }

@@ -13,6 +13,8 @@ export interface Booking {
       method: string;
       amount: number;
       status: string;
+      releasedDate?:Date
+      time?: Date;
     };
     providerDetails?: Provider[]
     userDetails?:User[];

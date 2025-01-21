@@ -28,6 +28,7 @@ import pageNotFound from './components/PageNotFound/PageNotFound';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import DiyPage from './pages/DIYPage/DiyPage';
 import DiyDetails from './pages/DiyDetails/DiyDetails';
+import PaymentConfirmation from './pages/PaymentConfirmation/PaymentConfirmation';
 
 
 const App = () => {
@@ -64,6 +65,7 @@ const App = () => {
         <Route path="*" element={<PageNotFound />} />
         <Route path="/DIY" element={<DiyPage />} />
         <Route path="/diyDetails" element={<DiyDetails/>} />
+        <Route path="/paymentConfirmation" element={<PaymentConfirmation/>} />
 
 
       </Routes>

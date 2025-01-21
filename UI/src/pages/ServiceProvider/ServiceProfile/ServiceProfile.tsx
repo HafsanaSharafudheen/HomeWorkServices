@@ -166,10 +166,10 @@ function ServiceProfile() {
     </div>
 
     <div className="col-md-6 text-center">
-    <div className="profile-container">
+    <div>
   {profile && (
     <>
-      <h2 className="profile-name">{profile.fullName}</h2>
+      <h2>{profile.fullName}</h2>
 
       {/* Clickable Profile Image */}
       <img

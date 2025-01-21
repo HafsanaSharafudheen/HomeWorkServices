@@ -168,6 +168,20 @@ border-radius: 5px;
     color: #666;
     margin-bottom: 10px;
 }
+.payment-details {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  
+  .payment-details p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
 
 .update-photos,
 .update-videos {

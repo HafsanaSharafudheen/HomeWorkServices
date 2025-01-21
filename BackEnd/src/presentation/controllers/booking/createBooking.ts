@@ -21,6 +21,7 @@ export const createBooking = async (req: any, res: any): Promise<void> => {
         amount: amount,
         method: "pending",
         status: "pending", 
+        time:null,
       },
     });
 

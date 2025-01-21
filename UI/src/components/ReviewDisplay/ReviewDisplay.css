@@ -1,0 +1,74 @@
+/* General container for the review */
+/* .review-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+  } */
+  
+  /* Wrapper for the review card */
+  .review-wrapper {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* Individual review card */
+  .review-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+ 
+  
+  .carousel-image {
+    width: 50%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  /* Text area for review details */
+  .review-text {
+    text-align: center;
+    font-size: 16px;
+    color: #333333;
+  }
+  
+  .review-text .star-rating {
+    margin-bottom: 10px;
+  }
+  
+  .review-text .review-message {
+    font-size: 18px;
+    font-style: italic;
+    color: #555555;
+  }
+  
+  /* Name or title area */
+  .review-name {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4caf50;
+  }
+  
+  /* Videos section */
+  .video-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  .review-video {
+    max-width: 300px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  

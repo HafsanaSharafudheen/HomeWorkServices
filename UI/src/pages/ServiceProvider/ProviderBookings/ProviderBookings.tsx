@@ -413,9 +413,27 @@ function ProviderBookings() {
                                                 </button>
                                             </>
                                         )}
-                                        {booking.status === 'completed' && (
-                                            <p className="badge bg-success">Completed</p>
-                                        )}
+                                       {booking.status === "completed" && (
+  <div>
+    <p className="badge bg-success">Completed</p>
+    {/* Payment Credit Details */}
+    {booking.payment.time && (
+      <div className="payment-details mt-2">
+        <p>
+          <strong>Amount:</strong> ₹{booking.payment.amount}
+        </p>
+        <p>
+          <strong>Payment will be credited on:</strong>{" "}
+          {new Date(
+                              new Date(booking.payment.time).getTime() +
+                                3 * 24 * 60 * 60 * 1000
+                            ).toLocaleDateString()}
+        </p>
+      </div>
+    )}
+  </div>
+)}
+
                                         {booking.status === 'rejected' && (
                                             <p className="badge bg-danger">Rejected</p>
                                         )}
