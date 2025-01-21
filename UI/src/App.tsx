@@ -16,7 +16,6 @@ import ServiceProviderSignup from './pages/ServiceProvider/serviceProviderSignup
 import ServiceProfile from './pages/ServiceProvider/ServiceProfile/ServiceProfile';
 import ServicesDetails from './pages/servicesDetailedPage/servicesDetails';
 import Bookings from './pages/UserBookings/Bookings';
-import AdminBookings from './pages/admin/adminBookings/adminBookings';
 import ProviderBookings from './pages/ServiceProvider/ProviderBookings/ProviderBookings';
 import DiyForm from './pages/ServiceProvider/diy/diyForm';
 import ForgotPassword from './components/forgotPassword/ForgotPassword';
@@ -24,11 +23,11 @@ import ResetPassword from './components/forgotPassword/ResetPassword';
 import Chat from './components/chat/Chat';
 import ChatList from './components/ChatList/ChatList';
 import AdminProfile from './pages/admin/adminProfile/adminProfile';
-import pageNotFound from './components/PageNotFound/PageNotFound';
 import PageNotFound from './components/PageNotFound/PageNotFound';
 import DiyPage from './pages/DIYPage/DiyPage';
 import DiyDetails from './pages/DiyDetails/DiyDetails';
 import PaymentConfirmation from './pages/PaymentConfirmation/PaymentConfirmation';
+import AdminBookings from './pages/admin/adminBookings/AdminBookings';
 
 
 const App = () => {

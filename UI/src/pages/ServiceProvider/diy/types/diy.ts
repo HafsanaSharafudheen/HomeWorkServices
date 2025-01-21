@@ -1,4 +1,4 @@
-import { Provider } from "./provider";
+import { Provider } from "../../../../types/provider";
 
   
   export interface DIY {
@@ -16,5 +16,5 @@ import { Provider } from "./provider";
     photos: File[];
     vedios: File[];
     providerId:string;
-    providerDetails:Provider
+    providerDetails?:Provider
   };

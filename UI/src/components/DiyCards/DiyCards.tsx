@@ -1,6 +1,6 @@
 // import React from 'react';
 import React from 'react';
-import { DIY } from '../../types/diy';
+import { DIY } from '../../pages/ServiceProvider/diy/types/diy';
 import './DiyCards.css';
 import { useNavigate } from 'react-router-dom';
 

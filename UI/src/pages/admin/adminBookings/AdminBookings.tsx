@@ -1,90 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState,  } from "react";
 import "./adminBookings.css";
 import SideBar from "../adminDashboard/SideBar";
-import axios from "../../../utilities/axios";
-import { FaFilter, FaUsers, FaCheckCircle } from "react-icons/fa";
+import {  FaUsers, FaCheckCircle } from "react-icons/fa";
 import { Booking } from "../../../types/booking";
+import { useFetchBookings } from "./hooks/useFetchBookings ";
+import { useFilterBookings } from "./hooks/useFilterBookings ";
 
 const AdminBookings = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [bookingsPerPage] = useState(10);
   const [filterType, setFilterType] = useState("");
-  const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get<{ bookings: Booking[] }>("/fetchAllBookings");
-        const bookingsData = response.data.bookings;
+  const { bookings, categories, loading, error } = useFetchBookings();
+  const filteredBookings = useFilterBookings(
+    bookings,
+    searchTerm,
+    filterType,
+    selectedCategory,
+    paymentStatus
+  );
 
-        setBookings(bookingsData);
-        setFilteredBookings(bookingsData);
-
-        const uniqueCategories = [
-          ...new Set(
-            bookingsData.map(
-              (booking) => booking.providerDetails?.[0]?.serviceCategory
-            )
-          ),
-        ].filter((category) => category);
-
-        setCategories(uniqueCategories as string[]);
-      } catch (error) {
-        console.error("Error fetching bookings:", error);
-      }
-    };
-
-    fetchBookings();
-  }, []);
-
-  useEffect(() => {
-    let filtered = [...bookings];
-
-    // Apply search filter
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (booking) =>
-          booking.userDetails?.[0]?.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.providerDetails?.[0]?.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.providerDetails?.[0]?.serviceCategory?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          booking.payment.method.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          new Date(booking.selectedDate).toLocaleDateString().includes(searchTerm)
-      );
-    }
-
-    // Apply alphabetical order filter
-    if (filterType === "alphabetical") {
-      filtered.sort((a, b) =>
-        (a.userDetails?.[0]?.fullName || "").localeCompare(
-          b.userDetails?.[0]?.fullName || ""
-        )
-      );
-    }
-
-    // Filter by selected category
-    if (selectedCategory) {
-      filtered = filtered.filter(
-        (booking) =>
-          booking.providerDetails?.[0]?.serviceCategory === selectedCategory
-      );
-    }
-
-    // Filter by payment status
-    if (paymentStatus) {
-      filtered = filtered.filter(
-        (booking) => booking.payment.status === paymentStatus
-      );
-    }
-    
-    setFilteredBookings(filtered);
-  }, [searchTerm, filterType, selectedCategory, paymentStatus, bookings]);
-
+ 
+  
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
   const currentBookings = filteredBookings.slice(indexOfFirstBooking, indexOfLastBooking);
@@ -122,44 +63,45 @@ const AdminBookings = () => {
       <div className="col-lg-9 col-md-8 col-sm-12">
         <h2 className="headingStyle my-4">Booking Details</h2>
 
-        <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
-          <div className="d-flex align-items-center">
-            <FaUsers className="me-2 text-primary" />
-            <span>Total Bookings: {filteredBookings.length}</span>
-          </div>
+        {loading && <p>Loading bookings...</p>}
+        {error && <p className="text-danger">{error}</p>}
 
-          <div className="d-flex align-items-center">
-            <input
-              type="text"
-              placeholder="Search by name, category, date, or status"
-              className="form-control me-3"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-
-            <select
-              className="form-select me-3"
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-
-            <select
-              className="form-select"
-              onChange={(e) => setPaymentStatus(e.target.value)}
-            >
-              <option value="">All Payment Status</option>
-              <option value="completed">Completed</option>
-              <option value="pending">Pending</option>
-            </select>
-          </div>
-        </div>
-
+        {!loading && !error && (
+          <>
+            <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
+              <div className="d-flex align-items-center">
+                <FaUsers className="me-2 text-primary" />
+                <span>Total Bookings: {filteredBookings.length}</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <input
+                  type="text"
+                  placeholder="Search by name, category, date, or status"
+                  className="form-control me-3"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <select
+                  className="form-select me-3"
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className="form-select"
+                  onChange={(e) => setPaymentStatus(e.target.value)}
+                >
+                  <option value="">All Payment Status</option>
+                  <option value="completed">Completed</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </div>
+            </div>
         <div className="table-responsive">
           <table className="bookingstable table">
             <thead>
@@ -270,6 +212,10 @@ const AdminBookings = () => {
             </tbody>
           </table>
         </div>
+
+</>
+ )}
+ </div>
 
         <div className="pagination d-flex align-items-center justify-content-center">
           <button
@@ -387,7 +333,8 @@ const AdminBookings = () => {
 
 
       </div>
-    </div>
+  
+  
   );
 };
 

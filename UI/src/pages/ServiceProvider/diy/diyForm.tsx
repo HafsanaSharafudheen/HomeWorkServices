@@ -1,21 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import { DIY } from "../../../types/diy";
-import ServiceNavbar from "../ServiceNavbar";
+import React, { useRef, useState, lazy, Suspense } from "react";
+import { DIY } from "./types/diy";
 import { FaPlusCircle, FaRegImage, FaTimesCircle, FaVideo } from "react-icons/fa";
 import "./diyForm.css";
 import axios from "../../../utilities/axios";
-import PreviousDIY from "../../../components/diy/PreviousDIY";
-import ServiceSidebar from "../serviceSidebar";
 import Swal from "sweetalert2";
-import { Category } from "../../../types/category";
+import { useCategories } from "./hooks/useCategories";
+
+const PreviousDIY = lazy(() => import("../../../components/diy/PreviousDIY"));
+const ServiceNavbar = lazy(() => import("../ServiceNavbar"));
+const ServiceSidebar = lazy(() => import("../serviceSidebar"));
 
 export const DIYForm: React.FC = () => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [videoPreviews, setVideoPreviews] = useState<string[]>([]);
-  const [categories, setCategories] = useState<
-    { _id: string; categoryName: string; categoryImage: string }[]
-  >([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
 
   const [formData, setFormData] = useState<Omit<DIY, "_id" | "providerId">>({
@@ -29,22 +26,15 @@ export const DIYForm: React.FC = () => {
     photos: [],
     vedios: [],
   });
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get("/fetchCategories"); 
 
-        setCategories(response.data); 
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
 
-    fetchCategories();
-  }, []);
   
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+
+  const  {categories, loading, error} = useCategories();
+
+  
   const handleAddStep = () => {
     setFormData({
       ...formData,
@@ -204,14 +194,24 @@ export const DIYForm: React.FC = () => {
   };
 
 
- 
+  if (loading) {
+    return <p>Loading categories...</p>; // Show this while fetching
+  }
+  
+  if (error) {
+    return <p className="text-danger">Error: {error}</p>; // Show this if fetching fails
+  }
 
   return (
     <div>
-      <ServiceNavbar />
+      <Suspense fallback={<div>Loading Navbar...</div>}>
+        <ServiceNavbar />
+      </Suspense>
       <div className="row">
         <div className="col-md-3">
-          <ServiceSidebar />
+          <Suspense fallback={<div>Loading Sidebar...</div>}>
+            <ServiceSidebar />
+          </Suspense>
         </div>
         <div className="col-md-9">
           <div className="text-white text-center">
@@ -325,19 +325,21 @@ export const DIYForm: React.FC = () => {
               <div className="row g-4">
                 <div className="col-md-6">
                   <label className="form-label fw-bold">Select Category</label>
-                  <select
-                    className="form-select"
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  >
-                  <option value="">Select Category</option>
-{categories &&categories.map((category, index) => (
-  <option key={index} value={category.categoryName}>
-    {category.categoryName}
-  </option>
-))}
 
-          </select>
+                  <select
+  className="form-select"
+  value={formData.category}
+  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+>
+  <option value="">Select Category</option>
+  {Array.isArray(categories) &&
+    categories.map((category, index) => (
+      <option key={index} value={category.categoryName}>
+        {category.categoryName}
+      </option>
+    ))}
+</select>
+
          
                   {errors.category && <p className="errorMessage">{errors.category}</p>}
                 </div>
@@ -439,8 +441,10 @@ export const DIYForm: React.FC = () => {
           
           </div>
           <div>
+          <Suspense fallback={<div>Loading Previous DIY...</div>}>
             <PreviousDIY />
-          </div>
+          </Suspense>
+                    </div>
         </div>
       </div>
     </div>

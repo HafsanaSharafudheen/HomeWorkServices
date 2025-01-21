@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DIY } from '../../types/diy';
+import { DIY } from '../ServiceProvider/diy/types/diy';
 import DiyCards from '../../components/DiyCards/DiyCards';
 import axios from '../../utilities/axios';
 import Header from '../../components/Header';
