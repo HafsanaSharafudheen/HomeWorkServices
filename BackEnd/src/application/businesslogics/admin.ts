@@ -169,6 +169,21 @@ export const updateUserBlockStatus = async (userId:string, isBlocked:boolean) =>
   if (!user) throw new Error("User not found");
   return user;
 };
+export const updateProviderBlockStatus = async (
+  providerId: string,
+  isBlocked: boolean
+) => {
+  const objectId = new mongoose.Types.ObjectId(providerId);
+console.log(objectId,"-------------objectId")
+  const provider = await Provider.findByIdAndUpdate(
+    objectId,
+    { isBlocked },
+    { new: true } 
+  );
+
+  if (!provider) throw new Error("Provider not found");
+  return provider;
+};
 
 
 export const fetchAdminProfileDetails =async(adminId:string) => {
@@ -201,6 +216,6 @@ export const fetchAllAdminSideCategories = async () => {
 
 
 
-export default { findAllProviders,
+export default { findAllProviders,updateProviderBlockStatus,
   findAllUsers,findAllBookings,fetchAllAdminSideCategories,
   getDashboardDetails,updateUserBlockStatus,addNewCategory, };

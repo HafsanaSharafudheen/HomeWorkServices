@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Category.css";
 import SideBar from "../adminDashboard/SideBar";
 import CategoryCard from "../../../components/CategoryCard/CategoryCard";
-import { CategoryModel } from "../../../types/category";
 import { FaImage, FaTimes } from "react-icons/fa";
 import { Form } from "react-bootstrap";
+import useCategories from "./hooks/useCategories";
 import axios from "../../../utilities/axios";
 
 const Category = () => {
-  const [categories, setCategories] = useState<CategoryModel[]>([]);
+  const { categories, loading, error, fetchCategories } = useCategories();
   const [showPopup, setShowPopup] = useState(false);
   const [newCategory, setNewCategory] = useState<{
     categoryName: string;
@@ -18,21 +18,6 @@ const Category = () => {
     categoryImage: null,
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
-  // Fetch categories
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get("/AdminCategories");
-      setCategories(response.data.categories);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
-  // useEffect to fetch categories when the component mounts
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   const handleAddCategory = async () => {
     if (!newCategory.categoryName || !newCategory.categoryImage) {
@@ -45,7 +30,7 @@ const Category = () => {
     formData.append("categoryImage", newCategory.categoryImage);
 
     try {
-      const response = await axios.post("/addCategories", formData, {
+      await axios.post("/addCategories", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -64,7 +49,7 @@ const Category = () => {
   const handleDeleteCategory = async (id: string) => {
     try {
       await axios.delete(`/deleteCategories/${id}`);
-      setCategories(categories.filter((category) => category._id !== id));
+      fetchCategories();
     } catch (error) {
       console.error("Error deleting category:", error);
     }
@@ -97,17 +82,21 @@ const Category = () => {
             Add New Category
           </button>
         </div>
+
+        {loading && <p>Loading categories...</p>}
+        {error && <p className="text-danger">{error}</p>}
+
         <div className="container">
-        <div className="row">
-          {categories.map((category) => (
-            <CategoryCard
-              key={category._id}
-              category={category}
-              onDelete={handleDeleteCategory}
-            />
-          ))}
-            </div>
-            </div>
+          <div className="row">
+            {categories.map((category) => (
+              <CategoryCard
+                key={category._id}
+                category={category}
+                onDelete={handleDeleteCategory}
+              />
+            ))}
+          </div>
+        </div>
 
         {showPopup && (
           <div className="popup-overlay">

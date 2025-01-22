@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { RootState } from '../../../Redux/store';
 import StarRating from '../StarRating';
+import useWorkSamples from "./hooks/fetchWorkSamples ";
 
 const timeSlots = [
   { start: "9:00 AM", end: "11:00 AM" },
@@ -26,6 +27,7 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+  const { workSamples, loading, error, fetchWorkSamples } = useWorkSamples();
 
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -134,7 +136,10 @@ const handleDateChange = (date: Date) => {
         Swal.fire("Error", "An error occurred while booking. Please try again later.", "error");
       }
     };
-
+    const handleWorkSamplesTabClick = () => {
+      setSelectedTab("samples");
+      fetchWorkSamples(provider._id);
+    };
 
   return (
     <div className="serviceDetailsSidebar">
@@ -150,12 +155,12 @@ const handleDateChange = (date: Date) => {
         </button>
       </li>
       <li className="nav-item">
-        <button
-          className={`nav-link ${selectedTab === "samples" ? "active" : ""}`}
-          onClick={() => setSelectedTab("samples")}
-        >
-          Work Samples
-        </button>
+      <button
+                className={`nav-link ${selectedTab === "samples" ? "active" : ""}`}
+                onClick={handleWorkSamplesTabClick}
+              >
+                Work Samples
+              </button>
       </li>
       <li className="nav-item">
         <button
@@ -220,14 +225,73 @@ const handleDateChange = (date: Date) => {
             </button>
           </div>
         )}
-        {selectedTab === "samples" && (
-          <div className="tab-pane active">
-            <h5>Work Samples</h5>
-            <div className="sample-gallery">
-              <p>Sample works will appear here.</p>
-            </div>
+
+{selectedTab === "samples" && (
+  <div className="tab-pane active">
+    <h5>Work Samples</h5>
+    {loading ? (
+      <p>Loading...</p>
+    ) : error ? (
+      <p className="text-danger">{error}</p>
+    ) : workSamples.length > 0 ? (
+      <div className="sample-gallery">
+        {workSamples.map((sample, sampleIndex) => (
+          <div key={sampleIndex} className="work-update mb-3">
+            {sample.workingUpdates &&sample.workingUpdates?.length > 0 ? (
+              <>
+                {/* <h6>Update: {sample.workingUpdates[0]?.title || "Untitled"}</h6> */}
+                <p>{sample.workingUpdates[0]?.description || "No description available."}</p>
+
+                {sample.workingUpdates &&sample.workingUpdates[0]?.photos?.length > 0 ? (
+                  <div className="photos-section d-flex flex-wrap">
+                    {sample.workingUpdates &&sample.workingUpdates[0]?.photos.map((photo, index) => (
+                      <img
+                        key={index}
+                        src={`${import.meta.env.VITE_API_BASEURL}/${photo}`}
+                        alt="Work Photo"
+                        className="img-thumbnail me-2 mb-2"
+                        style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <p>No photos available.</p>
+                )}
+
+                {sample.workingUpdates[0]?.videos?.length > 0 ? (
+                  <div className="videos-section d-flex flex-wrap">
+                    {sample.workingUpdates[0]?.videos.map((video, index) => (
+                      <video
+                        key={index}
+                        controls
+                        className="me-2 mb-2"
+                        style={{ width: "200px", height: "150px" }}
+                      >
+                        <source
+                          src={`${import.meta.env.VITE_API_BASEURL}/${video}`}
+                          type="video/mp4"
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    ))}
+                  </div>
+                ) : (
+                  <p></p>
+                )}
+              </>
+            ) : (
+              <p></p>
+            )}
           </div>
-        )}
+        ))}
+      </div>
+    ) : (
+      <p>No work samples available.</p>
+    )}
+  </div>
+)}
+
+
       {selectedTab === "feedback" && (
           <div style={{fontSize:"12px"}}>
             <h6>Customer Feedback</h6>

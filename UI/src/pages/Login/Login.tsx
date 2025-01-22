@@ -57,7 +57,7 @@ function Login() {
 
 
       const user = response.data.user;
-      if (user.isBlocked) {
+      if (user.isBlocked ) {
         Swal.fire({
           title: "Account Blocked",
           text: "Your account is blocked. Please contact support for assistance.",

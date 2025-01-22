@@ -1,49 +1,37 @@
 import React, { useState, useEffect } from "react";
 import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../utilities/axios";
-import { Provider } from "../../../types/provider";
-import { FaEdit, FaTrash, FaFilter, FaUsers } from "react-icons/fa";
+import { Provider, Review } from "../../../types/provider";
+import { FaEdit, FaTrash, FaFilter, FaUsers, FaBan, FaCheck, FaStar, FaClock, FaMapMarkerAlt, FaLanguage, FaBriefcase, FaMoneyBillWave, FaWrench, FaPhone, FaEnvelope } from "react-icons/fa";
 import "./AdminServiceProvider.css";
+import { useServiceProviders } from "./hooks/useServiceProviders.ts";
+import { useProviderReviews } from "./hooks/useProviderReviews .tsx";
+
 
 const AdminServiceProviders = () => {
-  const [providers, setProviders] = useState<Provider[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProviders, setFilteredProviders] = useState<Provider[]>([]);
   const [filterType, setFilterType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10; 
-  // Fetch providers on component mount
-  useEffect(() => {
-    const fetchProviders = async () => {
-      try {
-        const response = await axios.get("/fetchProviders");
-        setProviders(response.data.providers);
-        setFilteredProviders(response.data.providers);
-      } catch (error) {
-        console.error("Error fetching providers:", error);
-      }
-    };
-
-    fetchProviders();
-  }, []);
+  const rowsPerPage = 10;
+  const { providers, loading, error, updateProvider } = useServiceProviders();
+  const { fetchReviews } = useProviderReviews(); // Hook to fetch reviews
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   // Filter logic
   useEffect(() => {
     let filtered = [...providers];
-
-    // Search by name or category
     if (searchTerm) {
       filtered = filtered.filter(
         (provider) =>
           provider.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           (provider.serviceCategory &&
-            provider.serviceCategory
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()))
+            provider.serviceCategory.toLowerCase().includes(searchTerm.toLowerCase()))
       );
     }
 
-    // Additional filters
     if (filterType === "category") {
       filtered = filtered.filter((provider) => provider.serviceCategory);
     } else if (filterType === "clear") {
@@ -54,21 +42,6 @@ const AdminServiceProviders = () => {
     setFilteredProviders(filtered);
   }, [searchTerm, filterType, providers]);
 
-  // Actions
-  const handleEditProvider = (id: string) => {
-    alert(`Edit functionality for provider with ID: ${id}`);
-  };
-
-  const handleDeleteProvider = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this provider?")) {
-      try {
-        await axios.delete(`/api/providers/${id}`);
-        setProviders(providers.filter((provider) => provider._id !== id));
-      } catch (error) {
-        console.error("Error deleting provider:", error);
-      }
-    }
-  };
   // Pagination logic
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -86,6 +59,34 @@ const AdminServiceProviders = () => {
     }
   };
 
+  const handleBlockUser = async (id: string) => {
+    try {
+      const response = await axios.patch(`/blockProvider/${id}`);
+      updateProvider(response.data.provider);
+    } catch (error) {
+      console.error("Error blocking provider:", error);
+    }
+  };
+
+  const handleUnblockUser = async (id: string) => {
+    try {
+      const response = await axios.patch(`/unblockProvider/${id}`);
+      updateProvider(response.data.provider);
+    } catch (error) {
+      console.error("Error unblocking provider:", error);
+    }
+  };
+
+  const handleViewDetails = async (provider: Provider) => {
+    setSelectedProvider(provider);
+    try {
+      const reviewsData = await fetchReviews(provider._id);
+      setReviews(reviewsData);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+    setShowModal(true);
+  };
 
   return (
     <div className="row">
@@ -93,21 +94,16 @@ const AdminServiceProviders = () => {
         <SideBar />
       </div>
 
-      {/* Main Content */}
       <div className="col-lg-9 col-md-8 col-sm-12">
         <h2 className="table-title my-4">Service Providers Details</h2>
-
         {/* Top Controls */}
         <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
-          {/* Total Providers */}
           <div className="d-flex align-items-center">
             <FaUsers className="me-2 text-primary" />
             <span>Total Providers: {filteredProviders.length}</span>
           </div>
-
           {/* Search and Filter */}
           <div className="d-flex align-items-center">
-            {/* Search */}
             <div className="form-floating me-3">
               <input
                 type="text"
@@ -119,8 +115,6 @@ const AdminServiceProviders = () => {
               />
               <label htmlFor="searchInput">Search</label>
             </div>
-
-            {/* Filter Dropdown */}
             <div className="dropdown">
               <button
                 className="DefaultDropDown btn-sm btn dropdown-toggle"
@@ -155,7 +149,7 @@ const AdminServiceProviders = () => {
         </div>
 
         {/* Table */}
-        <div className="table-responsive ">
+        <div className="table-responsive">
           <table className="providersTable table">
             <thead>
               <tr>
@@ -163,8 +157,10 @@ const AdminServiceProviders = () => {
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Service Category</th>
+                <th>Service Charge</th>
                 <th>Address</th>
                 <th>Actions</th>
+                <th>View Details</th>
               </tr>
             </thead>
             <tbody>
@@ -175,32 +171,50 @@ const AdminServiceProviders = () => {
                     <td>{provider.email}</td>
                     <td>{provider.contactNumber || "N/A"}</td>
                     <td>{provider.serviceCategory || "N/A"}</td>
+                    <td>{provider.serviceCharge || "N/A"}</td>
                     <td>
                       {provider.address.city || "N/A"},{" "}
                       {provider.address.district || "N/A"}, PIN:{" "}
                       {provider.address.pin || "N/A"}
                     </td>
+                   
+                      <td>
+                      {provider.isBlocked ? (
+                        <button
+                          className="btn-unblock"
+                          onClick={() => provider._id && handleUnblockUser(provider._id)}
+                        >
+                          Unblock
+                        </button>
+                      ) : (
+                        <button
+                          className="btn-block"
+                          onClick={() => provider._id && handleBlockUser(provider._id)}
+                        >
+                          Block
+                        </button>
+                      )}
+                    </td>
                     <td>
-  <button
-    className="DefaultButton2"
-    onClick={() => handleEditProvider(provider._id)}
-  >
-    <FaEdit />
-  </button>
-  <button
-    className="DefaultButton2"
-    onClick={() => handleDeleteProvider(provider._id)}
-  >
-    <FaTrash />
-  </button>
-</td>
 
+                  
+                    <a
+    href="#"
+    className="text-primary"
+    onClick={(e) => {
+      e.preventDefault();
+      handleViewDetails(provider);
+    }}
+  >
+    View Details
+  </a>
+  </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-        <td colSpan={3} className="text-center noProviders">
-        No providers found.
+                  <td colSpan={7} className="text-center noProviders">
+                    No providers found.
                   </td>
                 </tr>
               )}
@@ -211,7 +225,7 @@ const AdminServiceProviders = () => {
         {/* Pagination */}
         <div className="pagination d-flex align-items-center justify-content-center">
           <button
-            className={`btn btn-sm btn-primary mx-2`}
+            className="btn btn-sm btn-primary mx-2"
             disabled={currentPage === 1}
             onClick={handlePrevPage}
           >
@@ -219,7 +233,7 @@ const AdminServiceProviders = () => {
           </button>
           <span className="mx-3">{currentPage}</span>
           <button
-            className={`btn btn-sm btn-primary mx-2`}
+            className="btn btn-sm btn-primary mx-2"
             disabled={
               currentPage === Math.ceil(filteredProviders.length / rowsPerPage)
             }
@@ -229,6 +243,137 @@ const AdminServiceProviders = () => {
           </button>
         </div>
       </div>
+
+     {/* Modal for Provider Details */}
+{showModal && selectedProvider && (
+  <div className="modal show d-block" tabIndex="-1">
+    <div className="modal-dialog modal-lg">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="headingStyle">{selectedProvider.fullName} - Details</h5>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setShowModal(false)}
+          ></button>
+        </div>
+        <div className="modal-body">
+          {/* Provider Details */}
+          <div>
+  {/* Email */}
+  <p>
+    <FaEnvelope className="icon" /> {selectedProvider.email}
+  </p>
+
+  {/* Contact Number */}
+  <p>
+    <FaPhone className="icon" /> {selectedProvider.contactNumber}
+  </p>
+
+  {/* Service Category */}
+  <p>
+    <FaWrench className="icon" /> {selectedProvider.serviceCategory}
+  </p>
+
+  {/* Service Charge */}
+  <p>
+    <FaMoneyBillWave className="icon" /> {selectedProvider.serviceCharge} service charge
+  </p>
+
+  {/* Years of Experience */}
+  <p>
+    <FaBriefcase className="icon" /> {selectedProvider.yearsOfExperience} years of experience
+  </p>
+
+  {/* Languages */}
+  <p>
+    <FaLanguage className="icon" /> {selectedProvider.languages.join(", ")}
+  </p>
+
+  {/* Availability */}
+  <p
+    style={{
+      color: selectedProvider.isAvailable ? "green" : "red",
+      fontWeight: "bold",
+    }}
+  >
+    <FaClock className="icon" /> {selectedProvider.isAvailable ? "Available" : "Not Available"}
+  </p>
+
+  {/* Address */}
+  <p>
+    <FaMapMarkerAlt className="icon" /> {selectedProvider.address.city}, {selectedProvider.address.district}, PIN: {selectedProvider.address.pin}
+  </p>
+
+  
+</div>
+
+          {/* Reviews */}
+          <h6 className="headingStyle">Reviews:</h6>
+          {reviews.length > 0 ? (
+            <div>
+              {reviews.map((review) => (
+                <div key={review._id} className="mb-3 border p-3 rounded">
+                  {/* Reviewer Details */}
+                  <h6 className="mb-1">Review From</h6>
+                  <p>
+                    <strong>{review.userDetails.fullName}</strong> ({review.userDetails.email})<br />
+             {review.userDetails.phone}<br />
+                  {review.userDetails.address.city}, {review.userDetails.address.district}, PIN: {review.userDetails.address.pin}
+                  </p>
+
+                 {/* Review Details */}
+<h6 className="mb-1">Review:</h6>
+<div className="mb-2">
+  {Array.from({ length: 5 }, (_, index) => (
+    <span key={index}>
+      {index < review.ratings ? (
+        <FaStar color="gold" /> // Filled star for ratings
+      ) : (
+        <FaStar color="lightgray" /> // Empty star for remaining
+      )}
+    </span>
+  ))}
+</div>
+<p>Message: {review.message}</p>
+
+                  {/* Work Images */}
+                  {review.workImage.length > 0 && (
+                    <div>
+                      <h6 className="mb-1">Work Images:</h6>
+                      <div className="d-flex">
+                        {review.workImage.map((image, index) => (
+                           <img
+                           key={index}
+                           src={`${import.meta.env.VITE_API_BASEURL}/${image}`} // Dynamically construct the image URL
+                           alt="Work"
+                           style={{ width: "50px", height: "50px", marginRight: "10px" }}
+                         />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No reviews available.</p>
+          )}
+        </div>
+        <div className="modal-footer">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => setShowModal(false)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

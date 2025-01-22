@@ -4,6 +4,7 @@ export interface IProvider extends Document {
   fullName: string;
   email: string;
   phone?: string;
+  isBlocked: boolean;
   address?: {
     city: string;
     district: string;
@@ -58,6 +59,7 @@ const providerSchema: Schema = new Schema({
     year: { type: Number },
   },
   profilePicture:{type:String},
+  isBlocked: { type: Boolean, default: false },
 
   confirmPassword: { type: String },
   isAdmin: { type: Boolean, default: false },

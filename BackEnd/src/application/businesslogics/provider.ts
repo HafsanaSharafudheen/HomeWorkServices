@@ -245,6 +245,8 @@ export const searchDIYS=async(providerId:string)=>{
 
 }
 
+
+
 export default {
   findProviderById,findAllBookingsData,updateBookingStatusByProvider,
   updateProviderProfile,getDashboardData,fetchDataWithDate,

@@ -1,6 +1,8 @@
 import { Review } from "./review";
 
 export interface Provider {
+  endTime: string;
+  startTime: string;
   _id ?:string;
   fullName: string; 
   email: string;
@@ -8,6 +10,8 @@ export interface Provider {
   totalReviews?:number;
   password: string; 
   reviews:Review[];
+  isBlocked?: boolean;
+
   confirmPassword: string;
   contactNumber: string; 
   whatsappNumber: string; 

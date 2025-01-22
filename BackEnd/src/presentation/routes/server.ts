@@ -65,6 +65,8 @@ import { getUserBookingsbyTime } from "../controllers/booking/fetchBookingsByDat
 import { deleteFromUser } from "../controllers/user/DeleteBooking";
 import { razorpayBooking } from "../controllers/booking/payementCOntroller";
 import { workingProgressUpdate } from "../controllers/booking/workingProgressUpdate";
+import providerActions from "../controllers/admin/providerActions";
+import fetchWorkSamples from "../controllers/user/fetchWorkSamples";
 initSocketIO(server);
 
 app.get('/testimonials',fetchTestimonials )
@@ -80,6 +82,9 @@ app.post("/providerSignup", providerSignupController.handleSignup);
 app.get('/fetchUsers',fetchUsers);
 app.get('/fetchProviders',fetchServiceProviders);
 app.get('/all-diys',fetchAllDiys)
+app.get('/allServices',fetchAllServices);
+app.get('/providers',fetchAllProvidersByCategory);
+app.get('/workSamples/:providerId',fetchWorkSamples)
 
 app.use(verifyToken);
 app.get('/serviceProviderProfile',fetchProfileDetails);
@@ -87,7 +92,6 @@ app.get('/serviceProviderProfile',fetchProfileDetails);
 app.post('/updateProfile',ServiceProfileUpdate)
 app.post('/updateUserProfile',UserProfileUpdate)
 
-app.get('/providers',fetchAllProvidersByCategory);
 app.get('/fetchProviderBookings',fetchProviderBookings)
 
 app.post('/updateAvailability', updateAvailability);
@@ -116,10 +120,14 @@ app.post('/createDIY', upload.fields([
 app.get('/DiysByProvider',findAllDiysByProvider)
 app.patch("/block/:id", userActions.blockUser);
 app.patch("/unblock/:id", userActions.unblockUser);
+
+app.get('/providersReviews/:providerId', providerActions.fetchAllReviews);
+
+app.patch("/blockProvider/:id", providerActions.blockProvider);
+app.patch("/unblockProvider/:id", providerActions.unblockProvider);
 app.post('/upload-profile-picture', upload.single('profilePicture'),uploadProfilePictureOfUser)
 app.get('/fetchCategories',fetchAllcategories)
 app.get('/providerChatList',fetchProvidersChatHistory);
-app.get('/allServices',fetchAllServices);
 app.get('/userChatList',fetchUsersChatHistory)
 app.get('/chatHistory',fetchChatHistory)
 app.post('/saveChatMessage',saveChatMessage)

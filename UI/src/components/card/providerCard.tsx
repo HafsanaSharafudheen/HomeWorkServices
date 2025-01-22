@@ -15,6 +15,9 @@ import { Provider } from "../../types/provider";
 import ServiceDetailsSidebar from "../ServiceDetailsSidebar/ServiceDetailsSidebar";
 import StarRating from '../StarRating';
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
 
 const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -22,7 +25,26 @@ const navigate=useNavigate()
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+
+  const user = useSelector((state: RootState) => state.user.user);
+
   const redirectToChat = (providerId: string, providerName: string) => {
+    if (!user) {
+      Swal.fire({
+        title: "Login Required",
+        text: "You need to log in to request a service.",
+        icon: "info",
+        confirmButtonText: "OK",
+        customClass: {
+          popup: "small-text-swal-popup",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login"); 
+        }
+      });
+      return; 
+    }
     navigate("/messages", {
       state: { 
         providerId: providerId,
