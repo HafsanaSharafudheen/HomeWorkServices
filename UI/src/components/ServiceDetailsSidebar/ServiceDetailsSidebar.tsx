@@ -27,7 +27,7 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
-  const { workSamples, loading, error, fetchWorkSamples } = useWorkSamples();
+  const { workSamples, loading, error,message, fetchWorkSamples } = useWorkSamples();
 
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -232,19 +232,20 @@ const handleDateChange = (date: Date) => {
     {loading ? (
       <p>Loading...</p>
     ) : error ? (
-      <p className="text-danger">{error}</p>
+      <p className="text-warning">{error}</p> // Display error message
     ) : workSamples.length > 0 ? (
       <div className="sample-gallery">
         {workSamples.map((sample, sampleIndex) => (
           <div key={sampleIndex} className="work-update mb-3">
-            {sample.workingUpdates &&sample.workingUpdates?.length > 0 ? (
+            {sample.workingUpdates?.length > 0 ? (
               <>
                 {/* <h6>Update: {sample.workingUpdates[0]?.title || "Untitled"}</h6> */}
                 <p>{sample.workingUpdates[0]?.description || "No description available."}</p>
 
-                {sample.workingUpdates &&sample.workingUpdates[0]?.photos?.length > 0 ? (
+                {/* Photos */}
+                {sample.workingUpdates[0]?.photos?.length > 0 ? (
                   <div className="photos-section d-flex flex-wrap">
-                    {sample.workingUpdates &&sample.workingUpdates[0]?.photos.map((photo, index) => (
+                    {sample.workingUpdates[0]?.photos.map((photo, index) => (
                       <img
                         key={index}
                         src={`${import.meta.env.VITE_API_BASEURL}/${photo}`}
@@ -258,6 +259,7 @@ const handleDateChange = (date: Date) => {
                   <p>No photos available.</p>
                 )}
 
+                {/* Videos */}
                 {sample.workingUpdates[0]?.videos?.length > 0 ? (
                   <div className="videos-section d-flex flex-wrap">
                     {sample.workingUpdates[0]?.videos.map((video, index) => (

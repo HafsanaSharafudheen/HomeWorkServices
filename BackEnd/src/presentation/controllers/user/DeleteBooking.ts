@@ -3,19 +3,22 @@ import booking from "../../../infrastructure/dbModels/booking";
 
 export const deleteFromUser = async (req:any, res:any) => {
   try {
-    const bookingId = req.query.bookingId;
-
+    const  bookingId  = req.body.bookingId; 
     if (!bookingId) {
       return res.status(400).json({ message: "Booking ID is required." });
     }
 
-    // Convert bookingId to ObjectId
     const objectId = new mongoose.Types.ObjectId(bookingId);
-    // Delete booking by ObjectId
-    const result = await booking.deleteOne({ _id: objectId });
+
+    const result = await booking.findOneAndUpdate(
+      { _id: objectId }, 
+      { $set: { status: "cancelled" } }, 
+      { new: true } 
+    );
+       
     console.log(objectId,result,"ppppffffffffffffffffiiiii")
 
-    if (result.deletedCount === 0) {
+    if (!result) {
       return res.status(404).json({ message: "Booking not found." });
     }
 

@@ -141,7 +141,7 @@ app.post('/updateWorkDetails', upload.fields([
   { name: "videos", maxCount: 5 },]),workingProgressUpdate)
 
 app.get('/bookingsSlot',getUserBookingsbyTime)
-app.delete('/deleteBooking',deleteFromUser)
+app.post('/deleteBooking',deleteFromUser)
 // payment
 app.post('/razorpay',razorpayBooking )
 app.post('/updateBookingDetails',updateStatus)

@@ -9,7 +9,7 @@ import defaultImage from "../../../assets/images/DefaultImage.avif";
 
 // Import icons
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSetting } from "react-icons/ai";
-import { FaGraduationCap, FaSignOutAlt } from 'react-icons/fa';
+import { FaGraduationCap, FaMapMarkerAlt, FaMedal, FaSignOutAlt } from 'react-icons/fa';
 import { MdCategory } from "react-icons/md";
 import { AiOutlineClockCircle, AiOutlineWhatsApp } from "react-icons/ai";
 
@@ -153,27 +153,30 @@ function ServiceProfile() {
             {profile?.education?.institute || "N/A"},{" "}
             {profile?.education?.year || "N/A"}
           </p>
-          <p>Certifications: {profile?.certifications || "No certifications available"}</p>
           <p>
-            Address: {profile.address?.city || "N/A"},{" "}
-            {profile.address?.district || "N/A"},{" "}
-            {profile.address?.pin || "N/A"}
-          </p>
+  <FaMedal className="icon" />
+  Certifications: {profile?.certifications || "No certifications available"}
+</p>          <p>
+  <FaMapMarkerAlt className="icon" />
+  Address: {profile?.address?.city || "N/A"},{" "}
+  {profile?.address?.district || "N/A"},{" "}
+  {profile?.address?.pin || "N/A"}
+</p>
         </div>
       ) : (
         <p>Loading profile...</p>
       )}
     </div>
 
-    <div className="col-md-6 text-center">
+    <div className="col-md-6 mt-5">
     <div>
   {profile && (
     <>
-      <h2>{profile.fullName}</h2>
+      <h2 className="headingStyle">{profile.fullName}</h2>
 
       {/* Clickable Profile Image */}
       <img
-        className="profile-img"
+        className="providerProfile-img"
         src={
           profile.profilePicture
             ? `${import.meta.env.VITE_API_BASEURL}${profile.profilePicture}`
@@ -189,7 +192,7 @@ function ServiceProfile() {
         accept="image/*"
         onChange={handleFileChange}
       />
-      <div className="button-container">
+      <div>
         <button
           className={`btn-availability ${
             profile.isAvailable ? "available" : "not-available"

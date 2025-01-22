@@ -40,16 +40,17 @@ const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
   const [reviewDetails, setReviewDetails] = useState<ReviewDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 const navigate=useNavigate()
-  const user = useSelector((state: RootState) => state.user.user);
 
+
+// if (!reviewDetails) {
+//   return <p>No review available.</p>;
+// }
   const handleCancelBooking = async (bookingId: string) => {
     if (!bookingId) {
       Swal.fire("Error", "Booking ID is required.", "error");
       return;
     }
-    if (!reviewDetails) {
-      return <p>No review available.</p>;
-    }
+   
   
     const confirm = await Swal.fire({
       title: "Are you sure?",
@@ -62,12 +63,12 @@ const navigate=useNavigate()
   
     if (confirm.isConfirmed) {
       try {
-        const response = await axios.delete(`/deleteBooking`, {
-          params: { bookingId },
-        });        if (response.status === 200) {
+        const response = await axios.post(`/deleteBooking`, {
+          bookingId:bookingId, 
+        }); 
+              if (response.status === 200) {
           Swal.fire("Success", "Booking successfully canceled.", "success");
   
-          // Optionally, update your UI or fetch bookings again
           fetchBookings();
         }
       } catch (error) {
@@ -177,8 +178,10 @@ const navigate=useNavigate()
   }, [booking._id, booking.userId, booking.payment.status,booking.providerId]);
 
   return (
-    <div className="card booking-card shadow-sm rounded border p-3 mb-4 mt-3">
+    <div className="booking-card shadow-sm rounded border p-3 mb-4 mt-3">
+       <div className="container">
       <div className="row">
+      
         
         <div className="col-md-6">
         <h6 className="text-success">{provider?.serviceCategory?.toUpperCase()}</h6>
@@ -197,19 +200,8 @@ const navigate=useNavigate()
             <FaUser className="me-2 text-secondary" />
             {provider.fullName}
           </p>
-          <p>
-            <FaPhoneAlt className="me-2 text-secondary" />
-            {provider.contactNumber}
-          </p>
-          <p>
-            <FaWhatsapp className="me-2 text-secondary" />
-             {provider.whatsappNumber}
-          </p>
-          <p>
-            <FaMapMarkerAlt className="me-2 text-secondary" />
-            {provider.address.city}, {provider.address.district} -{" "}
-            {provider.address.pin}
-          </p>
+          
+         
           <p>
             <FaMoneyBillWave className="me-2 text-secondary" />
             ₹{provider.serviceCharge}
@@ -236,28 +228,37 @@ const navigate=useNavigate()
 
   {/* Accepted Status */}
   {booking.status === "accepted" && booking.payment.status === "pending" && (
-    <>
-      <button
-        className="btn btn-danger me-2"
-        onClick={() => handleCancelBooking(booking._id)}
-      >
-        Cancel Booking
-      </button>
-      <button
-        className="btn btn-success"
-        onClick={() =>
-          handlePayment(booking._id as string, booking.providerDetails?.[0]?.serviceCharge || 0)
-        }
-      >
-        Pay Now
-      </button>
-    </>
-  )}
+  <div className="button-container">
+    <button
+      className="btn btn-danger"
+      onClick={() => handleCancelBooking(booking._id)}
+    >
+      Cancel Booking
+    </button>
+    <button
+      className="btn btn-success"
+      onClick={() =>
+        handlePayment(
+          booking._id as string,
+          booking.providerDetails?.[0]?.serviceCharge || 0
+        )
+      }
+    >
+      Pay Now
+    </button>
+  </div>
+)}
+
 
   {/* Rejected Status */}
   {booking.status === "rejected" && (
     <div className="rejected-overlay">
       <p className="text-danger">Booking Rejected</p>
+    </div>
+  )}
+   {booking.status === "cancelled" && (
+    <div className="rejected-overlay">
+      <p className="text-danger">Booking Cancelled</p>
     </div>
   )}
 
@@ -269,9 +270,10 @@ const navigate=useNavigate()
       </div>
 </div>
 
+
       </div>
       
-   
+      </div>
 
 
     </div>

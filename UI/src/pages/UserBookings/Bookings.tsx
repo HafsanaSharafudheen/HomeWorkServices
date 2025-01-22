@@ -40,7 +40,7 @@ function Bookings() {
             <p>It seems like you haven't made any bookings yet.</p>
           </div>
         ) : (
-          <div className="bookingsContainer">
+          <div>
                      <h3 className="headingStyle">Your Bookings</h3>
 
             <div className="bookingsGrid">

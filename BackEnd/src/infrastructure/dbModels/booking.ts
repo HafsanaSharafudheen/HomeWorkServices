@@ -31,7 +31,7 @@ const bookingSchema: Schema = new Schema({
   createdAt: { type: Date, default: Date.now },
   status: {
     type: String,
-    enum: ["pending", "rejected","accepted", "completed"],
+    enum: ["pending", "rejected","accepted", "completed","cancelled"],
     default: "pending",},
   payment: {
     method: { type: String, required: true },

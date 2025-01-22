@@ -6,18 +6,22 @@
   background-color: #f9f9f9;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
+
 .profile-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Align the image and details side-by-side */
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
   min-height: 70vh;
-  background-color: #f9f9f9; 
+  background-color: #f9f9f9;
   text-align: center;
   padding: 20px;
-  align-items: center;
-
 }
+
+
+
+
+
 .action-links {
   display: flex;
   justify-content: center; 
@@ -29,72 +33,86 @@
 
 .profile-details p {
   font-size: 14px;
-  align-items: center;
   margin: 10px 0;
-
+  display: flex;
+  align-items: center; 
 }
 
 .profile-details .icon {
-  font-size: 16px;
-  color:var(--border-color);
-  
+  font-size: 18px;
+  margin-right: 8px;
+  color: var(--border-color);
 }
 
 
 
-.profile-img {
+.providerProfile-img {
   width: 160px;
   height: 160px;
   border-radius: 50%;
   border: 2px solid #ddd;
- margin-left: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease; 
+}
+
+.providerProfile-img:hover {
+  transform: scale(1.05); 
+  border-color: white;
 }
 
 
 .btn-availability {
-  margin: 10px 0;
-  padding: 10px 10px;
-  font-size: 10px;
-  border: 1px solid;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 10px 15px;
+  font-size: 12px;
+  font-weight: bold;
   text-transform: uppercase;
-  transition: all 0.3s ease; /* Smooth transition effect */
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-availability.available {
   background-color: #eafbee;
   color: #28a745;
-  border-color: #28a745;
+  border: 2px solid #28a745;
 }
 
 .btn-availability.available:hover {
-  background-color: #d4f3d4; /* Slightly darker green background */
-  color: #1e7e34; /* Darker green text */
-  border-color: #1e7e34; /* Darker green border */
+  background-color: #d4f3d4;
+  color: #1e7e34;
+  border-color: #1e7e34;
 }
 
 .btn-availability.not-available {
   background-color: #fdecea;
   color: #dc3545;
-  border-color: #dc3545;
+  border: 2px solid #dc3545;
 }
 
 .btn-availability.not-available:hover {
-  background-color: #f8d7da; /* Slightly darker red background */
-  color: #a71d2a; /* Darker red text */
-  border-color: #a71d2a; /* Darker red border */
+  background-color: #f8d7da;
+  color: #a71d2a;
+  border-color: #a71d2a;
 }
 
 
+.action-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Add spacing between buttons */
+  margin-top: 20px;
+}
+
 .editProfileLink {
-  display: block;
   font-size: 14px;
+  font-weight: bold;
   color: #007bff;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .editProfileLink:hover {
+  color: #0056b3; /* Darker blue on hover */
   text-decoration: underline;
 }
 

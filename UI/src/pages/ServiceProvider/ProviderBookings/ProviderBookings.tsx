@@ -437,6 +437,9 @@ function ProviderBookings() {
                                         {booking.status === 'rejected' && (
                                             <p className="badge bg-danger">Rejected</p>
                                         )}
+                                         {booking.status === 'cancelled' && (
+                                            <p className="badge bg-danger">Cancelled</p>
+                                        )}
                                     </div>
                                 </li>
                             ))}
