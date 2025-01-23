@@ -9,6 +9,7 @@ export interface ChatType {
     fullName:string;
     receiver:string;
     message:string;
+    userName?:string;
     createdAt: string;
     updatedAt: Date;
     read?: boolean;

@@ -16,7 +16,7 @@ const initSocketIO = (httpServer: HttpServer): SocketIOServer => {
     console.log(`User connected: ${socket.id}`);
 
     // Event listener for "sendMessage"
-    socket.on("sendMessage", (data: { sender: string; text: string; providerId: string; userId: string, _id:string }) => {
+    socket.on("sendMessage", (data: { sender: string;userName:string; text: string; providerId: string; userId: string, _id:string }) => {
       console.log("Message received:", data);
       io.emit("receiveMessage", data); // Broadcast message to all connected clients
     });
@@ -29,6 +29,17 @@ const initSocketIO = (httpServer: HttpServer): SocketIOServer => {
       // Notify other participants about the read status
       io.emit("messageReadAck", data);
     });
+
+    socket.on("messageReadByP2P", (data: { sender: string; receiver: string }) => {
+      console.log(`All Messages by ${data.sender} was read by ${data.receiver}`);
+      // Optionally, you can update your database to record that the message was read
+      // For example: updateMessageStatus(data.messageId, data.readerId, "read");
+  
+      // Notify other participants about the read status
+      io.emit("messageReadByP2PAck", data);
+    });
+
+    
   
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);

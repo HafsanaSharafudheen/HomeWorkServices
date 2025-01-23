@@ -41,7 +41,6 @@
     display: flex;
     color: black;
     align-items: center;
-    background-color: #A17536;
     border: 1px solid var(--border-color);
     padding: 15px;
     margin-bottom: 10px;
@@ -52,7 +51,8 @@
   
   .chat-list-item:hover {
     transform: scale(1.02);
-    background-color:#c69756;
+    background-color: var(--primary-color);
+    color: white;
   }
   
   .chat-participant {
@@ -78,18 +78,15 @@
     font-size: 16px;
     font-weight: 600;
     margin: 0;
-    color: #fff;
   }
   
   .chat-participant-info .last-message {
     font-size: 14px;
-    color: #f8f9fa;
     margin: 5px 0 0;
   }
   
   .message-time {
     font-size: 12px;
-    color: #fff;
     margin-left: 10px;
     align-self: flex-start;
   }

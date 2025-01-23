@@ -8,6 +8,7 @@ import axios from "../../utilities/axios";
 import { ChatType } from "../../types/chat";
 import { BiCheckDouble } from "react-icons/bi"; // Import double tick icon
 import './Chat.css'
+import Header from "../Header";
 
 
 const Chat: React.FC = () => {
@@ -18,6 +19,7 @@ const Chat: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const userId = user?.id;
+  const userName=user?.fullName
 
   useEffect(() => {
   
@@ -28,6 +30,7 @@ const Chat: React.FC = () => {
         );
         setMessages(response.data.messages);
          await markMessagesAsRead();
+         socket.emit("messageReadByP2P", {sender: providerId, receiver: userId});
 
         
       } catch (error) {
@@ -48,9 +51,11 @@ const Chat: React.FC = () => {
             msg.sender === providerId ? { ...msg, read: true } : msg
           )
         );
+
       } catch (error) {
         console.error("Error marking messages as read:", error);
       }
+      
     };
   
 
@@ -96,15 +101,25 @@ const Chat: React.FC = () => {
       //   );
         console.log(messages)
      }
-      
-      
     });
 
+    // sender`s window (if other person red messages then it will trigger)
+    socket.on("messageReadByP2PAck", async (data: { sender: string; receiver: string }) => {
+      console.log("messageReadByP2PAck", data);
+      if(data.sender == userId && data.receiver == providerId){
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.sender === userId && data.receiver == providerId ? { ...msg, read: true } : msg
+          )
+        );      }
+     });
     
 
     return () => {
       socket.off("receiveMessage");
       socket.off("messageReadAck");
+      socket.off("messageReadByP2PAck");
+
     };
   }, [providerId, isProvider, userId]);
 
@@ -116,6 +131,7 @@ const Chat: React.FC = () => {
         sender:  userId,
         receiver: providerId,
         message:input,
+        userName:userName,
         createdAt: new Date().toISOString(),
         read: false, // Default to unread
       };
@@ -142,6 +158,7 @@ const Chat: React.FC = () => {
   return (
     <div className="chat-container">
       <div className="chat-header">
+
         <h3>Chat with {participantName}</h3>
       </div>
       <div className="chat-body">

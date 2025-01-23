@@ -10,11 +10,12 @@ import { RootState } from "../../../Redux/store";
 import ServiceSidebar from "../../pages/ServiceProvider/serviceSidebar";
 import ServiceNavbar from "../../pages/ServiceProvider/ServiceNavbar";
 import socket from "../../utilities/socket";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
   const [fromProvider, setFromProvider] = useState<boolean>(false);
-  
 
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
@@ -22,7 +23,6 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const loggedInUserId = user?.id;
 
   useEffect(() => {
-
     const fetchChatList = async () => {
       try {
         const endpoint = isProvider ? `/providerChatList` : `/userChatList`;
@@ -46,31 +46,27 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
 
     fetchChatList();
 
-    
-    // socket.on("receiveMessage", (data: ChatType) => {
-    //   if (data.receiver === loggedInUserId) {
-    //     const senderName = data.senderDetails?.fullName || "Unknown";
-    //   //  setNotification({ senderName, message: data.message });
+    socket.on("receiveMessage", (data: ChatType) => {
+      if (data.receiver === loggedInUserId) {
+        console.log(data.userName,"username",data)
+        const senderName = data.userName || "Unknown";
 
-    //     const recentChat = chatList.find((chat) => chat.sender === data.sender);
-    //     if (recentChat) {
-    //       setChatList((prevChatList) =>
-    //         prevChatList.map((chat) =>
-    //           chat.sender === data.sender
-    //             ? { ...chat, message: data.message, createdAt: data.createdAt }
-    //             : chat
-    //         )
-    //       );
-    //     } else {
-    //       setChatList((prev) => [...prev, data]);
-    //     }
-    //   }
-    // });
+        // Show notification using react-toastify
+        toast.info(`New message from ${senderName}: ${data.message}`);
+
+        setChatList((prevChatList) =>
+          prevChatList.map((chat) =>
+            chat.sender === data.sender
+              ? { ...chat, message: data.message, createdAt: data.createdAt }
+              : chat
+          )
+        );
+      }
+    });
 
     return () => {
       socket.off("receiveMessage");
     };
-    
   }, [loggedInUserId, isProvider]);
 
   const handleChatClick = async (id: string, fullName: string) => {
@@ -139,10 +135,6 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
     );
   };
 
- 
-   
-
-
   return (
     <div className="chat-list-page">
       {isProvider ? (
@@ -153,7 +145,7 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
           </div>
           <div className="col-md-8">
             <div className="chat-list-container provider-view">
-              <h3>Your Users</h3>
+              <h3 className="headingStyle">Your Connections</h3>
               {renderChatList()}
             </div>
           </div>
@@ -168,6 +160,9 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
           <Footer />
         </>
       )}
+
+      {/* Toast container */}
+      <ToastContainer />
     </div>
   );
 };
