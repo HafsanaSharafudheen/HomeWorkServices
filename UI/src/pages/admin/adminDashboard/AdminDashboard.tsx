@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../../utilities/axios";
 import "./adminDashboard.css";
-import {  FaUsers, FaClipboardList, FaBuilding } from "react-icons/fa";
+import {  FaUsers, FaClipboardList, FaBuilding, FaTools } from "react-icons/fa";
 import { Bar, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -39,6 +39,7 @@ const navigate=useNavigate()
     totalBookings: 0,
     totalUsers: 0,
     totalServiceProviders: 0,
+    totalCategories:0
   });
   const [barData, setBarData] = useState({
     labels: [],
@@ -74,6 +75,7 @@ if(user===null){
         totalBookings: data.totalBookings,
         totalUsers: data.totalUsers,
         totalServiceProviders: data.totalServiceProviders,
+        totalCategories:data.totalCategories
       });
 
       setBarData({
@@ -123,24 +125,28 @@ if(user===null){
         <div className="col-md-3">
           <SideBar />
         </div>
-        <div className="col-md-9 mainContent">
+        <div className="col-md-9 mainContent mt-4">
           <div className="header d-flex justify-content-between align-items-center">
-            <h1>Admin Dashboard</h1>
+            <h1 className="headingStyle mb-3">Admin Dashboard</h1>
            
           </div>
 
           <div className="row statsCards">
-            <div className="col-md-4 card">
+            <div className="col-md-3 card me-2">
               <p><FaClipboardList /> Total Bookings</p>
               <h3>{stats.totalBookings}</h3>
             </div>
-            <div className="col-md-4 card">
+            <div className="col-md-3 card me-2">
               <p><FaUsers /> Total Users</p>
               <h3>{stats.totalUsers}</h3>
             </div>
-            <div className="col-md-4 card">
-              <p><FaBuilding /> Total Service Providers</p>
+            <div className="col-md-3 card me-2">
+              <p><FaBuilding /> Total ServiceMen</p>
               <h3>{stats.totalServiceProviders}</h3>
+            </div>
+            <div className="col-md-3 card me-2">
+              <p> <FaTools /> Total Categories</p>
+              <h3>{stats.totalCategories}</h3>
             </div>
           </div>
 

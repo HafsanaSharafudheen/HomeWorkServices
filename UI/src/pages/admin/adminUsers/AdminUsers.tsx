@@ -4,7 +4,7 @@ import SideBar from "../adminDashboard/SideBar";
 import axios from "../../../utilities/axios";
 import { User } from "../../../types/user";
 import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFilter, FaUsers, FaEdit, FaTrash, FaBan, FaCheck } from 'react-icons/fa';
-
+import defaultImage from '../../../assets/images/DefaultImage.avif'
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -86,12 +86,12 @@ const AdminUsers = () => {
 
       {/* Main Content */}
       <div className="col-lg-9 col-md-8 col-sm-12">
-      <h2 className="table-title my-4">User Details</h2>
+      <h2 className="table-title my-4 headingStyle">User Details</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
       <div className="d-flex align-items-center">
       <FaUsers className="me-2 text-primary" />
-    <span>Total Users: {filteredUsers.length}</span>
+    <h6>Total Users: {filteredUsers.length}</h6>
   </div>
   <div className="d-flex align-items-center">
 
@@ -165,14 +165,19 @@ const AdminUsers = () => {
     users.map((user) => (
       <tr key={user._id}>
         <td>
-          <div className="userProfile">
-            <img
-              src={user.image || "https://via.placeholder.com/100"}
-              alt={user.fullName}
-              className="user-image"
-            />
-            <p>{user.fullName}</p>
-          </div>
+        <div className="userProfile">
+  <img
+    src={
+      user.profilePicture
+        ? `${import.meta.env.VITE_API_BASEURL}${user.profilePicture}`
+        : defaultImage
+    }
+    alt={user.fullName}
+    className="user-image"
+  />
+  <p>{user.fullName}</p>
+</div>
+
         </td>
         <td>
           <div className="contactIcons">

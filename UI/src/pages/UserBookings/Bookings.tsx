@@ -27,15 +27,11 @@ function Bookings() {
       <Header />
    <hr></hr>
         <div className="row">
-          {/* Profile Section */}
-          <div className="col-md-4">
-            <Profile />
-          </div>
-          <div className="col-md-8">
+         
             
       <div className="bookingsPage">
         {bookings.length === 0 ? (
-          <div className="no-bookings">
+          <div className="no-bookings text-center">
             <h2>No Bookings Yet</h2>
             <p>It seems like you haven't made any bookings yet.</p>
           </div>
@@ -43,14 +39,15 @@ function Bookings() {
           <div>
                      <h3 className="headingStyle">Your Bookings</h3>
 
-            <div className="bookingsGrid">
-              {bookings.map((booking) => (
+                     {bookings.map((booking) => (
+                                           <div className="col-12 mb-4" key={booking?._id}>
+
                 <BookingCard key={booking?._id} booking={booking}  fetchBookings={fetchBookings}/>
+                </div>
+
               ))}
             </div>
-          </div>
         )}
-      </div>
       </div>
       </div>
       <Footer />

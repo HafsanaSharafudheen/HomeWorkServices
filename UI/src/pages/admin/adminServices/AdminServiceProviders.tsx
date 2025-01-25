@@ -6,6 +6,7 @@ import { FaEdit, FaTrash, FaFilter, FaUsers, FaBan, FaCheck, FaStar, FaClock, Fa
 import "./AdminServiceProvider.css";
 import { useServiceProviders } from "./hooks/useServiceProviders.ts";
 import { useProviderReviews } from "./hooks/useProviderReviews .tsx";
+import defaultImage from '../../../assets/images/DefaultImage.avif'
 
 
 const AdminServiceProviders = () => {
@@ -95,12 +96,12 @@ const AdminServiceProviders = () => {
       </div>
 
       <div className="col-lg-9 col-md-8 col-sm-12">
-        <h2 className="table-title my-4">Service Providers Details</h2>
+        <h2 className="table-title my-4 headingStyle">Service Providers Details</h2>
         {/* Top Controls */}
         <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
           <div className="d-flex align-items-center">
             <FaUsers className="me-2 text-primary" />
-            <span>Total Providers: {filteredProviders.length}</span>
+            <h6>Total Providers: {filteredProviders.length}</h6>
           </div>
           {/* Search and Filter */}
           <div className="d-flex align-items-center">
@@ -167,9 +168,33 @@ const AdminServiceProviders = () => {
               {currentRows.length > 0 ? (
                 currentRows.map((provider) => (
                   <tr key={provider._id}>
-                    <td>{provider.fullName}</td>
+                  <td>
+  <div style={{ textAlign: "center" }}>
+    <img
+      src={
+        provider.profilePicture
+          ? `${import.meta.env.VITE_API_BASEURL}${provider.profilePicture}`
+          : defaultImage
+      }
+      alt={provider.fullName}
+      style={{
+        width: "50px",
+        height: "50px",
+        borderRadius: "50%",
+        objectFit: "cover",
+        display: "block",
+        margin: "0 auto",
+      }}
+    />
+    <p>
+      {provider.fullName}
+    </p>
+  </div>
+</td>
+
+
                     <td>{provider.email}</td>
-                    <td>{provider.contactNumber || "N/A"}</td>
+                    <td><p>{provider.contactNumber || "N/A"}</p><p>{provider.whatsappNumber}</p></td>
                     <td>{provider.serviceCategory || "N/A"}</td>
                     <td>{provider.serviceCharge || "N/A"}</td>
                     <td>

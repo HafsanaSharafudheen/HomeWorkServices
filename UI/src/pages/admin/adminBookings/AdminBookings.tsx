@@ -71,7 +71,7 @@ const AdminBookings = () => {
             <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
               <div className="d-flex align-items-center">
                 <FaUsers className="me-2 text-primary" />
-                <span>Total Bookings: {filteredBookings.length}</span>
+                <h6>Total Bookings: {filteredBookings.length}</h6>
               </div>
               <div className="d-flex align-items-center">
                 <input

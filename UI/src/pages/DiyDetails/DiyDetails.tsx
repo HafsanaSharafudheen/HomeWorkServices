@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import defaultImage from '../../assets/images/DefaultImage.avif';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const DiyDetails: React.FC = () => {
   const location = useLocation();
@@ -11,7 +13,9 @@ const DiyDetails: React.FC = () => {
   }
 
   return (
-    <div className="container my-5">
+    <>
+    <Header/>
+    <div className="container">
       <div className="row">
         {/* Left Column: DIY Image */}
         <div className="col-md-6">
@@ -23,7 +27,7 @@ const DiyDetails: React.FC = () => {
             }
             alt={diy.ditTitle || 'DIY'}
             className="img-fluid rounded"
-            style={{ width: '50%', height: 'auto', objectFit: 'cover' }}
+            style={{ width: '100%', height: '200px', objectFit: 'cover' }}
           />
         </div>
 
@@ -53,9 +57,9 @@ const DiyDetails: React.FC = () => {
 
    
           {/* DIY Details */}
-          <h1>{diy.ditTitle}</h1>
+          <h6 className='headingStyle mt-3 mb-3'>{diy.ditTitle}</h6>
           <p>{diy.purpose}</p>
-          <h4>Materials Required:</h4>
+          <h4 className=''>Materials Required:</h4>
           <ul>
             {diy.materialsRequired.map((material, index) => (
               <li key={index}>{material}</li>
@@ -63,7 +67,7 @@ const DiyDetails: React.FC = () => {
           </ul>
            {/* Image Gallery */}
            <h4 className="diy-section-title">Image Gallery</h4>
-          <div className="row diy-image-gallery">
+          <div className="row diyImageGallery">
             {diy.photos && diy.photos.length > 0 ? (
               diy.photos.map((photo, index) => (
                 <div className="col-md-4" key={index}>
@@ -120,6 +124,9 @@ const DiyDetails: React.FC = () => {
         </div>
     
     </div>
+    <Footer/>
+    </>
+
   );
 };
 

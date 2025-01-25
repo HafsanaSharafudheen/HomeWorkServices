@@ -14,6 +14,8 @@ import {
 import './Profile.css';
 import defaultImage from '../../assets/images/DefaultImage.avif';
 import { logout } from '../../../Redux/user/userSlice';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 function Profile() {
   const [user, setUser] = useState<User | null>(null);
@@ -85,6 +87,8 @@ function Profile() {
   };
 
   return (
+    <>
+   <Header/>
     <div className="profile-header position-relative">
       {/* Background Section */}
       <div className="profile-background"></div>
@@ -176,6 +180,8 @@ function Profile() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 

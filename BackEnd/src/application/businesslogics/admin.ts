@@ -17,18 +17,22 @@ const findAllProviders = async (): Promise<any> => {
 const findAllUsers = async  (page: number, limit: number,search:string, filter: string): Promise<any> => {
 try{
   const skip = (page - 1) * limit;
-  const searchQuery = search
-  ? {
-      $or: [
-        { fullName: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
-        { phone: { $regex: search, $options: "i" } },
-
-        { "address.city": { $regex: search, $options: "i" } },
-        { "address.district": { $regex: search, $options: "i" } },
-      ]
-    }
-  : {};
+  const searchQuery = {
+    ...(
+      search
+        ? {
+            $or: [
+              { fullName: { $regex: search, $options: "i" } },
+              { email: { $regex: search, $options: "i" } },
+              { phone: { $regex: search, $options: "i" } },
+              { "address.city": { $regex: search, $options: "i" } },
+              { "address.district": { $regex: search, $options: "i" } },
+            ],
+          }
+        : {}
+    ),
+    isAdmin: { $ne: true }, 
+  };
   const sortOptions: any = {};
   if (filter === "alphabetical") {
     sortOptions.fullName = 1; // Sort by fullName in ascending order
@@ -94,6 +98,7 @@ export const getDashboardDetails = async (): Promise<any> => {
   const totalBookings = await Booking.countDocuments();
   const totalUsers = await User.countDocuments();
   const totalServiceProviders = await Provider.countDocuments();
+  const totalCategories = await Category.countDocuments();
 
   // Aggregate bookings by date
   const bookingsByDate = await Booking.aggregate([
@@ -139,6 +144,7 @@ export const getDashboardDetails = async (): Promise<any> => {
     totalBookings,
     totalUsers,
     totalServiceProviders,
+    totalCategories,
     bookingsByDate: {
       labels: bookingsByDate.map(
         (item) => `${item._id.year}-${item._id.month}-${item._id.day}`

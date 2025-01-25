@@ -77,8 +77,13 @@ const Category = () => {
         <SideBar />
       </div>
       <div className="col-lg-9 col-md-8 col-sm-12">
+      <h2 className="headingStyle mt-4">
+        All Categories
+      </h2>
+
         <div className="header">
-          <button className="DefaultButton mb-5 mt-5" onClick={() => setShowPopup(true)}>
+
+          <button className="DefaultButton mb-5" onClick={() => setShowPopup(true)}>
             Add New Category
           </button>
         </div>

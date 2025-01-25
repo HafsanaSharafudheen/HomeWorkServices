@@ -28,6 +28,7 @@ import DiyPage from './pages/DIYPage/DiyPage';
 import DiyDetails from './pages/DiyDetails/DiyDetails';
 import PaymentConfirmation from './pages/PaymentConfirmation/PaymentConfirmation';
 import AdminBookings from './pages/admin/adminBookings/AdminBookings';
+import Profile from './pages/Profile/Profile';
 
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/adminCategories" element={<Category />} />
         <Route path="/adminUsers" element={<AdminUsers />} />
         <Route path="/adminProfile" element={<AdminProfile />} />
+        <Route path="/profile" element={<Profile />} />
 
         <Route path="/adminBookings" element={<AdminBookings />} />
         <Route path="/adminServiceProviders" element={<AdminServiceProviders />} />

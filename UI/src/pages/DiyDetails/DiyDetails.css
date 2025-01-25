@@ -57,14 +57,14 @@
   }
   
   /* Image Gallery */
-  .diy-image-gallery {
+  .diyImageGallery {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     margin-top: 1rem;
   }
   
-  .diy-image-gallery img {
+  .diyImageGallery img {
     width: 200px;
     height: 200px;
     object-fit: cover;
@@ -73,7 +73,7 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .diy-image-gallery img:hover {
+  .diyImageGallery img:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }

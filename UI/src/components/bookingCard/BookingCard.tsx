@@ -42,9 +42,7 @@ const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
 const navigate=useNavigate()
 
 
-// if (!reviewDetails) {
-//   return <p>No review available.</p>;
-// }
+
   const handleCancelBooking = async (bookingId: string) => {
     if (!bookingId) {
       Swal.fire("Error", "Booking ID is required.", "error");
@@ -178,105 +176,103 @@ const navigate=useNavigate()
   }, [booking._id, booking.userId, booking.payment.status,booking.providerId]);
 
   return (
-    <div className="booking-card shadow-sm rounded border p-3 mb-4 mt-3">
-       <div className="container">
+    <div className="booking-card shadow-sm rounded border p-4 mb-4 w-100">
       <div className="row">
-      
-        
-        <div className="col-md-6">
-        <h6 className="text-success">{provider?.serviceCategory?.toUpperCase()}</h6>
-      <p>
-          <FaCalendarAlt className="me-2 text-secondary" />
-          {new Date(booking.selectedDate).toLocaleDateString()}
-        </p>
-        <p>
-          <FaClock className="me-2 text-secondary" />
-          {booking.selectedTime}
-        </p>
-     
-      {provider && (
-        <div>
-          <p style={{color:'Green',fontWeight:"500"}}>
-            <FaUser className="me-2 text-secondary" />
-            {provider.fullName}
-          </p>
-          
-         
+        {/* Left Section */}
+        <div className="col-md-12">
+          <p className="text-success fw-bold">{provider?.serviceCategory?.toUpperCase()}</p>
           <p>
-            <FaMoneyBillWave className="me-2 text-secondary" />
-            ₹{provider.serviceCharge}
+            <FaCalendarAlt className="me-2 text-secondary" />
+            {new Date(booking.selectedDate).toLocaleDateString()}
           </p>
+          <p>
+            <FaClock className="me-2 text-secondary" />
+            {booking.selectedTime}
+          </p>
+          {provider && (
+            <div>
+<p className="text-success fw-bold">
+<FaUser className="me-2 text-secondary" />
+                {provider.fullName}
+              </p>
+              <p>
+                <FaMoneyBillWave className="me-2 text-secondary" />
+                ₹{provider.serviceCharge}
+              </p>
+            </div>
+          )}
         </div>
-      )}
-        </div>
+
         <div className="col-md-6">
-        <div className="text-center">
-  {/* Pending Status */}
-  {booking.status === "pending" && (
-    <>
-      <p className="text-warning">
-        Please wait for the acceptance of the serviceman.
-      </p>
-      <button
-        className="btn btn-danger"
-        onClick={() => handleCancelBooking(booking._id)}
-      >
-        Cancel Booking
-      </button>
-    </>
-  )}
+  <ReviewDisplay reviewDetails={reviewDetails} />
 
-  {/* Accepted Status */}
-  {booking.status === "accepted" && booking.payment.status === "pending" && (
-  <div className="button-container">
-    <button
-      className="btn btn-danger"
-      onClick={() => handleCancelBooking(booking._id)}
-    >
-      Cancel Booking
-    </button>
-    <button
-      className="btn btn-success"
-      onClick={() =>
-        handlePayment(
-          booking._id as string,
-          booking.providerDetails?.[0]?.serviceCharge || 0
-        )
-      }
-    >
-      Pay Now
-    </button>
   </div>
-)}
 
+ 
 
-  {/* Rejected Status */}
-  {booking.status === "rejected" && (
-    <div className="rejected-overlay">
-      <p className="text-danger">Booking Rejected</p>
-    </div>
-  )}
-   {booking.status === "cancelled" && (
-    <div className="rejected-overlay">
-      <p className="text-danger">Booking Cancelled</p>
-    </div>
-  )}
-
-
-
-
-<ReviewDisplay reviewDetails={reviewDetails} />
-
-      </div>
-</div>
-
-
+  
+        {/* Right Section */}
+        <div className="col-md-12">
+        
+  
+            {/* Pending Status */}
+            {booking.status === "pending" && (
+            <>
+<p className="text-danger fw-bold">
+Please wait for the acceptance of the serviceman.
+              </p>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleCancelBooking(booking._id)}
+              >
+                Cancel Booking
+              </button>
+            </>
+          )}
+  
+          {/* Accepted Status */}
+          {booking.status === "accepted" &&
+            booking.payment.status === "pending" && (
+              <div className="button-container">
+                <button
+                  className="btn btn-danger me-2"
+                  onClick={() => handleCancelBooking(booking._id)}
+                >
+                  Cancel Booking
+                </button>
+                <button
+                  className="btn btn-success"
+                  onClick={() =>
+                    handlePayment(
+                      booking._id as string,
+                      booking.providerDetails?.[0]?.serviceCharge || 0
+                    )
+                  }
+                >
+                  Pay Now
+                </button>
+              </div>
+            )}
+  
+          {/* Rejected Status */}
+          {booking.status === "rejected" && (
+            <div className="rejected-overlay">
+             <p className="text-danger fw-bold">
+             Booking Rejected</p>
+            </div>
+          )}
+  
+          {/* Cancelled Status */}
+          {booking.status === "cancelled" && (
+            <div className="rejected-overlay">
+             <p className="text-danger fw-bold">
+             Booking Cancelled</p>
+            </div>
+          )}
+        </div>
       </div>
       
       </div>
-
-
-    </div>
   );
 };
 

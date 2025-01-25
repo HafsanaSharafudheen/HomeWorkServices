@@ -1,80 +1,163 @@
-import { Link } from "react-router-dom";
-import { Navbar, Container, Nav, NavDropdown, Offcanvas, Form, Button } from "react-bootstrap";
-import "../assets/css/App.css";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../Redux/store";
+import { RootState } from "../../Redux/store"; // Adjust path to your store
+import { FaHome, FaUsers, FaHammer, FaComments, FaBell, FaInfoCircle, FaStar } from "react-icons/fa"; // Importing icons
+import "../assets/css/App.css";
 import logo from "../assets/images/logo.png";
+import defaultProfilePicture from '../assets/images/DefaultImage.avif'
 
-const Header: React.FC = () => {
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../Redux/user/userSlice";
+import axios from "../utilities/axios";
+
+const Navbar: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
-  return (
-    <header className="HeaderContainer">
-      <Navbar expand="sm">
-          {/* Logo Section */}
-          <Navbar.Brand href="/" className="d-flex align-items-center">
-            <img src={logo} alt="Logo" style={{ height: "100px" }} />
-          </Navbar.Brand>
+  const [profile, setProfile] = useState<{ fullName: string; profilePicture: string }>({
+    fullName: "",
+    profilePicture: "",
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-          {/* Toggle Icon */}
-          <Navbar.Toggle
-            aria-controls="offcanvasNavbar-expand-sm"
-            className="ms-auto"
-          />
+  const handleLogout = async () => {
+    // Dispatch logout action
+    dispatch(logout());
 
-        {/* Offcanvas Menu */}
-        <Navbar.Offcanvas
-          id="offcanvasNavbar-expand-sm"
-          aria-labelledby="offcanvasNavbarLabel-expand-sm"
-          placement="start"
-        >
-          <Offcanvas.Header closeButton>
+    // Clear localStorage and sessionStorage
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // Navigate to the login page
+    navigate("/login", { replace: true });
+  };
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get('/fetchUserDetails');
+        const { fullName, profilePicture } = response.data.user;
+  console.log(response.data)
+        setProfile({
+          fullName: fullName || "Default User",
+          profilePicture:
+            profilePicture
+              ? `${import.meta.env.VITE_API_BASEURL}${profilePicture}` 
+              : defaultProfilePicture,
+        });
         
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            {/* Navigation Links */}
-            <Nav className="justify-content-end flex-grow-1 pe-3">
-              <Nav.Link as={Link} to="/">
-                <span className="DefaultFontColor">Home</span>
-              </Nav.Link>
-              <Nav.Link as={Link} to="/DIY">
-                <span className="DefaultFontColor">DIY</span>
-              </Nav.Link>
-             
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+      }
+    };
+  
+    fetchUserDetails();
+  }, []); // Dependency array empty if user is static.
+  
 
-              {user && (
-                <NavDropdown
-                  title="Profile"
-                  id="offcanvasNavbarDropdown-profile-expand-sm"
-                >
-                
-                  <NavDropdown.Item as={Link} to="/YourBookings">
-                    <span className="DefaultFontColor">Your Bookings</span>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/YourChats">
-                    <span className="DefaultFontColor">Messages</span>
-                  </NavDropdown.Item>
-                </NavDropdown>
-              )}
-              <NavDropdown
-                title="About"
-                id="offcanvasNavbarDropdown-about-expand-sm"
-              >
-                <NavDropdown.Item as={Link} to="/aboutUs">
-                  <span className="DefaultFontColor">About Us</span>
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/testimonials">
-                  <span className="DefaultFontColor">Testimonials</span>
-                </NavDropdown.Item>
-               
-              </NavDropdown>
-            </Nav>
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light">
+      <div className="container">
+        {/* Logo */}
+        <img src={logo} alt="Logo" style={{ height: "100px" }} />
 
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
-      </Navbar>
-    </header>
+        {/* If user exists, show full navbar, otherwise show only Home */}
+        {user ? (
+          <>
+            {/* Toggle Button */}
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <FaHome />
+            </button>
+
+            {/* Collapsible Wrapper */}
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <a className="nav-link d-flex align-items-center" href="/">
+                    <FaHome className="me-2" />
+                    Home
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link d-flex align-items-center" href="/DIY">
+                    <FaHammer className="me-2" />
+                    DIY
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link d-flex align-items-center" href="/YourChats">
+                    <FaComments className="me-2" />
+                    Messages
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link d-flex align-items-center" href="/YourBookings">
+                    <FaBell className="me-2" />
+                    Bookings
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link d-flex align-items-center" href="/aboutUs">
+                    <FaInfoCircle className="me-2" />
+                    About Us
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link d-flex align-items-center" href="/testimonials">
+                    <FaStar className="me-2" />
+                    Testimonials
+                  </a>
+                </li>
+
+                {/* Profile Section */}
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle d-flex align-items-center"
+                      href="#"
+                      id="navbarDropdownMenuLink"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                  <img
+    src={
+      profile.profilePicture
+        ? profile.profilePicture
+        : defaultProfilePicture
+    }
+    className="rounded-circle navProfile-img"
+    alt="Profile"
+  />
+
+                    </a>
+                    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <li>
+                        <a className="dropdown-item" href="/profile">
+                          My Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a className="dropdown-item" href="#" onClick={handleLogout}>
+                          Logout
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+              </ul>
+            </div>
+          </>
+        ) : null}
+      </div>
+    </nav>
   );
 };
 
-export default Header;
+export default Navbar;

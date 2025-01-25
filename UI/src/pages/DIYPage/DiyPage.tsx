@@ -39,8 +39,8 @@ const DiyPage: React.FC = () => {
     <>
     <Header/>
     <div className="container my-5">
-      <h1 className="text-center">DIY Home Fixes Made Easy</h1>
-      <p className="text-center">First Time Repairing? Learn to fix just about anything. You got this!</p>
+      <h1 className="text-center animate__animated animate__fadeInLeft">DIY Home Fixes Made Easy</h1>
+      <p className="text-center animate__animated animate__fadeInLeft">First Time Repairing? Learn to fix just about anything. You got this!</p>
 
       <div className="row">
         {diyList &&

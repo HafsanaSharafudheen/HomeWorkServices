@@ -8,14 +8,18 @@ import axios from "../../utilities/axios";
 import { ChatType } from "../../types/chat";
 import { BiCheckDouble } from "react-icons/bi"; // Import double tick icon
 import './Chat.css'
+import defaultImage from '../../assets/images/DefaultImage.avif'
+import Footer from "../Footer";
 import Header from "../Header";
-
+import ServiceSidebar from "../../pages/ServiceProvider/serviceSidebar";
+import ServiceHeading from "../../pages/ServiceProvider/ServiceProviderDashboard/ServiceHeader";
+import ServiceNavbar from "../../pages/ServiceProvider/ServiceNavbar";
 
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<ChatType[]>([]);
   const [input, setInput] = useState("");
   const location = useLocation();
-  const { providerId, participantName, isProvider,markAsRead } = location.state || {};
+  const { providerId, participantName, isProvider,markAsRead,profilePicture } = location.state || {};
   const user = useSelector((state: RootState) => state.user.user);
 
   const userId = user?.id;
@@ -156,41 +160,119 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="chat-container">
-      <div className="chat-header">
+    <div>
+    {isProvider ? (
+      <div className="row">
+          <ServiceNavbar />
 
-        <h3>Chat with {participantName}</h3>
-      </div>
-      <div className="chat-body">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-message ${
-              msg.sender === userId ? "logged-in-user" : "other-user"
-            }`}
-          >
-            <p>{msg.message}</p>
-            <span className="messageTime">{formatTime(msg.createdAt)}</span>
-      {msg.sender === userId && (
-        <BiCheckDouble
-          className={msg.read ? "double-tick-read" : "double-tick-unread"}
-        />
-      )}
+      
+<div className="row">
 
-          </div>
-        ))}
-      </div>
-      <div className="chat-footer">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message"
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
+
+    <div className="col-md-3">
+    <ServiceSidebar />
+
     </div>
-  );
+    <div className="col-md-9">
+
+   
+          <div className="chat-container">
+            <div className="chat-header">
+              <div className="participant-info">
+                <img
+                  src={
+                    profilePicture
+                      ? `${import.meta.env.VITE_API_BASEURL}${profilePicture}`
+                      : defaultImage
+                  }
+                  alt="Profile"
+                  className="participant-profile-img"
+                />
+                <h6>{participantName}</h6>
+              </div>
+            </div>
+            <div className="chat-body">
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`chat-message ${
+                    msg.sender === userId ? "logged-in-user" : "other-user"
+                  }`}
+                >
+                  <p>{msg.message}</p>
+                  <span className="messageTime">{formatTime(msg.createdAt)}</span>
+                  {msg.sender === userId && (
+                    <BiCheckDouble
+                      className={msg.read ? "double-tick-read" : "double-tick-unread"}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="chat-footer">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type a message"
+              />
+              <button onClick={sendMessage}>Send</button>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <>
+        <Header />
+        <div className="chat-container">
+          <div className="chat-header">
+            <div className="participant-info">
+              <img
+                src={
+                  profilePicture
+                    ? `${import.meta.env.VITE_API_BASEURL}${profilePicture}`
+                    : defaultImage
+                }
+                alt="Profile"
+                className="participant-profile-img"
+              />
+              <h6>{participantName}</h6>
+            </div>
+          </div>
+          <div className="chat-body">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`chat-message ${
+                  msg.sender === userId ? "logged-in-user" : "other-user"
+                }`}
+              >
+                <p>{msg.message}</p>
+                <span className="messageTime">{formatTime(msg.createdAt)}</span>
+                {msg.sender === userId && (
+                  <BiCheckDouble
+                    className={msg.read ? "double-tick-read" : "double-tick-unread"}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="chat-footer">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message"
+            />
+            <button onClick={sendMessage}>Send</button>
+          </div>
+        </div>
+        <Footer />
+      </>
+    )}
+  </div>
+);
 };
 
 export default Chat;

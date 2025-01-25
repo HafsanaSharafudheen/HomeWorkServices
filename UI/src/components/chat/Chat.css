@@ -10,10 +10,15 @@
   background-color: #0f5132;
   color: white;
   padding: 15px;
+  display: flex;
+  
   text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
   border-bottom: 1px solid #ddd;
+}
+.participant-info {
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 
 /* Chat Body */

@@ -4,16 +4,7 @@
     padding: 10px;
   }
   
-  /* .bookingsContainer {
-    flex: 1;
 
-  } */
-  
-  /* .bookingsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  } */
   .no-bookings {
     flex: 1;
     display: flex;

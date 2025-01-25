@@ -29,7 +29,7 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({ reviewDetails }) => {
   }, [reviewDetails]);
 
   if (!reviewDetails) {
-    return <p>No review available.</p>;
+    return <p></p>;
   }
 
   return (

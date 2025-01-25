@@ -12,6 +12,7 @@ import ServiceNavbar from "../../pages/ServiceProvider/ServiceNavbar";
 import socket from "../../utilities/socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import defaultImage from '../../assets/images/DefaultImage.avif'
 
 const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   const [chatList, setChatList] = useState<ChatType[]>([]);
@@ -69,11 +70,11 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
     };
   }, [loggedInUserId, isProvider]);
 
-  const handleChatClick = async (id: string, fullName: string) => {
+  const handleChatClick = async (id: string, fullName: string,profilePicture: string) => {
     try {
       const markAsRead = await markMessagesAsRead(id, loggedInUserId);
       navigate("/messages", {
-        state: { providerId: id, participantName: fullName, isProvider, markAsRead },
+        state: { providerId: id, participantName: fullName, isProvider, markAsRead,profilePicture },
       });
     } catch (error) {
       console.error("Error handling chat click:", error);
@@ -110,12 +111,21 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
               className="chat-list-item"
               onClick={() =>
                 participantDetails._id && participantDetails.fullName
-                  ? handleChatClick(participantDetails._id, participantDetails.fullName)
+                  ? handleChatClick(participantDetails._id, participantDetails.fullName,participantDetails.profilePicture,)
                   : console.warn("Participant details are incomplete")
               }
             >
               <div className="chat-participant">
                 <div className="chat-participant-info">
+                <img
+      src={
+        participantDetails.profilePicture
+          ? `${import.meta.env.VITE_API_BASEURL}${participantDetails.profilePicture}`
+          : defaultImage
+      }
+      alt="Profile"
+      className="participant-profile-img"
+    />
                   <h4>{participantDetails.fullName}</h4>
                   <p className="last-message">{message}</p>
                 </div>

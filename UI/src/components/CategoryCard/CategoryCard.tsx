@@ -20,24 +20,24 @@ const CategoryCard: React.FC<ICategoryCardProps> = ({
 
   return (
     
-  <div className="col-md-3 mb-4 category-card">
-      <div className="card" style={{ backgroundColor: "var(--background-color)" }}>
+  <div className="col-md-3 mb-4 category-SingleCard">
+      <div className="SingleCard" style={{ backgroundColor: "var(--background-color)" }}>
         <img
           src={imageUrl}
           alt={category.categoryName}
-          className="card-img-top category-image"
+          className="SingleCard-img-top category-image"
         />
-        <div className="card-body text-center">
-          <p className="card-title category-name">{category.categoryName}</p>
-          <div className="d-flex justify-content-center gap-2 mt-3">
+        <div className="SingleCard-body text-center">
+          <p className="SingleCard-title category-name">{category.categoryName}</p>
+          <div className="d-flex justify-content-center gap-2 mb-3">
             <button
-              className="btn-primary btn-sm"
+              className="btn-primary btn-sm mb-2"
               onClick={() => onEdit?.(category._id)}
             >
               <FaEdit />
             </button>
             <button
-              className="btn-danger btn-sm"
+              className="btn-danger btn-sm mb-2"
               onClick={() => onDelete(category._id)}
             >
               <FaTrash /> 

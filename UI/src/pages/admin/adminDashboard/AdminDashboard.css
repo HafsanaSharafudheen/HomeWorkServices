@@ -97,9 +97,16 @@
   .card {
     background-color: var(--primary-color);
     color: #fff;
+    width: 200px;
+    height: 100px;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
   }
-
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: var(--border-color);
+  }
   

@@ -95,6 +95,8 @@ const ReviewComponent: React.FC<ReviewProps> = ({
   };
 
   return (
+    <div className="center-container">
+
     <div className="review-component card p-4">
       <h5 className="mb-3 text-center">Leave a Review</h5>
 
@@ -158,6 +160,7 @@ const ReviewComponent: React.FC<ReviewProps> = ({
       <button className="btn btn-primary w-100" onClick={handleSubmit}>
         Submit Review
       </button>
+    </div>
     </div>
   );
 };

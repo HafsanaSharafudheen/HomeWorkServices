@@ -87,6 +87,7 @@ app.get('/providers',fetchAllProvidersByCategory);
 app.get('/workSamples/:providerId',fetchWorkSamples)
 
 app.use(verifyToken);
+
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
 app.post('/updateProfile',ServiceProfileUpdate)
