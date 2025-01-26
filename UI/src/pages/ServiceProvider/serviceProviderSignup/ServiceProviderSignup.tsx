@@ -32,6 +32,8 @@ function ServiceProviderSignup() {
     serviceCharge: 0,
     address: { city: "", district: "", pin: "" },
     whatsappNumber: "",
+    accountNumber:"",
+    IFSCCode:""
   });
 
   const [formError, setFormError] = useState<string>("");
@@ -93,6 +95,8 @@ function ServiceProviderSignup() {
         case "serviceCharge":
         case "password":
         case "confirmPassword":
+          case "accountNumber":
+            case "IFSCCode":
           return {
             ...prev,
             [name]: value,
@@ -103,7 +107,7 @@ function ServiceProviderSignup() {
             ...prev,
             languages: checked
               ? [...prev.languages, value]
-              : prev.languages.filter((lang) => lang !== value),
+              : prev.languages?.filter((lang) => lang !== value),
           };
 
         case "address.city":
@@ -229,11 +233,11 @@ function ServiceProviderSignup() {
     }
   
     // Address
-    if (!formData.address.city) errors["address.city"] = "City is required.";
-    if (!formData.address.district) errors["address.district"] = "District is required.";
-    if (!formData.address.pin) {
+    if (!formData.address?.city) errors["address.city"] = "City is required.";
+    if (!formData.address?.district) errors["address.district"] = "District is required.";
+    if (!formData.address?.pin) {
       errors["address.pin"] = "PIN Code is required.";
-    } else if (!/^\d{6}$/.test(formData.address.pin)) {
+    } else if (!/^\d{6}$/.test(formData.address?.pin)) {
       errors["address.pin"] = "Enter a valid 6-digit PIN code.";
     }
   
@@ -241,14 +245,14 @@ function ServiceProviderSignup() {
     if (!formData.serviceCategory) errors.serviceCategory = "Service Category is required.";
   
     // Languages
-    if (formData.languages.length === 0) errors.languages = "Select at least one language.";
+    if (formData.languages?.length === 0) errors.languages = "Select at least one language.";
   
     // Education
-    if (!formData.education.institute) {
+    if (!formData.education?.institute) {
       errors["education.institute"] = "Institute name is required.";
     }
     
-    if (!formData.education.year || formData.education.year < 1900 || formData.education.year > new Date().getFullYear()) {
+    if (!formData.education?.year || formData.education.year < 1900 || formData.education.year > new Date().getFullYear()) {
       errors["education.year"] = "Enter a valid year of completion.";
     }
     
@@ -263,16 +267,27 @@ function ServiceProviderSignup() {
       errors.serviceCategory = "Service Category is required.";
     }
     
-    if (!formData.workingHours.start) {
+    if (!formData.workingHours?.start) {
       errors.workingHoursStart = "Working hours start time is required.";
     }
     
-    if (!formData.workingHours.end) {
+    if (!formData.workingHours?.end) {
       errors.workingHoursEnd = "Working hours end time is required.";
     }
-    
+    if (!formData.IFSCCode) {
+      errors.IFSCCode = "IFSC Code is required.";
+    } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.IFSCCode)) {
+      errors.IFSCCode = "Enter a valid 11-character IFSC Code.";
+    }
+  
+    // Account Number
+    if (!formData.accountNumber) {
+      errors.accountNumber = "Account Number is required.";
+    } else if (!/^\d{9,18}$/.test(formData.accountNumber)) {
+      errors.accountNumber = "Enter a valid bank account number (9-18 digits).";
+    }
     if (
-      formData.workingHours.start &&
+      formData.workingHours?.start &&
       formData.workingHours.end &&
       formData.workingHours.start >= formData.workingHours.end
     ) {
@@ -646,7 +661,7 @@ function ServiceProviderSignup() {
           {/* Password Fields */}
           <Form.Group>
             <div className="row">
-              <div className="col-md-6 mb-3">
+              <div className="col-md-3 mb-3">
                 <div className="form-floating">
                   <Form.Control
                     type="password"
@@ -679,7 +694,7 @@ function ServiceProviderSignup() {
                   </li>
                 </ul>
               </div>
-              <div className="col-md-6 mb-3">
+              <div className="col-md-3 mb-3">
                 <div className="form-floating">
                   <Form.Control
                     type="password"
@@ -693,6 +708,40 @@ function ServiceProviderSignup() {
                   <Form.Label>Confirm Password</Form.Label>
                   {formErrors.confirmPassword && (
                   <p className="errorMessageText">{formErrors.confirmPassword}</p>
+                )}
+                </div>
+              </div>
+              <div className="col-md-3 mb-3">
+                <div className="form-floating">
+                  <Form.Control
+                    type="text"
+                    name="accountNumber"
+                    placeholder="Account Number"
+                    value={formData.accountNumber}
+                    onChange={handleChange}
+                   
+                    
+                  />
+                  <Form.Label>Account Number</Form.Label>
+                  {formErrors.accountNumber && (
+                  <p className="errorMessageText">{formErrors.accountNumber}</p>
+                )}
+                </div>
+              </div>
+              <div className="col-md-3 mb-3">
+                <div className="form-floating">
+                  <Form.Control
+                    type="text"
+                    name="IFSCCode"
+                    placeholder="IFSC Code"
+                    value={formData.IFSCCode}
+                    onChange={handleChange}
+                   
+                    
+                  />
+                  <Form.Label>IFSC Code</Form.Label>
+                  {formErrors.IFSCCode && (
+                  <p className="errorMessageText">{formErrors.IFSCCode}</p>
                 )}
                 </div>
               </div>

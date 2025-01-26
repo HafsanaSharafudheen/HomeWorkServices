@@ -5,6 +5,7 @@ import {  FaUsers, FaCheckCircle } from "react-icons/fa";
 import { Booking } from "../../../types/booking";
 import { useFetchBookings } from "./hooks/useFetchBookings ";
 import { useFilterBookings } from "./hooks/useFilterBookings ";
+import axios from "../../../utilities/axios";
 
 const AdminBookings = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -50,8 +51,12 @@ const AdminBookings = () => {
     }
   };
 
-  const handleTransferPayment = (bookingId: string) => {
-    console.log(`Transferring payment for booking ID: ${bookingId}`);
+  const handleTransferPayment = async(booking: Booking) => {
+    try {
+      const response = await axios.post(`/payout`, {booking:booking});  
+      } catch (error) {
+      console.error("Error blocking provider:", error);
+    }
   };
 
   return (
@@ -169,16 +174,14 @@ const AdminBookings = () => {
                             <p className="text-danger">
                               Eligible on: {transferDate.toLocaleDateString()}
                             </p>
-                            {canTransfer ? (
+                           
                               <button
                                 className="btn btn-success btn-sm"
-                                onClick={() => handleTransferPayment(booking._id)}
+                                onClick={() => handleTransferPayment(booking)}
                               >
                                 Transfer Payment
                               </button>
-                            ) : (
-                              <p className="text-secondary">Not Eligible Yet</p>
-                            )}
+                           
                           </div>
                         ) : (
                           <p className="text-secondary">No Transfer Date</p>
