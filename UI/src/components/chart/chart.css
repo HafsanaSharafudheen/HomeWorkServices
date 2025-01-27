@@ -1,4 +1,6 @@
 .smallCardStyle {
+  color: #ffffff; 
+
     background-color:var(--background-color);
     border: 1px solid var(--border-color);
     border-radius: 8px; 
@@ -8,13 +10,12 @@
   
   .smallCardStyle .card-title {
     font-size: 14px;
-    color: #6c757d; 
   }
   
   .smallCardStyle .card-text {
     font-size: 14px;
     font-weight: bold;
-    color:var(--text-color);
+    color:white
   }
   .ChartDiagram{
     width: 100%;

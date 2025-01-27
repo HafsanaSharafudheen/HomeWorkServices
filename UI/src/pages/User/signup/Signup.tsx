@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "../../utilities/axios";
-import { User } from "../../types/user";
-import image from "../../assets/images/blackTools.jpeg";
+import axios from "../../../utilities/axios";
+import { User } from "../../../types/user";
+import image from "../../../assets/images/blackTools.jpeg";
 
 const Signup: React.FC = () => {
   const location = useLocation();

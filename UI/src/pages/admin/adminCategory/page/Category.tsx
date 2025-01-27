@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import "./Category.css";
-import SideBar from "../adminDashboard/SideBar";
-import CategoryCard from "../../../components/CategoryCard/CategoryCard";
 import { FaImage, FaTimes } from "react-icons/fa";
 import { Form } from "react-bootstrap";
-import useCategories from "./hooks/useCategories";
-import axios from "../../../utilities/axios";
+import axios from "../../../../utilities/axios";
+import SideBar from "../../adminDashboard/page/sideBar/SideBar";
+import CategoryCard from "../../../../components/CategoryCard/CategoryCard";
+import useCategories from "../hooks/useCategories";
 
 const Category = () => {
   const { categories, loading, error, fetchCategories } = useCategories();

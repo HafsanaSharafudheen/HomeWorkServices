@@ -11,4 +11,5 @@ export interface Review  {
     userDetails:User[];
     workImage?:string[],
     workVideo? : string[];
+    fullName?:string;
   }

@@ -11,8 +11,7 @@ import {
   FaBars,
   FaUser,
 } from "react-icons/fa";
-import "./AdminDashboard.css";
-
+import './sideBar'
 const SideBar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();

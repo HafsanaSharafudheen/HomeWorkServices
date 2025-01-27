@@ -1,26 +1,14 @@
-import { useEffect, useState } from "react";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+
+import BookingCard from "../../../../components/bookingCard/BookingCard";
+import Footer from "../../../../components/Footer";
+import Header from "../../../../components/Header";
 import "./Bookings.css";
-import BookingCard from "../../components/bookingCard/BookingCard";
-import axios from "../../utilities/axios";
-import Profile from "../Profile/Profile";
+
+import useFetchBookings from "./hooks/useFetchBookings";
 
 function Bookings() {
-  const [bookings, setBookings] = useState([]);
-  const fetchBookings = async () => {
-    try {
-      const response = await axios.get("/bookingDetails");
-      setBookings(response.data.bookings);
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-    }
-  };
-  useEffect(() => {
-   
+  const { bookings, fetchBookings } = useFetchBookings();
 
-    fetchBookings();
-  }, []);
 
   return (
     <>

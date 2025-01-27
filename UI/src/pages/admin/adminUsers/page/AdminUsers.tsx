@@ -1,10 +1,9 @@
 import  { useState, useEffect } from "react";
 import "./adminUsers.css";
-import SideBar from "../adminDashboard/SideBar";
-import axios from "../../../utilities/axios";
-import { User } from "../../../types/user";
 import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFilter, FaUsers, FaEdit, FaTrash, FaBan, FaCheck } from 'react-icons/fa';
-import defaultImage from '../../../assets/images/DefaultImage.avif'
+import { User } from "../../../../types/user";
+import axios from "../../../../utilities/axios";
+import SideBar from "../../adminDashboard/page/sideBar/SideBar";
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,7 +11,7 @@ const AdminUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const [totalUsers, setTotalUsers] = useState(0);
-
+const defaultImage ='../../../../assets//images/DefaultImage.avif'
   const [filterType, setFilterType] = useState(""); 
 
  

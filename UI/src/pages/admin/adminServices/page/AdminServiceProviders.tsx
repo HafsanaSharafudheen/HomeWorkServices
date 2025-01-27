@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import SideBar from "../adminDashboard/SideBar";
-import axios from "../../../utilities/axios";
-import { Provider, Review } from "../../../types/provider";
-import { FaEdit, FaTrash, FaFilter, FaUsers, FaBan, FaCheck, FaStar, FaClock, FaMapMarkerAlt, FaLanguage, FaBriefcase, FaMoneyBillWave, FaWrench, FaPhone, FaEnvelope } from "react-icons/fa";
+import  { useState, useEffect } from "react";
+import SideBar from "../../adminDashboard/page/sideBar/SideBar.tsx";
+import axios from "../../../../utilities/axios.ts";
+import { Provider } from "../../../../types/provider.ts";
+import {  FaFilter, FaUsers, FaStar, FaClock, FaMapMarkerAlt, FaLanguage, FaBriefcase, FaMoneyBillWave, FaWrench, FaPhone, FaEnvelope } from "react-icons/fa";
 import "./AdminServiceProvider.css";
-import { useServiceProviders } from "./hooks/useServiceProviders.ts";
-import { useProviderReviews } from "./hooks/useProviderReviews .tsx";
-import defaultImage from '../../../assets/images/DefaultImage.avif'
+import { useServiceProviders } from "../hooks/useServiceProviders.ts.tsx";
+import { useProviderReviews } from "../hooks/useProviderReviews .tsx";
+import { Review } from "../../../../types/review.ts";
+const defaultImage ='../../../../assets//images/DefaultImage.avif'
 
 
 const AdminServiceProviders = () => {
@@ -15,7 +16,7 @@ const AdminServiceProviders = () => {
   const [filterType, setFilterType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
-  const { providers, loading, error, updateProvider } = useServiceProviders();
+  const { providers, updateProvider } = useServiceProviders();
   const { fetchReviews } = useProviderReviews(); // Hook to fetch reviews
   const [showModal, setShowModal] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState<Provider | null>(null);
@@ -198,9 +199,9 @@ const AdminServiceProviders = () => {
                     <td>{provider.serviceCategory || "N/A"}</td>
                     <td>{provider.serviceCharge || "N/A"}</td>
                     <td>
-                      {provider.address.city || "N/A"},{" "}
-                      {provider.address.district || "N/A"}, PIN:{" "}
-                      {provider.address.pin || "N/A"}
+                      {provider.address?.city || "N/A"},{" "}
+                      {provider.address?.district || "N/A"}, PIN:{" "}
+                      {provider.address?.pin || "N/A"}
                     </td>
                    
                       <td>
@@ -312,7 +313,7 @@ const AdminServiceProviders = () => {
 
   {/* Languages */}
   <p>
-    <FaLanguage className="icon" /> {selectedProvider.languages.join(", ")}
+    <FaLanguage className="icon" /> {selectedProvider.languages?.join(", ")}
   </p>
 
   {/* Availability */}
@@ -327,7 +328,8 @@ const AdminServiceProviders = () => {
 
   {/* Address */}
   <p>
-    <FaMapMarkerAlt className="icon" /> {selectedProvider.address.city}, {selectedProvider.address.district}, PIN: {selectedProvider.address.pin}
+    <FaMapMarkerAlt className="icon" /> {selectedProvider.address?.city}, 
+    {selectedProvider.address?.district}, PIN: {selectedProvider.address?.pin}
   </p>
 
   

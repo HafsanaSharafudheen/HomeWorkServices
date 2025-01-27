@@ -1,13 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import defaultImage from '../../assets/images/DefaultImage.avif';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../../../components/Header';
+import Footer from '../../../../components/Footer';
 
 const DiyDetails: React.FC = () => {
   const location = useLocation();
   const diy = location.state?.diy;
-
+const defaultImage ='../../../../assets/images/DefaultImage.avif'
   if (!diy) {
     return <p>No DIY details available!</p>;
   }

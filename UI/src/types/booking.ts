@@ -9,7 +9,7 @@ export interface Booking {
     selectedTime: string;
     createdAt?: Date;
     status: string;
-    payment: {
+    payment?: {
       method: string;
       amount: number;
       status: string;

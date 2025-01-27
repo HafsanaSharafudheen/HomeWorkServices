@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { signupStart, signupSuccess, signupFailure } from "../../../Redux/user/userSlice";
+import { signupStart, signupSuccess, signupFailure } from "../../../../../Redux/user/userSlice";
 import { useNavigate, Link } from 'react-router-dom';
 import "./Login.css";
-import image from "../../assets/images/blackTools.jpeg";
-import axios from "../../utilities/axios";
-import { RootState } from '../../../Redux/store';
+import image from "../../../../assets/images/blackTools.jpeg";
+import axios from "../../../../utilities/axios";
+import { RootState } from '../../../../../Redux/store';
 import Swal from 'sweetalert2';
 
 function Login() {

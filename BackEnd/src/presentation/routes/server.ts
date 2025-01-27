@@ -63,11 +63,10 @@ import fetchAllDiys from "../controllers/user/fetchAllDiys";
 import fetchAllcategories from "../controllers/user/fetchAllcategories";
 import { getUserBookingsbyTime } from "../controllers/booking/fetchBookingsByDate";
 import { deleteFromUser } from "../controllers/user/DeleteBooking";
-import { razorpayBooking } from "../controllers/booking/payementCOntroller";
+import { razorpayBooking, razorpayPaymentToBankAccount } from "../controllers/booking/payementCOntroller";
 import { workingProgressUpdate } from "../controllers/booking/workingProgressUpdate";
 import providerActions from "../controllers/admin/providerActions";
 import fetchWorkSamples from "../controllers/user/fetchWorkSamples";
-import { razorpayPaymentToBankAccount } from '../controllers/booking/payoutRoutes';
 initSocketIO(server);
 
 app.get('/testimonials',fetchTestimonials )
@@ -87,7 +86,6 @@ app.get('/allServices',fetchAllServices);
 app.get('/providers',fetchAllProvidersByCategory);
 app.get('/workSamples/:providerId',fetchWorkSamples)
 
-app.post('/test-payout',razorpayPaymentToBankAccount )
 
 
 app.use(verifyToken);
@@ -150,7 +148,7 @@ app.post('/deleteBooking',deleteFromUser)
 // payment
 app.post('/razorpay',razorpayBooking )
 app.post('/updateBookingDetails',updateStatus)
-app.post('/payout',razorpayPaymentToBankAccount )
+app.post('/transferDate',razorpayPaymentToBankAccount )
 
 
 app.use(errorMiddleware);

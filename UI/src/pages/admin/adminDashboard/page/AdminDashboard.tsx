@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../../utilities/axios";
 import "./adminDashboard.css";
 import {  FaUsers, FaClipboardList, FaBuilding, FaTools } from "react-icons/fa";
 import { Bar, Pie } from "react-chartjs-2";
@@ -13,11 +12,12 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
-import SideBar from "./SideBar";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { RootState } from "../../../../Redux/store";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import axios from "../../../../utilities/axios";
+import { RootState } from "../../../../../Redux/store";
+import SideBar from "./sideBar/SideBar";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 

@@ -62,4 +62,36 @@ export const razorpayBooking = async (req: any, res: any) => {
       res.status(500).json({ success: false, message: "Failed to create Razorpay order." });
     }
   };
+
+  export const razorpayPaymentToBankAccount = async (req: any, res: any) => {
+    try {
+      const { booking } = req.body;
   
+      // Find the booking by ID
+      const existingBooking = await Booking.findById(booking._id);
+  
+      if (!existingBooking) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+  
+      if (existingBooking.payment.status !== "completed") {
+        return res
+          .status(400)
+          .json({ error: "Payment status is not eligible for transfer" });
+      }
+  
+      // Update the releasedDate to the current date
+      const currentDate = new Date();
+      existingBooking.payment.releasedDate = currentDate;
+  
+      // Save the updated booking back to the database
+      await existingBooking.save();
+  
+      console.log("Updated Booking:", existingBooking);
+  
+      res.status(200).json({ message: "Payment transferred", booking: existingBooking });
+    } catch (error) {
+      console.error("Error updating payment release date:", error);
+      res.status(500).json({ error: "Failed to update payment release date" });
+    }
+  };

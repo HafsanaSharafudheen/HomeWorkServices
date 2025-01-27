@@ -29,7 +29,7 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({ reviewDetails }) => {
   }, [reviewDetails]);
 
   if (!reviewDetails) {
-    return <p></p>;
+    return <p>no reviews</p>;
   }
 
   return (
@@ -37,7 +37,7 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({ reviewDetails }) => {
       <div className="review-wrapper">
         <div className="review-card">
           {/* Image Carousel */}
-          {reviewDetails.workImage.length > 0 && (
+          {reviewDetails &&reviewDetails.workImage.length > 0 && (
             <div className="review-image">
               <img
                 src={`${import.meta.env.VITE_API_BASEURL}/${reviewDetails.workImage[currentImageIndex]}`}
@@ -61,7 +61,7 @@ const ReviewDisplay: React.FC<ReviewDisplayProps> = ({ reviewDetails }) => {
           </div>
 
           {/* Videos */}
-          {reviewDetails.workVideo.length > 0 && (
+          {reviewDetails &&reviewDetails.workVideo.length > 0 && (
             <div className="review-name">
               <h6>Review Videos:</h6>
               <div className="video-section">

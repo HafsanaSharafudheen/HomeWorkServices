@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { DIY } from '../ServiceProvider/diy/types/diy';
-import DiyCards from '../../components/DiyCards/DiyCards';
-import axios from '../../utilities/axios';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import { DIY } from '../../../ServiceProvider/diy/types/diy';
+import DiyCards from '../../../../components/DiyCards/DiyCards';
+import axios from '../../../../utilities/axios';
+import Header from '../../../../components/Header';
+import Footer from '../../../../components/Footer';
 
 const DiyPage: React.FC = () => {
   const [diyList, setDiyList] = useState<DIY[]>([]);

@@ -2,33 +2,33 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login/Login';
-import Signup from './pages/signup/Signup';
+import Login from './pages/User/Pages/Login/Login';
+import Signup from './pages/User/signup/Signup';
 import Testimonials from './pages/TestimonialsPage/Testimonials';
 import About from './components/About/About';
-import Category from './pages/admin/adminCategory/Category';
-import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard'
-import AdminUsers from './pages/admin/adminUsers/AdminUsers';
-import AdminServiceProviders from './pages/admin/adminServices/AdminServiceProviders';
+import AdminServiceProviders from './pages/admin/adminServices/page/AdminServiceProviders';
 import ServiceProviderDashboard from './pages/ServiceProvider/ServiceProviderDashboard/ServiceProviderDashboard';
 import ServiceProviderSignup from './pages/ServiceProvider/serviceProviderSignup/ServiceProviderSignup';
 import ServiceProfile from './pages/ServiceProvider/ServiceProfile/ServiceProfile';
 import ServicesDetails from './pages/servicesDetailedPage/servicesDetails';
-import Bookings from './pages/UserBookings/Bookings';
 import ProviderBookings from './pages/ServiceProvider/ProviderBookings/ProviderBookings';
 import DiyForm from './pages/ServiceProvider/diy/diyForm';
 import ForgotPassword from './components/forgotPassword/ForgotPassword';
 import ResetPassword from './components/forgotPassword/ResetPassword';
 import Chat from './components/chat/Chat';
 import ChatList from './components/ChatList/ChatList';
-import AdminProfile from './pages/admin/adminProfile/adminProfile';
+import AdminProfile from './pages/admin/adminProfile/page/adminProfile';
 import PageNotFound from './components/PageNotFound/PageNotFound';
-import DiyPage from './pages/DIYPage/DiyPage';
-import DiyDetails from './pages/DiyDetails/DiyDetails';
-import PaymentConfirmation from './pages/PaymentConfirmation/PaymentConfirmation';
-import AdminBookings from './pages/admin/adminBookings/AdminBookings';
-import Profile from './pages/Profile/Profile';
+import DiyPage from './pages/DIY/pages/DIYPage/DiyPage';
+import DiyDetails from './pages/DIY/pages/DiyDetails/DiyDetails';
+import PaymentConfirmation from './pages/User/Pages/PaymentConfirmation/PaymentConfirmation';
+import AdminBookings from './pages/admin/adminBookings/page/AdminBookings';
+import Profile from './pages/User/Pages/Profile/Profile';
+import AdminDashboard from './pages/admin/adminDashboard/page/AdminDashboard';
+import Category from './pages/admin/adminCategory/page/Category';
+import AdminUsers from './pages/admin/adminUsers/page/AdminUsers';
+import Home from './pages/User/Pages/Home';
+import Bookings from './pages/User/Pages/UserBookings/Bookings';
 
 
 const App = () => {

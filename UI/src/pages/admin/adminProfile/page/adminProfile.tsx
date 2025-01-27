@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import "./AdminProfile.css"; 
-import { logout } from "../../../../Redux/user/userSlice";
-import { useAdminDetails } from "./hooks/useAdminDetails";
+import { logout } from "../../../../../Redux/user/userSlice";
+import { useAdminDetails } from "../hooks/useAdminDetails";
 
-const SideBar = lazy(() => import("../adminDashboard/SideBar"));
+const SideBar = lazy(() => import("../../adminDashboard/page/sideBar/SideBar"));
 
 const AdminProfile: React.FC = () => {
   const { adminDetails, loading, error } = useAdminDetails();

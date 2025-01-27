@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Booking } from "../../types/booking";
-import ReviewComponent from "../review/ReviewComponent";
 
 import {
   FaUser,
@@ -14,8 +13,7 @@ import {
 } from "react-icons/fa";
 import "./BookingCard.css";
 import Swal from "sweetalert2";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../Redux/store";
+
 import { useNavigate } from "react-router-dom";
 import axios from "../../utilities/axios";
 import ReviewDisplay from "../ReviewDisplay/ReviewDisplay";
@@ -36,7 +34,7 @@ interface ReviewDetails {
 
 const BookingCard: React.FC<BookingProps> = ({ booking, fetchBookings }) => {
   const provider = booking.providerDetails?.[0];
-  const [showReview, setShowReview] = useState<boolean>(false);
+  // const [showReview, setShowReview] = useState<boolean>(false);
   const [reviewDetails, setReviewDetails] = useState<ReviewDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 const navigate=useNavigate()
@@ -155,12 +153,12 @@ const navigate=useNavigate()
         const response = await axios.get(
           `/getReviewDetails?bookingId=${booking._id}&providerId=${booking.providerId}`
         );
-        if (response.data && response.data.review) {
+        if (response.data && response.data.review as ReviewDetails) {
           setReviewDetails({
-            ratings: response.data.review.ratings,
+            ratings: response.data.review.ratings ?? 0,
             message: response.data.review.message,
-            workImage: response.data.review.workImage,
-            workVideo: response.data.review.workVideo,
+            workImage: response.data.review.workImage ??[],
+            workVideo: response.data.review.workVideo ?? [],
           });
         }
       } catch (error) {
@@ -202,11 +200,12 @@ const navigate=useNavigate()
             </div>
           )}
         </div>
-
+{reviewDetails &&
         <div className="col-md-6">
   <ReviewDisplay reviewDetails={reviewDetails} />
 
   </div>
+}
 
  
 

@@ -1,11 +1,11 @@
 import { useState,  } from "react";
 import "./adminBookings.css";
-import SideBar from "../adminDashboard/SideBar";
+import SideBar from "../../adminDashboard/page/sideBar/SideBar";
 import {  FaUsers, FaCheckCircle } from "react-icons/fa";
-import { Booking } from "../../../types/booking";
-import { useFetchBookings } from "./hooks/useFetchBookings ";
-import { useFilterBookings } from "./hooks/useFilterBookings ";
-import axios from "../../../utilities/axios";
+import { Booking } from "../../../../types/booking";
+import { useFetchBookings } from "../hooks/useFetchBookings ";
+import { useFilterBookings } from "../hooks/useFilterBookings ";
+import axios from "../../../../utilities/axios";
 
 const AdminBookings = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,7 +16,7 @@ const AdminBookings = () => {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
-  const { bookings, categories, loading, error } = useFetchBookings();
+  const { bookings, categories, loading, error, refetchBookings } = useFetchBookings();
   const filteredBookings = useFilterBookings(
     bookings,
     searchTerm,
@@ -51,14 +51,19 @@ const AdminBookings = () => {
     }
   };
 
-  const handleTransferPayment = async(booking: Booking) => {
+  const handleTransferPayment = async (booking: Booking) => {
     try {
-      const response = await axios.post(`/payout`, {booking:booking});  
-      } catch (error) {
-      console.error("Error blocking provider:", error);
+      const response = await axios.post("/transferDate", { booking });
+      console.log("Payout successful:", response.data);
+  
+      refetchBookings();
+    } catch (error) {
+      console.error("Error transferring payment:", error);
+      alert("Failed to transfer payment. Please try again.");
     }
   };
-
+  
+  
   return (
     <div className="row admin-bookings-container">
       <div className="col-lg-3 col-md-4 col-sm-12">
@@ -114,6 +119,8 @@ const AdminBookings = () => {
                 <th>User</th>
                 <th>Provider</th>
                 <th>Category</th>
+                <th>Service Charge</th>
+
                 <th>Booking Date</th>
                 <th>Booked At</th>
                 <th>Working Status</th>
@@ -144,6 +151,8 @@ const AdminBookings = () => {
                       <td>{booking.userDetails?.[0]?.fullName || "N/A"}</td>
                       <td>{booking.providerDetails?.[0]?.fullName || "N/A"}</td>
                       <td>{booking.providerDetails?.[0]?.serviceCategory || "N/A"}</td>
+                      <td>{booking.providerDetails?.[0]?.serviceCharge || "N/A"}</td>
+
                       <td>{new Date(booking.selectedDate).toLocaleDateString()}</td>
                       <td>
                         {booking.createdAt
@@ -169,24 +178,33 @@ const AdminBookings = () => {
                         )}
                       </td>
                       <td>
-                        {booking.payment.status === "completed" && transferDate ? (
-                          <div>
-                            <p className="text-danger">
-                              Eligible on: {transferDate.toLocaleDateString()}
-                            </p>
-                           
-                              <button
-                                className="btn btn-success btn-sm"
-                                onClick={() => handleTransferPayment(booking)}
-                              >
-                                Transfer Payment
-                              </button>
-                           
-                          </div>
-                        ) : (
-                          <p className="text-secondary">No Transfer Date</p>
-                        )}
-                      </td>
+  {booking.payment.status === "completed" && booking.payment.releasedDate ? (
+    <div>
+      <p className="text-success">
+        Payment Transferred on:{" "}
+        {new Date(booking.payment.releasedDate).toLocaleDateString()}
+      </p>
+      <button className="btn btn-secondary btn-sm" disabled>
+        Marked as Transferred
+      </button>
+    </div>
+  ) : (
+    <div>
+      {booking.payment.status === "completed" ? (
+        <button
+          className="btn btn-success btn-sm"
+          onClick={() => handleTransferPayment(booking)}
+        >
+          Transfer Payment
+        </button>
+      ) : (
+        <p className="text-secondary">No Transfer Date</p>
+      )}
+    </div>
+  )}
+</td>
+
+
                       <td>
                       <td>
   <a

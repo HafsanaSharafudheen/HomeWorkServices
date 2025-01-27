@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from '../../utilities/axios';
-import { User } from '../../types/user';
+import axios from '../../../../utilities/axios';
+import { User } from '../../../../types/user';
 import {
   FaEdit,
   FaSignOutAlt,
@@ -12,17 +12,16 @@ import {
   FaPhone,
 } from 'react-icons/fa';
 import './Profile.css';
-import defaultImage from '../../assets/images/DefaultImage.avif';
-import { logout } from '../../../Redux/user/userSlice';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import { logout } from '../../../../../Redux/user/userSlice';
+import Header from '../../../../components/Header';
+import Footer from '../../../../components/Footer';
 
 function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+const defaultImage ='../../../../assets/images/DefaultImage.avif'
   // Fetch user details on component mount
   useEffect(() => {
     const fetchUserDetails = async () => {

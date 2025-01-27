@@ -95,10 +95,10 @@ const ReviewComponent: React.FC<ReviewProps> = ({
   };
 
   return (
-    <div className="center-container">
+    <div className="Review-container">
 
-    <div className="review-component card p-4">
-      <h5 className="mb-3 text-center">Leave a Review</h5>
+    <div className="reviewComponent reviewCard p-4">
+      <h5 className="mb-1 text-center">Leave a Review</h5>
 
       <div className="rating mb-3 text-center">
         {[1, 2, 3, 4, 5].map((star) => (
@@ -112,14 +112,14 @@ const ReviewComponent: React.FC<ReviewProps> = ({
       </div>
 
       <textarea
-        className="form-control mb-3"
+        className="form-control mb-1"
         placeholder="Write your comment here..."
         rows={3}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       ></textarea>
 
-      <label className="upload-label mb-3 d-flex align-items-center">
+      <label className="upload-label mb-1 d-flex align-items-center">
         <FaCloudUploadAlt className="me-2" size={20} />
         <input
           type="file"
