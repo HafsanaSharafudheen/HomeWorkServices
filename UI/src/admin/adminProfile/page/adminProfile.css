@@ -1,0 +1,59 @@
+/* Container for the entire admin profile */
+.AdminProfileContainer {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Profile picture container */
+.ProfilePictureContainer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Profile picture styles */
+.ProfilePicture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Admin name, email, role, and contact styles */
+.AdminName,
+.AdminEmail,
+.AdminRole,
+.AdminContact,
+.AdminAddress {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+/* Styles for icons */
+.AdminIcons {
+  margin-right: 10px;
+  color: #555;
+  font-size: 20px;
+}
+
+/* Logout button */
+.DefaultButton2 {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.DefaultButton2:hover {
+  background-color: #0056b3;
+}
+
+
