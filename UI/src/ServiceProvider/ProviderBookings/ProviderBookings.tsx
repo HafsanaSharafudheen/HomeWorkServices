@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import ServiceNavbar from '../ServiceNavbar';
-import ServiceSidebar from '../ServiceSidebar';
 import axios from '../../utilities/axios';
 import { Booking } from '../../booking/types/booking';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { FaTimes } from 'react-icons/fa';
+import { FaFilter, FaTimes } from 'react-icons/fa';
 import './ProviderBookings.css';
+import ProviderSidebar from '../Sidebar/Sidebar';
 
 function ProviderBookings() {
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -127,61 +127,73 @@ function ProviderBookings() {
     useEffect(() => {
         applyFilter();
     }, [bookings, filter]);
+    const [activeMenu, setActiveMenu] = useState<string>("Dashboard");
 
     return (
         <div>
-            <ServiceNavbar />
-            <div className="row">
-                <div className="col-md-3">
-                    <ServiceSidebar />
-                </div>
-                <div className="col-md-9">
-                    <button
-                        className="btn btn-primary mb-3"
-                        onClick={() => setShowCalendar(!showCalendar)}
-                    >
-                        Show Calendar
-                    </button>
-                    {showCalendar && (
-                        <Calendar
-                            onChange={(date) => setSelectedDate(date)}
-                            value={selectedDate}
-                            tileClassName={({ date }) => {
-                                const bookingsOnDate = bookings.filter(
-                                    (b) =>
-                                        new Date(b.selectedDate).toDateString() ===
-                                        date.toDateString()
-                                );
-                                return bookingsOnDate.length > 0 ? 'booked-slot' : '';
-                            }}
-                            tileContent={({ date }) => {
-                                const bookingsOnDate = bookings.filter(
-                                    (b) =>
-                                        new Date(b.selectedDate).toDateString() ===
-                                        date.toDateString()
-                                );
-                                return bookingsOnDate.length > 0 ? (
-                                    <div className="badge-wrapper">
-                                        <span className="booking-count">
-                                            {bookingsOnDate.length} Bookings
-                                        </span>
-                                    </div>
-                                ) : null;
-                            }}
-                        />
-                    )}
+        <ServiceNavbar />
 
-                    <select
-                        className="form-select mb-3"
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value)}
-                    >
-                        <option value="all">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="accepted">Accepted</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="completed">Completed</option>
-                    </select>
+      
+        <div className="d-flex h-screen bg-gray-100">
+
+      
+       <ProviderSidebar />
+            <div className="w-100 p-6 bg-white flex-1">
+<div className="row">
+
+                <div className="col-md-6 p-4">
+                <button
+  className="btn btn-primary mb-3"
+  onClick={() => setShowCalendar(!showCalendar)}
+>
+  Show Calendar
+</button>
+                </div>
+             
+{showCalendar && (
+  <Calendar
+    onChange={(date) => setSelectedDate(date)}
+    value={selectedDate}
+    tileClassName={({ date }) => {
+      const bookingsOnDate = bookings.filter(
+        (b) =>
+          new Date(b.selectedDate).toDateString() === date.toDateString()
+      );
+      return bookingsOnDate.length > 0 ? "booked-slot" : "";
+    }}
+    tileContent={({ date }) => {
+      const bookingsOnDate = bookings.filter(
+        (b) =>
+          new Date(b.selectedDate).toDateString() === date.toDateString()
+      );
+      return bookingsOnDate.length > 0 ? (
+        <div className="badge-wrapper">
+          <span className="booking-count">{bookingsOnDate.length} Bookings</span>
+        </div>
+      ) : null;
+    }}
+  />
+)}
+
+<div className="col-md-6">
+
+
+<div className="filter-dropdown-container">
+  <FaFilter className="filter-dropdown-icon" />
+  <select
+    className="filter-select"
+    value={filter}
+    onChange={(e) => setFilter(e.target.value)}
+  >
+    <option value="all">All</option>
+    <option value="pending">Pending</option>
+    <option value="accepted">Accepted</option>
+    <option value="rejected">Rejected</option>
+    <option value="completed">Completed</option>
+  </select>
+</div>
+</div>
+</div>
 
                     {filteredBookings.length > 0 ? (
                         <ul className="list-group">

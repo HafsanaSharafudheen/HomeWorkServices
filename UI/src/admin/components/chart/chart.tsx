@@ -131,30 +131,27 @@ function Chart() {
       <div className="row mb-5">
   {/* Total Bookings Card */}
   <div className="col-md-4">
-    <div className="card smallCardStyle">
-      <div className="card-body text-center">
-        <h6 className="card-title">Total Bookings</h6>
-        <h3 className="card-text">{dashboardData.totalBookings}</h3>
+    <div className="providerCard">
+      <div className="providerCard-body text-center">
+        <h6 className="providerCard-title">Total Bookings :{dashboardData.totalBookings}</h6>
       </div>
     </div>
   </div>
 
-  {/* Pending Bookings Card */}
+  {/* Pending Bookings providerCard */}
   <div className="col-md-4">
-    <div className="card smallCardStyle">
-      <div className="card-body text-center">
-        <h6 className="card-title">Pending</h6>
-        <h3 className="card-text">{dashboardData.paymentStatus.data[0]||0}</h3>
+    <div className="providerCard">
+      <div className="providerCard-body text-center">
+        <h6 className="providerCard-title">Pending :{dashboardData.paymentStatus.data[0]||0}</h6>
       </div>
     </div>
   </div>
 
-  {/* Completed Bookings Card */}
+  {/* Completed Bookings providerCard */}
   <div className="col-md-4">
-    <div className="card smallCardStyle">
-      <div className="card-body text-center">
-        <h6 className="card-title">Completed</h6>
-        <h3 className="card-text">{dashboardData.paymentStatus.data[1]||0}</h3>
+    <div className="providerCard">
+      <div className="providerCard-body text-center">
+        <h6 className="providerCard-title">Completed :{dashboardData.paymentStatus.data[1]||0}</h6>
       </div>
     </div>
   </div>

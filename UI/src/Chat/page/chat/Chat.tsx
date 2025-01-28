@@ -10,9 +10,9 @@ import { BiCheckDouble } from "react-icons/bi"; // Import double tick icon
 import './Chat.css'
 import Footer from "../../../User/components/Footer";
 import Header from "../../../User/components/Header";
-import ServiceSidebar from "../../../ServiceProvider/serviceSidebar";
-import ServiceHeading from "../../../ServiceProvider/ServiceProviderDashboard/ServiceHeader";
 import ServiceNavbar from "../../../ServiceProvider/ServiceNavbar";
+import ProviderSidebar from "../../../ServiceProvider/Sidebar/Sidebar";
+
 const defaultImage ='../../../assets//images//DefaultImage.avif'
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<ChatType[]>([]);
@@ -165,14 +165,16 @@ const Chat: React.FC = () => {
           <ServiceNavbar />
 
       
-<div className="row">
+
+      
+        <div className="d-flex h-screen bg-gray-100">
+
+      
+      
 
 
-    <div className="col-md-3">
-    <ServiceSidebar />
-
-    </div>
-    <div className="col-md-9">
+<ProviderSidebar />
+<div className="w-100 p-6 bg-white flex-1">
 
    
           <div className="chat-container">

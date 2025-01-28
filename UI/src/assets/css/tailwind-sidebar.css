@@ -1,0 +1,34 @@
+src/styles/sidebar.css
+
+.tw-sidebar {
+  height: 100vh;
+  background-color: #111827 !important; /* Force Tailwind equivalent: bg-gray-900 */
+  width: 64px;
+  transition: width 0.3s ease-in-out;
+}
+
+.tw-sidebar-expanded {
+  width: 256px !important;
+}
+
+.tw-sidebar-item {
+  display: flex !important; /* Tailwind equivalent: flex */
+  align-items: center !important; /* Tailwind equivalent: items-center */
+  padding: 17px 5px !important; /* Tailwind equivalent: px-5 py-4 */
+  color: white !important; /* Tailwind equivalent: text-white */
+  cursor: pointer !important; /* Tailwind equivalent: cursor-pointer */
+  transition: background 0.3s !important; /* Tailwind equivalent: transition-colors */
+}
+
+.tw-sidebar-item:hover {
+  background-color: #1f2937 !important; /* Tailwind equivalent: hover:bg-gray-800 */
+}
+
+.tw-sidebar-item span {
+  opacity: 0 !important; /* Tailwind equivalent: opacity-0 */
+  transition: opacity 0.2s ease-in-out !important; /* Tailwind equivalent: transition-opacity */
+}
+
+.tw-sidebar-expanded .tw-sidebar-item span {
+  opacity: 1 !important; /* Tailwind equivalent: opacity-100 */
+}

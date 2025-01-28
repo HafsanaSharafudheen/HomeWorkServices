@@ -7,11 +7,11 @@ import "./ChatList.css";
 import { ChatType } from "../../types/chat";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Redux/store";
-import ServiceSidebar from "../../../ServiceProvider/serviceSidebar";
 import ServiceNavbar from "../../../ServiceProvider/ServiceNavbar";
 import socket from "../../../utilities/socket";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProviderSidebar from "../../../ServiceProvider/Sidebar/Sidebar";
 const defaultImage = "../../../assets/images/DefaultImage";
 
 const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
@@ -148,17 +148,21 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
   return (
     <div className="chat-list-page">
       {isProvider ? (
-        <div className="row">
-          <ServiceNavbar />
-          <div className="col-md-4">
-            <ServiceSidebar />
-          </div>
-          <div className="col-md-8">
+        <div>
+        <ServiceNavbar />
+
+      
+        <div className="d-flex h-screen bg-gray-100">
+
+      
+       <ProviderSidebar />
+       <div className="w-100 bg-white flex-1">
             <div className="chat-list-container provider-view">
               <h3 className="headingStyle">Your Connections</h3>
               {renderChatList()}
             </div>
           </div>
+        </div>
         </div>
       ) : (
         <>
@@ -170,10 +174,10 @@ const ChatList: React.FC<{ isProvider: boolean }> = ({ isProvider }) => {
           <Footer />
         </>
       )}
-
       {/* Toast container */}
       <ToastContainer />
     </div>
+
   );
 };
 

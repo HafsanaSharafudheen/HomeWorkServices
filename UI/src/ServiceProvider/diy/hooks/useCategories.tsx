@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "../../../utilities/axios";
-import { Category } from "../../../admin/adminCategory/types/category";
+import { Category } from "../../../types/category";
 
 export const useCategories = () => {
   const [categories, setCategories] = useState<Category[]>([]); // Initialize as an empty array

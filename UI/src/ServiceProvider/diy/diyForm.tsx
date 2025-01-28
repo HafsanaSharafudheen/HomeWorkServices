@@ -5,6 +5,7 @@ import "./diyForm.css";
 import axios from "../../utilities/axios";
 import Swal from "sweetalert2";
 import { useCategories } from "./hooks/useCategories";
+import ProviderSidebar from '../Sidebar/Sidebar';
 
 const PreviousDIY = lazy(() => import("../../DIY/components/diy/PreviousDIY"));
 const ServiceNavbar = lazy(() => import("../ServiceNavbar"));
@@ -204,18 +205,20 @@ export const DIYForm: React.FC = () => {
 
   return (
     <div>
+      {/* Lazy Load Navbar */}
       <Suspense fallback={<div>Loading Navbar...</div>}>
         <ServiceNavbar />
       </Suspense>
-      <div className="row">
-        <div className="col-md-3">
-          <Suspense fallback={<div>Loading Sidebar...</div>}>
-            <ServiceSidebar />
-          </Suspense>
-        </div>
-        <div className="col-md-9">
-           
-         
+  
+      {/* Sidebar and Main Content */}
+      <div className="d-flex h-screen bg-gray-100">
+        {/* Lazy Load Sidebar */}
+        <Suspense fallback={<div>Loading Sidebar...</div>}>
+          <ProviderSidebar />
+        </Suspense>
+  
+        {/* Main Content Section */}
+        <div className="flex-1 p-6 bg-white w-100">
           <div className="formContainer">
             <form onSubmit={handleSubmit} className="p-4 shadow rounded bg-light">
               <h1 className="headingStyle">Submit Your DIY Tip</h1>
@@ -433,16 +436,16 @@ export const DIYForm: React.FC = () => {
             </div>
             </form>
           
-          </div>
-          <div>
-          <Suspense fallback={<div>Loading Previous DIY...</div>}>
-            <PreviousDIY />
-          </Suspense>
-                    </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+            </div>
+
+{/* Previous DIY Section */}
+<Suspense fallback={<div>Loading Previous DIY...</div>}>
+  <PreviousDIY />
+</Suspense>
+</div>
+</div>
+</div>
+);
+}
 
 export default DIYForm;

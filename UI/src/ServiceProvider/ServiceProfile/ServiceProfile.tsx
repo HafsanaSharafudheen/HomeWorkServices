@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ServiceSidebar from "../serviceSidebar";
 import ServiceNavbar from "../ServiceNavbar";
 import axios from "../../utilities/axios";
 import {  Button } from "react-bootstrap";
@@ -15,7 +14,8 @@ import { AiOutlineClockCircle, AiOutlineWhatsApp } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Redux/user/userSlice";
 import { useDispatch } from "react-redux";
-const defaultImage = "../../../public/images/DefaultImage.avif";
+import defaultImage from "../../assets/images/DefaultImage.avif";
+import ProviderSidebar from "../Sidebar/Sidebar";
 
 function ServiceProfile() {
   const [profile, setProfile] = useState<Provider | null>(null);
@@ -104,20 +104,16 @@ function ServiceProfile() {
 
   return (
     <div>
+        <ServiceNavbar />
 
-      <ServiceNavbar />
-      <div className="row">
+      
+        <div className="d-flex h-screen bg-gray-100">
 
-     
-       <div className="col-md-4">
-       <ServiceSidebar />
-
-       </div>
-
-        <div className="col-md-8">
-  <div className="service-profile row">
-
-    <div className="col-md-6 service-profile-left">
+      
+       <ProviderSidebar />
+       <div className="w-100 bg-white flex-1">
+<div className="row p-5">
+    <div className="col-md-6">
       {profile ? (
         <div className="profile-details">
           <p>
@@ -168,9 +164,10 @@ function ServiceProfile() {
       )}
     </div>
 
-    <div className="col-md-6 mt-5">
-    <div>
-  {profile && (
+    <div className="col-md-6">
+    <div className="profile-container">
+    {profile ? (
+        
     <>
       <h2 className="headingStyle">{profile.fullName}</h2>
 
@@ -225,12 +222,13 @@ function ServiceProfile() {
 
       </div>
     </>
+     ) : (
+      <p>Loading profile...</p>
   )}
 </div>
 
 </div>
-
-  </div>
+</div>
 </div>
 
 </div>

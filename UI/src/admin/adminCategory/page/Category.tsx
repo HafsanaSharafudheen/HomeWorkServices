@@ -72,11 +72,13 @@ const Category = () => {
   };
 
   return (
-    <div className="row">
-      <div className="col-lg-3 col-md-4 col-sm-12">
-        <SideBar />
-      </div>
-      <div className="col-lg-9 col-md-8 col-sm-12">
+    <div className="dashboardContainer">
+    <SideBar />
+    
+
+
+
+  <div className="mainContent">
       <h2 className="headingStyle mt-4">
         All Categories
       </h2>

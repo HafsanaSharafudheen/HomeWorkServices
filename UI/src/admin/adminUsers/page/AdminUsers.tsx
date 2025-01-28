@@ -4,6 +4,8 @@ import { FaPhone, FaWhatsapp, FaEnvelope, FaMapMarkerAlt, FaFilter, FaUsers, FaE
 import { User } from "../../../User/types/user";
 import axios from "../../../utilities/axios";
 import SideBar from "../../adminDashboard/page/sideBar/SideBar";
+import defaultImage from'../../../assets//images/DefaultImage.avif'
+
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,7 +13,6 @@ const AdminUsers = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const [totalUsers, setTotalUsers] = useState(0);
-const defaultImage ='../../../../assets//images/DefaultImage.avif'
   const [filterType, setFilterType] = useState(""); 
 
  
@@ -77,14 +78,13 @@ const defaultImage ='../../../../assets//images/DefaultImage.avif'
     }
   };
   return (
-    <div className="row admin-users-container">
-      {/* Sidebar */}
-      <div className="col-lg-3 col-md-4 col-sm-12">
+    <div className="dashboardContainer">
         <SideBar />
-      </div>
+        
 
-      {/* Main Content */}
-      <div className="col-lg-9 col-md-8 col-sm-12">
+
+
+      <div className="mainContent">
       <h2 className="table-title my-4 headingStyle">User Details</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
@@ -180,15 +180,14 @@ const defaultImage ='../../../../assets//images/DefaultImage.avif'
         </td>
         <td>
           <div className="contactIcons">
-            <FaPhone className="text-primary me-2"/>
+            <FaPhone className="text-primary"/>
             <p>{user.phone}</p>
-          </div>
-          <div className="contactIcons">
-          <FaWhatsapp className="text-success me-2" />
+          
+          <FaWhatsapp className="text-success" />
           <p>{user.whatsappNumber}</p>
           </div>
           <div className="contactIcons">
-          <FaEnvelope className="text-warning me-2" />
+          <FaEnvelope className="text-warning" />
           <p>{user.email}</p>
           </div>
         </td>
@@ -197,7 +196,7 @@ const defaultImage ='../../../../assets//images/DefaultImage.avif'
           <FaMapMarkerAlt className="text-danger me-2" />
 
           <p>
-              {user.address.city}, <br></br>{user.address.district} ,<br></br> {user.address.pin}
+              {user.address.city},{user.address.district} ,{user.address.pin}
             </p>
           </div>
          

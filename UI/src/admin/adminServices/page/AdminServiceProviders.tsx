@@ -7,7 +7,7 @@ import "./AdminServiceProvider.css";
 import { useServiceProviders } from "../hooks/useServiceProviders.ts.tsx";
 import { useProviderReviews } from "../hooks/useProviderReviews .tsx";
 import { Review } from "../../../Reviews/types/review.ts";
-const defaultImage ='../../../../assets//images/DefaultImage.avif'
+import defaultImage from '../../../assets/images/DefaultImage.avif'
 
 
 const AdminServiceProviders = () => {
@@ -91,12 +91,13 @@ const AdminServiceProviders = () => {
   };
 
   return (
-    <div className="row">
-      <div className="col-lg-3 col-md-4 col-sm-12">
+    <div className="dashboardContainer">
         <SideBar />
-      </div>
+        
 
-      <div className="col-lg-9 col-md-8 col-sm-12">
+
+
+      <div className="mainContent">
         <h2 className="table-title my-4 headingStyle">Service Providers Details</h2>
         {/* Top Controls */}
         <div className="d-flex justify-content-between align-items-center mb-3 totalCount">

@@ -1,5 +1,6 @@
 import React, {  useState } from "react";
 import "./ProviderCard.css";
+import defaultImage from "../../../assets/images/DefaultImage.avif";
 import {
   FaClock,
   FaGraduationCap,
@@ -17,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Redux/store";
-const defaultImage ='../../../../public/images/DefaultImage.avif'
+
 const ProviderCard: React.FC<{ provider: Provider }> = ({ provider }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 const navigate=useNavigate()

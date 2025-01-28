@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../utilities/axios";
 import { User } from "../../types/user";
-const image = "../../../../public/images/blackTools.jpeg";
+import image from "../../../assets/images/blackTools.jpeg";
 
 const Signup: React.FC = () => {
   const location = useLocation();

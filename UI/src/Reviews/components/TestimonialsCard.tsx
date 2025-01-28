@@ -1,7 +1,7 @@
 import React from "react";
 import { Review } from "../types/review";
 import "../page/TestimonialsPage/Testimonials.css";
-const  DefaultImage = '../../../public/images/DefaultImage.avif'
+import  DefaultImage from '../../assets/images//DefaultImage.avif'
 
 const TestimonialsCard: React.FC<{ testimonials: Review[] }> = ({ testimonials }) => {
     return (

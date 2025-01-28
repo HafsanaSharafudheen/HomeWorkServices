@@ -121,55 +121,80 @@ if(user===null){
 
   return (
     <div className="dashboardContainer">
-      <div className="row">
-        <div className="col-md-3">
-          <SideBar />
+      <SideBar />
+      <div className="mainContent">
+        <div className="row mt-3">
+          <div className="col-md-3 dashboardCard me-1">
+            <p>
+              <FaClipboardList /> Total Bookings
+            </p>
+            <p>{stats.totalBookings}</p>
+          </div>
+          <div className="col-md-3 dashboardCard me-1">
+            <p>
+              <FaUsers /> Total Users
+            </p>
+            <p>{stats.totalUsers}</p>
+          </div>
+          <div className="col-md-3 dashboardCard me-1">
+            <p>
+              <FaBuilding /> Total ServiceMen
+            </p>
+            <p>{stats.totalServiceProviders}</p>
+          </div>
+          <div className="col-md-3 dashboardCard me-1">
+            <p>
+              <FaTools /> Total Categories
+            </p>
+            <p>{stats.totalCategories}</p>
+          </div>
         </div>
-        <div className="col-md-9 mainContent mt-4">
-          <div className="header d-flex justify-content-between align-items-center">
-            <h1 className="headingStyle mb-3">Admin Dashboard</h1>
-           
-          </div>
-
-          <div className="row statsCards">
-            <div className="col-md-3 card me-2">
-              <p><FaClipboardList /> Total Bookings</p>
-              <h3>{stats.totalBookings}</h3>
-            </div>
-            <div className="col-md-3 card me-2">
-              <p><FaUsers /> Total Users</p>
-              <h3>{stats.totalUsers}</h3>
-            </div>
-            <div className="col-md-3 card me-2">
-              <p><FaBuilding /> Total ServiceMen</p>
-              <h3>{stats.totalServiceProviders}</h3>
-            </div>
-            <div className="col-md-3 card me-2">
-              <p> <FaTools /> Total Categories</p>
-              <h3>{stats.totalCategories}</h3>
+  
+        <div className="row charts mt-4">
+          <div className="col-12 col-sm-4">
+            <div className="barChart" style={{ height: "350px" }}>
+              <p className="headingStyle2 text-center">Bookings by Date</p>
+              <Bar
+                data={barData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
           </div>
-
-          <div className="row charts mt-5">
-            <div className="col-md-6 barChart" style={{ height: "300px" }}>
-              <h3>Bookings by Date</h3>
-              <Bar data={barData} options={{ responsive: true, maintainAspectRatio: false }} />
+  
+          <div className="col-12 col-sm-4">
+            <div className="barChart" style={{ height: "350px" }}>
+              <p className="headingStyle2 text-center">Bookings by Time</p>
+              <Bar
+                data={timeData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
-
-            <div className="col-md-6 barChart" style={{ height: "300px" }}>
-              <h3>Bookings by Time</h3>
-              <Bar data={timeData} options={{ responsive: true, maintainAspectRatio: false }} />
-            </div>
-
-            <div className="col-md-12 mt-5 pieChart" style={{ height: "300px" }}>
-              <h3>Payment Status Breakdown</h3>
-              <Pie data={pieData} options={{ responsive: true, maintainAspectRatio: false }} />
+          </div>
+  
+          <div className="col-12 col-sm-4">
+            <div className="pieChart" style={{ height: "350px" }}>
+              <p className="headingStyle2 text-center">Payment Status Breakdown</p>
+              <Pie
+                data={pieData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+  
+  
 };
 
 export default AdminDashboard;

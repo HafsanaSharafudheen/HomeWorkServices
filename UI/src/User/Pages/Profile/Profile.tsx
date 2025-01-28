@@ -15,13 +15,12 @@ import Footer from '../../components/Footer';
 import axios from '../../../utilities/axios';
 import { User } from '../../types/user';
 import { logout } from '../../../../Redux/user/userSlice';
-
+import defaultImage from'../../../assets/images/DefaultImage.avif'
 function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-const defaultImage ='../../../../public/images/DefaultImage.avif'
   // Fetch user details on component mount
   useEffect(() => {
     const fetchUserDetails = async () => {

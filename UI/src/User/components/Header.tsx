@@ -8,8 +8,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Redux/user/userSlice";
 import axios from "../../utilities/axios";
-const defaultProfilePicture = "../../../public/images/DefaultImage.avif";
-const logo='../../../public/images/logo.png'
+import defaultProfilePicture  from "../../assets/images/DefaultImage.avif";
+import  logo from '../../assets/images/logo.png'
 const Navbar: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);
 

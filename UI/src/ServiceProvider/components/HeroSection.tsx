@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 // import "../../assets/css/App";
+import HeroImage from '../../assets/images/HeroImage.jpg';
 import { RootState } from '../../../Redux/store';
 import { useSelector } from "react-redux";
-const HeroImage = '../../../public/images/HeroImage.jpg';
 
 const HeroSection: React.FC = () => {
   const user = useSelector((state: RootState) => state.user.user);

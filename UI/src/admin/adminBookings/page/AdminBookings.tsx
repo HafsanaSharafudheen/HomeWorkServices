@@ -65,20 +65,21 @@ const AdminBookings = () => {
   
   
   return (
-    <div className="row admin-bookings-container">
-      <div className="col-lg-3 col-md-4 col-sm-12">
+    <div className="dashboardContainer">
         <SideBar />
-      </div>
+        
 
-      <div className="col-lg-9 col-md-8 col-sm-12">
-        <h2 className="headingStyle my-4">Booking Details</h2>
+
+
+      <div className="mainContent">
+        <h2 className="headingStyle mt-2">Booking Details</h2>
 
         {loading && <p>Loading bookings...</p>}
         {error && <p className="text-danger">{error}</p>}
 
         {!loading && !error && (
           <>
-            <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
+            <div className="d-flex justify-content-between align-items-center mb-2 mt-3 totalCount">
               <div className="d-flex align-items-center">
                 <FaUsers className="me-2 text-primary" />
                 <h6>Total Bookings: {filteredBookings.length}</h6>
@@ -239,8 +240,9 @@ const AdminBookings = () => {
 
 </>
  )}
- </div>
+ 
 
+ 
         <div className="pagination d-flex align-items-center justify-content-center">
           <button
             className="btn btn-sm btn-primary mx-2"
@@ -357,8 +359,7 @@ const AdminBookings = () => {
 
 
       </div>
-  
-  
+      </div>
   );
 };
 

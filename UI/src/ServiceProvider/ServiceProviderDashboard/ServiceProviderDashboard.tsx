@@ -1,7 +1,7 @@
 import ServiceHeading from "./ServiceHeader"
 import ServiceNavbar from "../ServiceNavbar"
-import ServiceSidebar from "../serviceSidebar"
 import Chart from "../../admin/components/chart/chart"
+import ProviderSidebar from "../Sidebar/Sidebar"
 
 function ServiceProviderDashboard() {
 
@@ -10,17 +10,13 @@ function ServiceProviderDashboard() {
         <ServiceNavbar />
 
       
-       <div className="row">
+        <div className="d-flex h-screen bg-gray-100">
 
       
-           <div className="col-md-3">
-           <ServiceSidebar />
-
-           </div>
-            
-            <div className="col-md-9">
+       <ProviderSidebar />
+       <div className="w-100 p-6 bg-white flex-1">
               <ServiceHeading />
-              <div className="charts p-4">
+              <div className="charts">
              <Chart/>
               
               </div>

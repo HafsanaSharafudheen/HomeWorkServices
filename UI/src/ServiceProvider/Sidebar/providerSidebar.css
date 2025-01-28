@@ -1,0 +1,97 @@
+/* Provider Sidebar CSS */
+
+.providerSidebar {
+  background-color: var(--primary-color);
+  color: #fff;
+  width: 250px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  }
+  
+  .providerSidebar-collapsed {
+    width: 80px;
+  }
+  
+  .providerSidebar-header {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .providerSidebar-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .providerSidebar-navLinks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .providerSidebar-navItem {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: #ecf0f1;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .providerSidebar-navItem:hover {
+    background-color:white;
+    text-decoration: none;
+
+  color: black; }
+  
+  .providerSidebar-navLink {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .providerSidebar-navLink:hover{
+    text-decoration: none;
+  }
+  .providerSidebar-navLink .providerSidebar-navIcon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  
+  .providerSidebar-navText {
+    font-size: 16px;
+  }
+  
+  .providerSidebar-collapsed .providerSidebar-navText {
+    display: none;
+  }
+  
+  .providerSidebar-active {
+   
+    color: #1ec041;
+   
+  }
+  
+  .providerMainContent {
+    flex: 1;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+    background-color: #ecf0f1;
+  }
+  
+  .providerMainContent-shrinked {
+    margin-left: 250px;
+  }
+  
+  .providerMainContent-expanded {
+    margin-left: 80px;
+  }
+  

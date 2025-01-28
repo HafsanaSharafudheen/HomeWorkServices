@@ -7,7 +7,7 @@ import "./Login.css";
 import axios from "../../../utilities/axios";
 import { RootState } from '../../../../Redux/store';
 import Swal from 'sweetalert2';
- const image = "../../../../public/images/blackTools.jpeg";
+import image from "../../../assets/images/blackTools.jpeg";
 
 function Login() {
   const dispatch = useDispatch();

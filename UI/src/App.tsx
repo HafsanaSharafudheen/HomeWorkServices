@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './User/Pages/Login/Login';
 import Signup from './User/Pages/signup/Signup';
@@ -29,6 +28,7 @@ import Bookings from './User/Pages/UserBookings/Bookings';
 import Testimonials from './Reviews/page/TestimonialsPage/Testimonials';
 import ServicesDetails from './User/Pages/servicesDetailedPage/page/servicesDetails';
 import Chat from './Chat/page/chat/Chat';
+import Dashboard from './ServiceProvider/ServiceProviderDashboard/Dashboard';
 
 
 const App = () => {
@@ -67,6 +67,7 @@ const App = () => {
         <Route path="/DIY" element={<DiyPage />} />
         <Route path="/diyDetails" element={<DiyDetails/>} />
         <Route path="/paymentConfirmation" element={<PaymentConfirmation/>} />
+        <Route path="/mydash" element={<Dashboard/>} />
 
 
       </Routes>

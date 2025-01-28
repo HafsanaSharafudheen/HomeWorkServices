@@ -11,7 +11,7 @@ import {
 } from "../../../Redux/user/userSlice";
 import { Provider } from "../types/provider";
 
-const image ='../../../public//images/blackTools.jpeg'
+import image from'../../assets/images/blackTools.jpeg'
 function ServiceProviderSignup() {
   const location = useLocation();
   const mode = location.state?.mode;

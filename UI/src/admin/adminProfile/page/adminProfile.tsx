@@ -7,7 +7,7 @@ import { FaMapMarkerAlt, FaSignOutAlt } from "react-icons/fa";
 import "./AdminProfile.css";
 import { logout } from "../../../../Redux/user/userSlice";
 import { useAdminDetails } from "../hooks/useAdminDetails";
-const defaultImage = "../../../../public/images/DefaultImage.avif";
+import defaultImage from  "../../../assets/images/DefaultImage.avif"
 
 const SideBar = lazy(() => import("../../adminDashboard/page/sideBar/SideBar"));
 
@@ -32,15 +32,17 @@ const AdminProfile: React.FC = () => {
   }
 
   return (
-    <div className="row AdminProfileContainer">
-      <div className="col-lg-3 col-md-4 col-sm-12">
-        <Suspense fallback={<div>Loading Sidebar...</div>}>
+      <div className="dashboardContainer">
+      <Suspense fallback={<div>Loading Sidebar...</div>}>
           <SideBar />
         </Suspense>
-      </div>
 
-      <div className="col-lg-9 col-md-8 col-sm-12">
-        <div className="AdminProfile">
+    
+
+
+
+  <div className="mainContent">
+            <div className="AdminProfile">
           <div className="ProfilePictureContainer">
           <img
   src={adminDetails?.profilePicture ? adminDetails.profilePicture : defaultImage}
@@ -75,8 +77,8 @@ const AdminProfile: React.FC = () => {
             </button>
           </div>
         </div>
+        </div>
       </div>
-    </div>
   );
 };
 

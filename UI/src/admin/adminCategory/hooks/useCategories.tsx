@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Category } from "../types/category";
+import { Category } from "../../../types/category";
 import axios from "../../../utilities/axios";
 
 

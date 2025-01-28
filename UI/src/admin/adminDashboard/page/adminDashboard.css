@@ -94,19 +94,50 @@
     visibility: visible;
     opacity: 1;
   }
-  .card {
+  .dashboardCard {
     background-color: var(--primary-color);
     color: #fff;
     width: 200px;
-    height: 100px;
-    padding: 20px;
     border-radius: 8px;
+    padding: 10px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease; 
   }
-  .card:hover {
+  .dashboardCard:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: var(--border-color);
   }
+  .barChart,
+.pieChart {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.barChart:hover,
+.pieChart:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.headingStyle2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+.mainContent {
+  flex: 1; 
+  padding: 20px;
+  background-color: #f8f9fa; 
+  overflow-y: auto;
+
+}.dashboardContainer {
+  display: flex;
+  height: 100vh;
+}
+
   
