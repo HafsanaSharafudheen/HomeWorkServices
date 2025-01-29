@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineMail, AiOutlinePhone, AiOutlineSetting } from "react-icons/ai";
 import { FaMapMarkerAlt, FaSignOutAlt } from "react-icons/fa";
 
-import "./AdminProfile.css";
+import "./adminProfile";
 import { logout } from "../../../../Redux/user/userSlice";
 import { useAdminDetails } from "../hooks/useAdminDetails";
 import defaultImage from  "../../../assets/images/DefaultImage.avif"
