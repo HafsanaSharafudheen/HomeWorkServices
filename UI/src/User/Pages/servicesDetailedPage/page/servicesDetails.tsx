@@ -244,7 +244,7 @@ const ServicesDetails: React.FC = () => {
         ) : filteredProviders.length > 0 ? (
           <div className="row">
             {filteredProviders.map((provider) => (
-              <div className="col-md-12 mb-4" key={provider.id}>
+              <div className="col-md-12 mb-4" key={provider._id}>
                 <ProviderCard provider={provider} />
               </div>
             ))}
