@@ -1,5 +1,5 @@
 import React, {  useState } from "react";
-import "./ProviderCard";
+import "./providerCard.css";
 import defaultImage from "../../../assets/images/DefaultImage.avif";
 import {
   FaClock,
