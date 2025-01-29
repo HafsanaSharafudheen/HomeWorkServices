@@ -87,63 +87,70 @@ const AdminUsers = () => {
       <div className="mainContent">
       <h2 className="table-title my-4 headingStyle">User Details</h2>
 
-      <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
-      <div className="d-flex align-items-center">
+      <div className="container">
+  <div className="row g-3 align-items-center mb-3 totalCount">
+    
+    {/* Total Users - Full Width on Small, Inline on Medium+ */}
+    <div className="col-12 col-md-6 d-flex align-items-center">
       <FaUsers className="me-2 text-primary" />
-    <h6>Total Users: {filteredUsers.length}</h6>
-  </div>
-  <div className="d-flex align-items-center">
+      <h6 className="mb-0">Total Users: {filteredUsers.length}</h6>
+    </div>
 
-  <div className="form-floating me-2">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Search by name"
-      className="form-control"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-    />
-    <label htmlFor="searchInput">Search by name</label>
- 
-  </div>
-  <div className="dropdown mt-2">
-    <button
-                className="DefaultDropDown btn-sm btn dropdown-toggle"
-                type="button"
-      id="filterDropdown"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-    >
-      <FaFilter className="me-2" />
-      Filter
-    </button>
-    <ul className="dropdown-menu" aria-labelledby="filterDropdown">
-      <li>
-        <button
-          className="dropdown-item"
-          onClick={() => setFilterType("alphabetical")}
-        >
-          Alphabetical Order
-        </button>
-      </li>
-      <li>
-        <button
-          className="dropdown-item"
-          onClick={() => setFilterType("date")}
-        >
-          Date Added
-        </button>
-      </li>
-      <li>
-        <button
-          className="dropdown-item"
-          onClick={() => setFilterType("")}
-        >
-          Clear Filter
-        </button>
-      </li>
-    </ul>
-  </div>
+    {/* Search and Filter - Full Width on Small, Inline on Medium+ */}
+    <div className="col-12 col-md-6">
+      <div className="row g-2">
+        
+        {/* Search Input with Floating Label */}
+        <div className="col-12 col-md-8">
+          <div className="form-floating">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by name"
+              className="form-control"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <label htmlFor="searchInput">Search by name</label>
+          </div>
+        </div>
+
+        {/* Filter Dropdown */}
+        <div className="col-12 col-md-4">
+          <div className="dropdown">
+            <button
+              className="btn btn-sm btn-primary dropdown-toggle w-100"
+              type="button"
+              id="filterDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <FaFilter className="me-2" />
+              Filter
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="filterDropdown">
+              <li>
+                <button className="dropdown-item" onClick={() => setFilterType("alphabetical")}>
+                  Alphabetical Order
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => setFilterType("date")}>
+                  Date Added
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => setFilterType("")}>
+                  Clear Filter
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </div>
 

@@ -32,9 +32,18 @@ const ServiceDetailsSidebar: React.FC<{ provider: Provider; onClose: () => void 
   const user = useSelector((state: RootState) => state.user.user);
 
 const navigate=useNavigate()
+
+const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const maxDate = new Date(today);
+  maxDate.setMonth(today.getMonth() + 3);
+
 const handleDateChange = (date: Date) => {
   const selectedDate = new Date(date);
   selectedDate.setHours(0, 0, 0, 0); // Set to midnight in local time
+  if (selectedDate >= today && selectedDate <= maxDate) {
+    setSelectedDate(selectedDate);
+  }
 
   // Convert to UTC for consistency
   const utcDate = new Date(
@@ -186,8 +195,13 @@ const handleDateChange = (date: Date) => {
         {selectedTab === "slots" && (
           <div className="tab-pane active">
             <div className="calendar-container">
-              <Calendar value={selectedDate} onChange={handleDateChange} />
-            </div>
+            <Calendar
+          value={selectedDate}
+          onChange={handleDateChange}
+          minDate={today}
+          maxDate={maxDate}
+          tileDisabled={({ date }) => date < today || date > maxDate}
+        />            </div>
             {selectedDate && (
              <div className="time-slots-container mt-3">
              <div className="row">

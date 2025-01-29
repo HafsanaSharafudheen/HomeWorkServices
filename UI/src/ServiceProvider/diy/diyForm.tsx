@@ -218,7 +218,7 @@ export const DIYForm: React.FC = () => {
         </Suspense>
   
         {/* Main Content Section */}
-        <div className="flex-1 p-6 bg-white w-100">
+        <div className="w-100 p-6 bg-white flex-1 fixed-he-scroll">
           <div className="formContainer">
             <form onSubmit={handleSubmit} className="p-4 shadow rounded bg-light">
               <h1 className="headingStyle">Submit Your DIY Tip</h1>

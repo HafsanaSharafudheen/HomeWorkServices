@@ -100,56 +100,68 @@ const AdminServiceProviders = () => {
       <div className="mainContent">
         <h2 className="table-title my-4 headingStyle">Service Providers Details</h2>
         {/* Top Controls */}
-        <div className="d-flex justify-content-between align-items-center mb-3 totalCount">
-          <div className="d-flex align-items-center">
-            <FaUsers className="me-2 text-primary" />
-            <h6>Total Providers: {filteredProviders.length}</h6>
-          </div>
-          {/* Search and Filter */}
-          <div className="d-flex align-items-center">
-            <div className="form-floating me-3">
-              <input
-                type="text"
-                id="searchInput"
-                placeholder="Search by name or category"
-                className="form-control"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <label htmlFor="searchInput">Search</label>
-            </div>
-            <div className="dropdown">
-              <button
-                className="DefaultDropDown btn-sm btn dropdown-toggle"
-                type="button"
-                id="filterDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <FaFilter className="me-2" />
-                Filter
-              </button>
-              <ul className="dropdown-menu" aria-labelledby="filterDropdown">
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setFilterType("category")}
-                  >
-                    Category Based
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => setFilterType("clear")}
-                  >
-                    Clear Filter
-                  </button>
-                </li>
-              </ul>
-            </div>
+        <div className="container">
+  <div className="row g-3 align-items-center mb-3 totalCount">
+    
+    {/* Total Providers - Full Width on Small, Inline on Medium+ */}
+    <div className="col-12 col-md-6 d-flex align-items-center">
+      <FaUsers className="me-2 text-primary" />
+      <h6 className="mb-0">Total Providers: {filteredProviders.length}</h6>
+    </div>
+
+    {/* Search and Filter - Full Width on Small, Inline on Medium+ */}
+    <div className="col-12 col-md-6">
+      <div className="row g-2">
+        
+        {/* Search Input with Floating Label */}
+        <div className="col-12 col-md-8">
+          <div className="form-floating">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search by name or category"
+              className="form-control"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <label htmlFor="searchInput">Search</label>
           </div>
         </div>
+
+        {/* Filter Dropdown */}
+        <div className="col-12 col-md-4">
+          <div className="dropdown">
+            <button
+              className="btn btn-sm btn-primary dropdown-toggle w-100"
+              type="button"
+              id="filterDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <FaFilter className="me-2" />
+              Filter
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="filterDropdown">
+              <li>
+                <button className="dropdown-item" onClick={() => setFilterType("category")}>
+                  Category Based
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => setFilterType("clear")}>
+                  Clear Filter
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
         {/* Table */}
         <div className="table-responsive">

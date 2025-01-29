@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card,  Form } from "react-bootstrap";
+import { Card, Form } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
 import axios from "../../../utilities/axios";
 import {
@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import './chart.css'
+import './chart.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -98,19 +98,15 @@ function Chart() {
           "rgba(153, 102, 255, 0.8)", 
           "rgba(201, 203, 207, 0.8)", 
         ],
-       
       },
     ],
   };
-  
 
   const chartOptions = {
     responsive: true,
     plugins: {
       legend: {
-        labels: {
-          color: "black", 
-        },
+        labels: { color: "black" },
       },
       title: {
         display: true,
@@ -118,94 +114,55 @@ function Chart() {
         color: "black",
       },
     },
-   
   };
-  
 
   return (
     <div className="dashboard">
-
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger text-center">{error}</p>}
 
-      <div className="row mb-5">
-  {/* Total Bookings Card */}
-  <div className="col-md-4">
-    <div className="providerCard">
-      <div className="providerCard-body text-center">
-        <h6 className="providerCard-title">Total Bookings :{dashboardData.totalBookings}</h6>
-      </div>
-    </div>
-  </div>
-
-  {/* Pending Bookings providerCard */}
-  <div className="col-md-4">
-    <div className="providerCard">
-      <div className="providerCard-body text-center">
-        <h6 className="providerCard-title">Pending :{dashboardData.paymentStatus.data[0]||0}</h6>
-      </div>
-    </div>
-  </div>
-
-  {/* Completed Bookings providerCard */}
-  <div className="col-md-4">
-    <div className="providerCard">
-      <div className="providerCard-body text-center">
-        <h6 className="providerCard-title">Completed :{dashboardData.paymentStatus.data[1]||0}</h6>
-      </div>
-    </div>
-  </div>
-</div>
-
-<Form>
-  <div className="row align-items-end mb-5">
-    {/* Start Date */}
-    <div className="col-md-3">
-      <Form.Group>
-        <Form.Label>Start Date</Form.Label>
-        <Form.Control
+      {/* Search Date Filters */}
+      <div className="search-container">
+        <input
           type="date"
           value={dateRange.startDate}
-          onChange={(e) =>
-            setDateRange({ ...dateRange, startDate: e.target.value })
-          }
+          onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
         />
-      </Form.Group>
-    </div>
-
-    <div className="col-md-3">
-      <Form.Group>
-        <Form.Label>End Date</Form.Label>
-        <Form.Control
+        <input
           type="date"
           value={dateRange.endDate}
-          onChange={(e) =>
-            setDateRange({ ...dateRange, endDate: e.target.value })
-          }
+          onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
         />
-      </Form.Group>
-    </div>
+        <button className="DefaultButton" onClick={handleDateSearch}>Search</button>
+      </div>
+{/* Booking Cards */}
+<div className="row justify-content-center g-2 mt-4">
+        <div className="col-12 col-md-4">
+          <div className="providerCard">
+            <h6 className="providerCard-title">Total Bookings: {dashboardData.totalBookings}</h6>
+          </div>
+        </div>
 
-    <div className="col-md-3">
-  <button
-    onClick={handleDateSearch}
-    className="btn btn-primary d-flex align-items-center justify-content-center"
-  >
-    Search
-  </button>
-</div>
+        <div className="col-12 col-md-4">
+          <div className="providerCard">
+            <h6 className="providerCard-title">Pending: {dashboardData.paymentStatus.data[0] || 0}</h6>
+          </div>
+        </div>
 
-  </div>
-</Form>
-
+        <div className="col-12 col-md-4">
+          <div className="providerCard">
+            <h6 className="providerCard-title">Completed: {dashboardData.paymentStatus.data[1] || 0}</h6>
+          </div>
+        </div>
+      </div>
       {/* Chart */}
-     <div className="ChartDiagram">
-     <Card.Body style={{ backgroundColor: "white"}}>
-    <Bar data={chartData} options={chartOptions} />
-  </Card.Body>
-     </div>
- 
+      <div className="ChartDiagram">
+        <Card.Body>
+          <Bar data={chartData} options={chartOptions} />
+        </Card.Body>
+      </div>
 
+      
     </div>
   );
 }

@@ -79,40 +79,58 @@ const AdminBookings = () => {
 
         {!loading && !error && (
           <>
-            <div className="d-flex justify-content-between align-items-center mb-2 mt-3 totalCount">
-              <div className="d-flex align-items-center">
-                <FaUsers className="me-2 text-primary" />
-                <h6>Total Bookings: {filteredBookings.length}</h6>
-              </div>
-              <div className="d-flex align-items-center">
-                <input
-                  type="text"
-                  placeholder="Search by name, category, date, or status"
-                  className="form-control me-3"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <select
-                  className="form-select me-3"
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                  <option value="">All Categories</option>
-                  {categories.map((category) => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="form-select"
-                  onChange={(e) => setPaymentStatus(e.target.value)}
-                >
-                  <option value="">All Payment Status</option>
-                  <option value="completed">Completed</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div>
-            </div>
+
+          <div className="container">
+  {/* Responsive Layout */}
+  <div className="row g-3 align-items-center mb-2 mt-3 totalCount">
+    
+    {/* Total Bookings - Full Width on Small, Inline on Medium+ */}
+    <div className="col-12 col-md-6 d-flex align-items-center">
+      <FaUsers className="me-2 text-primary" />
+      <h6 className="mb-0">Total Bookings: {filteredBookings.length}</h6>
+    </div>
+
+    {/* Search, Category, and Payment Filters */}
+    <div className="col-12 col-md-6">
+      <div className="row g-2">
+        
+        {/* Search Input */}
+        <div className="col-12 col-md-6">
+          <input
+            type="text"
+            placeholder="Search by name, category, date, or status"
+            className="form-control"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        {/* Category Filter */}
+        <div className="col-12 col-md-3">
+          <select className="form-select" onChange={(e) => setSelectedCategory(e.target.value)}>
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Payment Status Filter */}
+        <div className="col-12 col-md-3">
+          <select className="form-select" onChange={(e) => setPaymentStatus(e.target.value)}>
+            <option value="">All Payment Status</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
         <div className="table-responsive">
           <table className="bookingstable table">
             <thead>

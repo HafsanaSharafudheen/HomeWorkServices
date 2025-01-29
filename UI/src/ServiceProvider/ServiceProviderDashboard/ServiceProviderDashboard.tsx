@@ -15,7 +15,6 @@ function ServiceProviderDashboard() {
       
        <ProviderSidebar />
        <div className="w-100 p-6 bg-white flex-1">
-              <ServiceHeading />
               <div className="charts">
              <Chart/>
               
