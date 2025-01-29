@@ -1,4 +1,3 @@
-import ServiceHeading from "./ServiceHeader"
 import ServiceNavbar from "../ServiceNavbar"
 import Chart from "../../admin/components/chart/chart"
 import ProviderSidebar from "../Sidebar/Sidebar"

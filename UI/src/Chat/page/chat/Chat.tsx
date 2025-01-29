@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import socket from '../../../utilities/socket'; // Import the socket instance
+import socket from '../../../utilities/socket';
 
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Redux/store";
 import axios from "../../../utilities/axios";
 import { ChatType } from "../../types/chat";
-import { BiCheckDouble } from "react-icons/bi"; // Import double tick icon
+import { BiCheckDouble } from "react-icons/bi"; 
 import './Chat.css'
 import Footer from "../../../User/components/Footer";
 import Header from "../../../User/components/Header";
