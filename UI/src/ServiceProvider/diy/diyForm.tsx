@@ -9,7 +9,6 @@ import ProviderSidebar from '../Sidebar/Sidebar';
 
 const PreviousDIY = lazy(() => import("../../DIY/components/diy/PreviousDIY"));
 const ServiceNavbar = lazy(() => import("../ServiceNavbar"));
-const ServiceSidebar = lazy(() => import("../serviceSidebar"));
 
 export const DIYForm: React.FC = () => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);

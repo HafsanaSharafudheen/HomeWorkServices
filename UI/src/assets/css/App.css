@@ -121,7 +121,7 @@ align-items: center;
 }
 
 .form-floating .form-control:focus::placeholder {
-  opacity: 0; /
+  opacity: 0; 
 }
 
 .form-floating .form-control:not(:focus) + label {
