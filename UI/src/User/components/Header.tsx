@@ -56,110 +56,100 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
-      <div className="container">
-        {/* Logo */}
-        <img src={logo} alt="Logo" style={{ height: "100px" }} />
+    <div className="container">
+      {/* Logo */}
+      <img src={logo} alt="Logo" style={{ height: "100px" }} />
 
-        {/* If user exists, show full navbar, otherwise show only Home */}
-        {user ? (
-          <>
-            {/* Toggle Button */}
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <FaHome />
-            </button>
+      {user ? (
+        <>
+          {/* Toggle Button */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <FaHome />
+          </button>
 
-            {/* Collapsible Wrapper */}
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  {/* <a className="nav-link d-flex align-items-center" href="/">
-                    <FaHome className="me-2" />
-                    Home
-                  </a> */}
-                  <Link to="/DIY" className="nav-link d-flex align-items-center">
-    <FaHammer className="me-2" />
-    DIY
-  </Link>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link d-flex align-items-center" href="/DIY">
-                    <FaHammer className="me-2" />
-                    DIY
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link d-flex align-items-center" href="/YourChats">
-                    <FaComments className="me-2" />
-                    Messages
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link d-flex align-items-center" href="/YourBookings">
-                    <FaBell className="me-2" />
-                    Bookings
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link d-flex align-items-center" href="/aboutUs">
-                    <FaInfoCircle className="me-2" />
-                    About Us
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link d-flex align-items-center" href="/testimonials">
-                    <FaStar className="me-2" />
-                    Testimonials
-                  </a>
-                </li>
+          {/* Collapsible Wrapper */}
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link className="nav-link d-flex align-items-center" to="/">
+                  <FaHome className="me-2" />
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link d-flex align-items-center" to="/DIY">
+                  <FaHammer className="me-2" />
+                  DIY
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link d-flex align-items-center" to="/YourChats">
+                  <FaComments className="me-2" />
+                  Messages
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link d-flex align-items-center" to="/YourBookings">
+                  <FaBell className="me-2" />
+                  Bookings
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link d-flex align-items-center" to="/aboutUs">
+                  <FaInfoCircle className="me-2" />
+                  About Us
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link d-flex align-items-center" to="/testimonials">
+                  <FaStar className="me-2" />
+                  Testimonials
+                </Link>
+              </li>
 
-                {/* Profile Section */}
-                  <li className="nav-item dropdown">
-                    <a
-                      className="nav-link dropdown-toggle d-flex align-items-center"
-                      href="#"
-                      id="navbarDropdownMenuLink"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
+              {/* Profile Section */}
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle d-flex align-items-center"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   <img
-    src={
-      profile.profilePicture
-        ? profile.profilePicture
-        : defaultProfilePicture
-    }
-    className="rounded-circle navProfile-img"
-    alt="Profile"
-  />
-
-                    </a>
-                    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li>
-                        <a className="dropdown-item" href="/profile">
-                          My Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#" onClick={handleLogout}>
-                          Logout
-                        </a>
-                      </li>
-                    </ul>
+                    src={profile?.profilePicture || defaultProfilePicture}
+                    className="rounded-circle navProfile-img"
+                    alt="Profile"
+                  />
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li>
+                    <Link className="dropdown-item" to="/profile">
+                      My Profile
+                    </Link>
                   </li>
-              </ul>
-            </div>
-          </>
-        ) : null}
-      </div>
-    </nav>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </>
+      ) : null}
+    </div>
+  </nav>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "../../../utilities/axios";
 import { User } from "../../types/user";
 import image from "../../../assets/images/blackTools.jpeg";
@@ -360,11 +360,11 @@ const Signup: React.FC = () => {
           </div>
         </Form>
       
-      <div className="text-center">
-            <a href="/login" className="text-muted" style={{fontSize:"12px"}}>
-             Already Have an account? <span className="text-primary">Login</span>
-            </a>
-          </div>
+        <div className="text-center">
+  <Link to="/login" className="text-muted" style={{ fontSize: "12px" }}>
+    Already Have an account? <span className="text-primary">Login</span>
+  </Link>
+</div>
           </div>
 
           
