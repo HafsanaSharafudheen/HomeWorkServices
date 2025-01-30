@@ -237,16 +237,17 @@ const AdminServiceProviders = () => {
                     <td>
 
                   
-                    <a
-    href="#"
-    className="text-primary"
-    onClick={(e) => {
-      e.preventDefault();
-      handleViewDetails(provider);
-    }}
-  >
-    View Details
-  </a>
+                    <button
+  className="text-primary"
+  style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+  onClick={(e) => {
+    e.preventDefault();
+    handleViewDetails(provider);
+  }}
+>
+  View Details
+</button>
+
   </td>
                   </tr>
                 ))

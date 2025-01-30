@@ -117,33 +117,33 @@ const Navbar: React.FC = () => {
 
               {/* Profile Section */}
               <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle d-flex align-items-center"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <img
-                    src={profile?.profilePicture || defaultProfilePicture}
-                    className="rounded-circle navProfile-img"
-                    alt="Profile"
-                  />
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li>
-                    <Link className="dropdown-item" to="/profile">
-                      My Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      Logout
-                    </button>
-                  </li>
-                </ul>
-              </li>
+  <button
+    className="nav-link dropdown-toggle d-flex align-items-center"
+    id="navbarDropdownMenuLink"
+    role="button"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+    style={{ background: "none", border: "none" }} // Removes default button styles
+  >
+    <img
+      src={profile?.profilePicture || defaultProfilePicture}
+      className="rounded-circle navProfile-img"
+      alt="Profile"
+    />
+  </button>
+  <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <li>
+      <Link className="dropdown-item" to="/profile">
+        My Profile
+      </Link>
+    </li>
+    <li>
+      <button className="dropdown-item" onClick={handleLogout}>
+        Logout
+      </button>
+    </li>
+  </ul>
+</li>
             </ul>
           </div>
         </>
