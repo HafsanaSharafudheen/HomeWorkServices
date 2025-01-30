@@ -85,9 +85,10 @@ const Navbar: React.FC = () => {
                     Home
                   </a> */}
                   <Link to="/DIY" className="nav-link d-flex align-items-center">
-  <FaHammer className="me-2" />
-  DIY
-</Link>
+                    <FaHammer className="me-2" />
+                    DIY
+                  </Link>
+                  
                 </li>
                 <li className="nav-item">
                   <a className="nav-link d-flex align-items-center" href="/DIY">
