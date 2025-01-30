@@ -64,8 +64,6 @@ const payementCOntroller_1 = require("../controllers/booking/payementCOntroller"
 const workingProgressUpdate_1 = require("../controllers/booking/workingProgressUpdate");
 const providerActions_1 = __importDefault(require("../controllers/admin/providerActions"));
 const fetchWorkSamples_1 = __importDefault(require("../controllers/user/fetchWorkSamples"));
-const payoutRoutes_1 = require("../controllers/booking/payoutRoutes");
-// import { razorpayPaymentToBankAccount } from '../controllers/booking/payoutRoutes';
 (0, socketServer_1.default)(server);
 app.get('/testimonials', fetchTestimonials_1.default);
 app.post("/signup", signupController_1.default.handleSignup);
@@ -79,7 +77,6 @@ app.get('/all-diys', fetchAllDiys_1.default);
 app.get('/allServices', fetchAllServices_1.fetchAllServices);
 app.get('/providers', fetchAllProvidersByCategory_1.default);
 app.get('/workSamples/:providerId', fetchWorkSamples_1.default);
-// app.post('/test-payout',razorpayPaymentToBankAccount )
 app.use(jwtService_1.verifyToken);
 app.get('/serviceProviderProfile', fetchProfileDetails_1.default);
 app.post('/updateProfile', profileUpdate_1.default);
@@ -128,6 +125,6 @@ app.post('/deleteBooking', DeleteBooking_1.deleteFromUser);
 // payment
 app.post('/razorpay', payementCOntroller_1.razorpayBooking);
 app.post('/updateBookingDetails', bookingStstusUpdate_1.default);
-app.post('/payout', payoutRoutes_1.razorpayPaymentToBankAccount);
+app.post('/transferDate', payementCOntroller_1.razorpayPaymentToBankAccount);
 app.use(errorMiddleware_1.default);
 //# sourceMappingURL=server.js.map

@@ -36,8 +36,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = void 0;
 const jwt = __importStar(require("jsonwebtoken"));
 const verifyToken = (req, res, next) => {
+    console.log(req.cookies, "requestcokkies");
     const token = req.cookies && req.cookies.access_token;
-    // console.log(req.cookies,"requestcokkies")
+    console.log(token, "token");
     if (!token) {
         return res.status(401).json({ message: "You need to login" });
     }
@@ -48,7 +49,7 @@ const verifyToken = (req, res, next) => {
         }
         console.log('Token verified successfully');
         req.user = user;
-        //  console.log(req.user,"request user after the verifictaion")
+        console.log(req.user, "request user after the verifictaion");
         next();
     });
 };

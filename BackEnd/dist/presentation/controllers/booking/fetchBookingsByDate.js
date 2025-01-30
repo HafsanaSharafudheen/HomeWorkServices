@@ -14,10 +14,12 @@ const bookingService_1 = require("../../../application/businesslogics/bookingSer
 const getUserBookingsbyTime = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { providerId, selectedTime, selectedDate } = req.query;
+        console.log("entered insid ethe getuserBookingsByTIme");
         if (!providerId) {
             return res.status(400).json({ message: "providerId is required." });
         }
         const bookings = yield (0, bookingService_1.getUserBookingsBySelectedTime)(providerId, selectedTime, selectedDate);
+        console.log("bookings in getuserBookingsByTIme", bookings);
         res.status(200).json({ bookings });
     }
     catch (error) {

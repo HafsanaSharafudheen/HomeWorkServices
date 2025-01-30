@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.razorpayBooking = void 0;
+exports.razorpayPaymentToBankAccount = exports.razorpayBooking = void 0;
 const razorpay_1 = __importDefault(require("razorpay"));
 const booking_1 = __importDefault(require("../../../infrastructure/dbModels/booking"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -64,4 +64,31 @@ const razorpayBooking = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.razorpayBooking = razorpayBooking;
+const razorpayPaymentToBankAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { booking } = req.body;
+        // Find the booking by ID
+        const existingBooking = yield booking_1.default.findById(booking._id);
+        if (!existingBooking) {
+            return res.status(404).json({ error: "Booking not found" });
+        }
+        if (existingBooking.payment.status !== "completed") {
+            return res
+                .status(400)
+                .json({ error: "Payment status is not eligible for transfer" });
+        }
+        // Update the releasedDate to the current date
+        const currentDate = new Date();
+        existingBooking.payment.releasedDate = currentDate;
+        // Save the updated booking back to the database
+        yield existingBooking.save();
+        console.log("Updated Booking:", existingBooking);
+        res.status(200).json({ message: "Payment transferred", booking: existingBooking });
+    }
+    catch (error) {
+        console.error("Error updating payment release date:", error);
+        res.status(500).json({ error: "Failed to update payment release date" });
+    }
+});
+exports.razorpayPaymentToBankAccount = razorpayPaymentToBankAccount;
 //# sourceMappingURL=payementCOntroller.js.map

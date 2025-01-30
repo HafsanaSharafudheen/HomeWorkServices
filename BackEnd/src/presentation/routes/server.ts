@@ -87,7 +87,6 @@ app.get('/providers',fetchAllProvidersByCategory);
 app.get('/workSamples/:providerId',fetchWorkSamples)
 
 
-
 app.use(verifyToken);
 
 app.get('/serviceProviderProfile',fetchProfileDetails);
@@ -143,7 +142,12 @@ app.post('/updateWorkDetails', upload.fields([
   { name: "photos", maxCount: 10 },
   { name: "videos", maxCount: 5 },]),workingProgressUpdate)
 
+
+
 app.get('/bookingsSlot',getUserBookingsbyTime)
+
+
+
 app.post('/deleteBooking',deleteFromUser)
 // payment
 app.post('/razorpay',razorpayBooking )
