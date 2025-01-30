@@ -5,7 +5,7 @@ import { FaHome,  FaHammer, FaComments, FaBell, FaInfoCircle, FaStar } from "rea
 import "../../assets/css/App.css";
 
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../Redux/user/userSlice";
 import axios from "../../utilities/axios";
 import defaultProfilePicture  from "../../assets/images/DefaultImage.avif";
@@ -80,10 +80,14 @@ const Navbar: React.FC = () => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link d-flex align-items-center" href="/">
+                  {/* <a className="nav-link d-flex align-items-center" href="/">
                     <FaHome className="me-2" />
                     Home
-                  </a>
+                  </a> */}
+                  <Link to="/DIY" className="nav-link d-flex align-items-center">
+    <FaHammer className="me-2" />
+    DIY
+  </Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link d-flex align-items-center" href="/DIY">
