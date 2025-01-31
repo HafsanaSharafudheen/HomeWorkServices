@@ -50,7 +50,7 @@ const verifyToken = (req, res, next) => {
         }
         console.log('Token verified successfully');
         req.user = user;
-        console.log(req.user, "request user after the verifictaion");
+        console.log(req.user, "request user after the verifictaion ");
         next();
     });
 };
