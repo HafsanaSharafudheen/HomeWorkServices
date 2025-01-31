@@ -6,6 +6,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 export const verifyToken = (req: AuthenticatedRequest, res: any, next: NextFunction): void => {
+  console.log("verifyToken 1");
   console.log(req.cookies,"requestcokkies");
   const token: string | undefined = req.cookies && req.cookies.access_token;
   console.log(token,"token")

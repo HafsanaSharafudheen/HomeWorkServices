@@ -36,6 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = void 0;
 const jwt = __importStar(require("jsonwebtoken"));
 const verifyToken = (req, res, next) => {
+    console.log("verifyToken 1");
     console.log(req.cookies, "requestcokkies");
     const token = req.cookies && req.cookies.access_token;
     console.log(token, "token");

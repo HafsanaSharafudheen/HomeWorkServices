@@ -86,8 +86,9 @@ app.get('/allServices',fetchAllServices);
 app.get('/providers',fetchAllProvidersByCategory);
 app.get('/workSamples/:providerId',fetchWorkSamples)
 
-
+console.log("before verify tocken");
 app.use(verifyToken);
+console.log("after verify tocken");
 
 app.get('/serviceProviderProfile',fetchProfileDetails);
 
