@@ -26,7 +26,7 @@ console.log(token,"ttttttttt")
   const cookieOptions: CookieOptions = {
     httpOnly: true,
     secure: false, //process.env.NODE_ENV === 'production',
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 30 * 24 * 60 * 60 * 1000
   };
 
