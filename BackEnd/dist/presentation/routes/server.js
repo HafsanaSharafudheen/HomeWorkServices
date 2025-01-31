@@ -60,8 +60,8 @@ app.use('/uploads', express_1.default.static('uploads'));
 //   credentials: true // ✅ Ensures cookies are included in requests
 // }));
 app.use((0, cors_1.default)({
-    origin: "http://homeworksapp.shop", // ✅ Use exact frontend URL
-    credentials: true, // ✅ Allow sending cookies
+    origin: "https://homeworksapp.shop",
+    credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'], // ✅ Ensure necessary headers are allowed
     exposedHeaders: ['Set-Cookie'] // ✅ Allow frontend to access Set-Cookie header
