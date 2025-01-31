@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 interface CookieOptions {
   httpOnly: boolean;
   secure: boolean;
-  sameSite: 'strict' | 'lax' | 'none';
+  sameSite: 'strict' | 'none';
   maxAge: number;
 }
 
@@ -20,7 +20,7 @@ console.log(token,"ttttttttt")
   const cookieOptions: CookieOptions = {
     httpOnly: true,
     secure: false,
-    sameSite: 'strict',
+    sameSite: (process.env.NODE_ENV === "production" ? "Strict" : "None") as "strict" | "none",
     maxAge: 30 * 24 * 60 * 60 * 1000 
   };
 

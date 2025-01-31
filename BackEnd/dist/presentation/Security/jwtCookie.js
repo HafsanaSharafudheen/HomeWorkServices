@@ -45,7 +45,7 @@ const setJwtCookie = (userId, res) => {
     const cookieOptions = {
         httpOnly: true,
         secure: false,
-        sameSite: 'strict',
+        sameSite: (process.env.NODE_ENV === "production" ? "Strict" : "None"),
         maxAge: 30 * 24 * 60 * 60 * 1000
     };
     res.cookie('access_token', token, cookieOptions);
