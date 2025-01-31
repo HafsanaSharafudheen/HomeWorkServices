@@ -54,10 +54,17 @@ app.use('/uploads', express_1.default.static('uploads'));
 //     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
 //     credentials: true
 //   }));
+// app.use(cors({
+//   origin: "http://homeworksapp.shop", // ✅ Replace with your frontend URL
+//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//   credentials: true // ✅ Ensures cookies are included in requests
+// }));
 app.use((0, cors_1.default)({
-    origin: "http://homeworksapp.shop", // ✅ Replace with your frontend URL
+    origin: "http://homeworksapp.shop", // ✅ Use exact frontend URL
+    credentials: true, // ✅ Allow sending cookies
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    credentials: true // ✅ Ensures cookies are included in requests
+    allowedHeaders: ['Content-Type', 'Authorization'], // ✅ Ensure necessary headers are allowed
+    exposedHeaders: ['Set-Cookie'] // ✅ Allow frontend to access Set-Cookie header
 }));
 app.use(body_parser_1.default.json());
 const socketServer_1 = __importDefault(require("../../infrastructure/services/socketServer"));
