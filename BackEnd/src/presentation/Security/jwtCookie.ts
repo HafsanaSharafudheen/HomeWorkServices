@@ -23,12 +23,12 @@ console.log(token,"ttttttttt")
   //   sameSite: (process.env.NODE_ENV === "production" ? "strict" : "none"),
   //   maxAge: 30 * 24 * 60 * 60 * 1000 
   // };
-  const cookieOptions: CookieOptions = {
+  const cookieOptions:any = {
     httpOnly: true,
-    secure: false, //process.env.NODE_ENV === 'production',
-    sameSite: "none",
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? "Strict" : "Lax", 
     maxAge: 30 * 24 * 60 * 60 * 1000
-  };
+};
 
   res.cookie('access_token', token, cookieOptions);
 };

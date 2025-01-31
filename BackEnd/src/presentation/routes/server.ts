@@ -50,11 +50,18 @@ app.use('/uploads', express.static( 'uploads'));
 
 
 
+// app.use(cors({
+//     origin: true, 
+//     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//     credentials: true
+//   }));
+
 app.use(cors({
-    origin: true, 
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    credentials: true
-  }));
+  origin: "http://homeworksapp.shop", // ✅ Replace with your frontend URL
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  credentials: true // ✅ Ensures cookies are included in requests
+}));
+
 
 app.use(bodyParser.json());
 

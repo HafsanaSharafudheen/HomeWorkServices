@@ -49,10 +49,15 @@ exports.server = server;
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use('/uploads', express_1.default.static('uploads'));
+// app.use(cors({
+//     origin: true, 
+//     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//     credentials: true
+//   }));
 app.use((0, cors_1.default)({
-    origin: true,
+    origin: "http://homeworksapp.shop", // ✅ Replace with your frontend URL
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    credentials: true
+    credentials: true // ✅ Ensures cookies are included in requests
 }));
 app.use(body_parser_1.default.json());
 const socketServer_1 = __importDefault(require("../../infrastructure/services/socketServer"));
