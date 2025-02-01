@@ -43,7 +43,7 @@ const AdminProfile: React.FC = () => {
 
   <div className="mainContent">
             <div className="AdminProfile">
-          <div className="ProfilePictureContainer">
+          <div className="profile-img-container">
           <img
   src={adminDetails?.profilePicture ? adminDetails.profilePicture : defaultImage}
   alt="Admin Profile"
