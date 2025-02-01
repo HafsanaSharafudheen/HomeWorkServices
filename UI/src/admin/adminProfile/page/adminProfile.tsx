@@ -47,7 +47,7 @@ const AdminProfile: React.FC = () => {
           <img
   src={adminDetails?.profilePicture ? adminDetails.profilePicture : defaultImage}
   alt="Admin Profile"
-  className="ProfilePicture"
+  className="ProfilePicture rounded-circle profile-img"
 />
 
           </div>
