@@ -63,8 +63,8 @@ app.use((0, cors_1.default)({
     origin: "https://homeworksapp.shop",
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'], // ✅ Ensure necessary headers are allowed
-    exposedHeaders: ['Set-Cookie'] // ✅ Allow frontend to access Set-Cookie header
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Set-Cookie']
 }));
 app.use(body_parser_1.default.json());
 const socketServer_1 = __importDefault(require("../../infrastructure/services/socketServer"));
