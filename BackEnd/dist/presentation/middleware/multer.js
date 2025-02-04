@@ -10,6 +10,7 @@ const storage = multer_1.default.diskStorage({
     },
     filename: function (req, file, cb) {
         var ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
+        console.log(file.originalname, "-----------file.originalname-----------");
         // cb(null,Date.now()+path.extname(file.originalname));
         cb(null, file.originalname + '-' + Date.now() + ext);
     },
