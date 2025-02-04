@@ -74,7 +74,28 @@ const navigate=useNavigate()
     }
   };
 
-
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (document.querySelector("script[src='https://checkout.razorpay.com/v1/checkout.js']")) {
+        console.log("Razorpay script already loaded.");
+        resolve(true);
+        return;
+      }
+  
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        console.log("Razorpay script loaded successfully.");
+        resolve(true);
+      };
+      script.onerror = () => {
+        console.error("Failed to load Razorpay script.");
+        resolve(false);
+      };
+  
+      document.body.appendChild(script);
+    });
+  };
 
   
   const handlePayment = async (bookingId: string, amount: number) => {
@@ -85,7 +106,18 @@ const navigate=useNavigate()
       if (!bookingId) {
         throw new Error("Booking ID is missing.");
       }
-      
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        Swal.fire("Error", "Failed to load Razorpay script. Please refresh and try again.", "error");
+        return;
+      }
+  
+      if (!(window as any).Razorpay) {
+        console.error("Razorpay script not loaded properly.");
+        Swal.fire("Error", "Razorpay script is not loaded. Please refresh the page.", "error");
+        return;
+      }
+  
   
       const paymentData = {
         amount:amount,
