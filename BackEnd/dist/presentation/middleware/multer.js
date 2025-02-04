@@ -4,19 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, process.env.NODE_ENV === 'production' ? (process.env.UPLOADPATH || "") : 'uploads');
     },
     filename: function (req, file, cb) {
-        let ext = path_1.default.extname(file.originalname); // Get the file extension
-        let name = path_1.default.basename(file.originalname, ext); // Get filename without extension
+        var ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
         console.log(file.originalname, "-----------file.originalname-----------");
-        // Sanitize filename: remove spaces and special characters
-        name = name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-_]/g, '');
-        // Generate new filename
-    }
+        // cb(null,Date.now()+path.extname(file.originalname));
+        cb(null, file.originalname + '-' + Date.now() + ext);
+    },
 });
 console.log("multerReached");
 // Create the Multer instance with the specified storage configuration
