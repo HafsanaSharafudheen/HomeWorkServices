@@ -131,8 +131,13 @@ const navigate=useNavigate()
         },
       };
   
-      const Razorpay = (window as any).Razorpay;
-  
+      const Razorpay = (window as any).Razorpay || null;
+      if (!Razorpay) {
+        console.error("Razorpay script not loaded properly.");
+        Swal.fire("Error", "Razorpay script is not loaded. Please refresh the page.", "error");
+        return;
+      }
+        
       if (typeof Razorpay === "function") {
         const rzp = new Razorpay(options);
         rzp.open();
@@ -168,10 +173,10 @@ const navigate=useNavigate()
       }
     };
 
-    if (booking.payment.status === "completed") {
+    if (booking.payment?.status === "completed") {
       fetchReviewDetails();
     }
-  }, [booking._id, booking.userId, booking.payment.status,booking.providerId]);
+  }, [booking._id, booking.userId, booking.payment?.status,booking.providerId]);
 
   return (
     <div className="booking-card shadow-sm rounded border p-4 mb-4 w-100">
