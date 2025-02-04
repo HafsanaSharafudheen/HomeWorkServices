@@ -23,7 +23,11 @@ interface BookingProps {
   fetchBookings: () => void;
 }
 
-
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 interface ReviewDetails {
   ratings: number;
@@ -73,115 +77,107 @@ const navigate=useNavigate()
       }
     }
   };
-
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
-      if (document.querySelector("script[src='https://checkout.razorpay.com/v1/checkout.js']")) {
-        console.log("Razorpay script already loaded.");
+      if (window.Razorpay) {
+        console.log("✅ Razorpay script already loaded.");
         resolve(true);
         return;
       }
-  
+
       const script = document.createElement("script");
       script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.defer = true;
+
       script.onload = () => {
-        console.log("Razorpay script loaded successfully.");
-        resolve(true);
+        if (window.Razorpay) {
+          console.log("✅ Razorpay script loaded successfully.");
+          resolve(true);
+        } else {
+          console.error("❌ Razorpay script loaded but not available in window.");
+          resolve(false);
+        }
       };
+
       script.onerror = () => {
-        console.error("Failed to load Razorpay script.");
+        console.error("❌ Failed to load Razorpay script.");
         resolve(false);
       };
-  
+
       document.body.appendChild(script);
     });
   };
 
-  
-  const handlePayment = async (bookingId: string, amount: number) => {
-    console.log("Amount:", amount);
+  useEffect(() => {
+    loadRazorpayScript();
+  }, []);
 
-    console.log(bookingId,"bookinnnnnnnnnnnn",amount,'...amount')
+
+  const handlePayment = async (bookingId: string, amount: number, provider?: any) => {
+    console.log("Amount:", amount);
+    console.log("Booking ID:", bookingId, "Amount:", amount);
+
     try {
       if (!bookingId) {
-        throw new Error("Booking ID is missing.");
+        throw new Error("❌ Booking ID is missing.");
       }
+
       const scriptLoaded = await loadRazorpayScript();
-      if (!scriptLoaded) {
-        Swal.fire("Error", "Failed to load Razorpay script. Please refresh and try again.", "error");
+      if (!scriptLoaded || !window.Razorpay) {
+        Swal.fire("Error", "❌ Failed to load Razorpay. Please refresh and try again.", "error");
+        console.error("❌ Razorpay is still not available after script load.");
         return;
       }
-  
-      if (!(window as any).Razorpay) {
-        console.error("Razorpay script not loaded properly.");
-        Swal.fire("Error", "Razorpay script is not loaded. Please refresh the page.", "error");
-        return;
-      }
-  
-  
+
       const paymentData = {
-        amount:amount,
+        amount: amount,
         currency: "INR",
-        bookingId:bookingId,
+        bookingId: bookingId,
       };
-  
+
       const response = await axios.post("/razorpay", paymentData);
-      console.log("Backend response:", response.data);
-      console.log("Order ID being sent to Razorpay:", response.data.order.id);
-      
+      console.log("✅ Backend response:", response.data);
+
+      const orderId = response.data?.order?.id;
+      if (!orderId) {
+        throw new Error("❌ Invalid order ID received from backend.");
+      }
+      console.log("✅ Order ID being sent to Razorpay:", orderId);
+
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: amount * 100, // Convert to paise
         currency: "INR",
         name: "HomeWorks",
         description: "Booking Service Fee",
-        order_id: response.data.order.id,
-      
+        order_id: orderId,
+
         handler: async (paymentResponse: any) => {
           try {
-            await axios.post("/updateBookingDetails", {
-              bookingId,
-              paymentResponse,
-            });
-            Swal.fire("Success", "Payment completed successfully.", "success");
-            navigate("/paymentConfirmation", {
-              state: {
-                bookingId,
-                providerId: provider?._id, 
-              },
-            });
-            
-                      } catch (error) {
-            console.error("Error updating booking details:", error);
-            Swal.fire("Error", "Failed to update booking details.", "error");
+            await axios.post("/updateBookingDetails", { bookingId, paymentResponse });
+            Swal.fire("✅ Success", "Payment completed successfully.", "success");
+            navigate("/paymentConfirmation", { state: { bookingId, providerId: provider?._id } });
+          } catch (error) {
+            console.error("❌ Error updating booking details:", error);
+            Swal.fire("Error", "❌ Failed to update booking details.", "error");
           }
         },
         modal: {
           ondismiss: () => {
-            Swal.fire("Cancelled", "Payment process was cancelled.", "info");
+            Swal.fire("⚠ Cancelled", "Payment process was cancelled.", "info");
           },
         },
       };
-  
-      const Razorpay = (window as any).Razorpay || null;
-      if (!Razorpay) {
-        console.error("Razorpay script not loaded properly.");
-        Swal.fire("Error", "Razorpay script is not loaded. Please refresh the page.", "error");
-        return;
-      }
-        
-      if (typeof Razorpay === "function") {
-        const rzp = new Razorpay(options);
-        rzp.open();
-      } else {
-        throw new Error("Razorpay is not available. Ensure the Razorpay script is loaded.");
-      }
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
-      console.error("Error initiating payment:", error);
-      Swal.fire("Error", "Failed to initiate payment. Please try again.", "error");
+      console.error("❌ Error initiating payment:", error);
+      Swal.fire("Error", error.message || "❌ Failed to initiate payment. Please try again.", "error");
     }
   };
-  
+
   // Fetch review details for the bookingId
   useEffect(() => {
     const fetchReviewDetails = async () => {
