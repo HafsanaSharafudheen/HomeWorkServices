@@ -48,7 +48,12 @@ const server = http_1.default.createServer(app);
 exports.server = server;
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
-app.use('/uploads', express_1.default.static('uploads'));
+if (process.env.NODE_ENV === 'production') {
+    app.use('/uploads', express_1.default.static((process.env.UPLOADPATH || "")));
+}
+else {
+    app.use('/uploads', express_1.default.static('uploads'));
+}
 // app.use(cors({
 //     origin: true, 
 //     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
@@ -60,7 +65,7 @@ app.use('/uploads', express_1.default.static('uploads'));
 //   credentials: true // ✅ Ensures cookies are included in requests
 // }));
 app.use((0, cors_1.default)({
-    origin: "https://homeworksapp.shop",
+    origin: process.env.NODE_ENV === 'production' ? "https://homeworksapp.shop" : true,
     credentials: true,
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
