@@ -104,11 +104,11 @@ const navigate=useNavigate()
         currency: "INR",
         bookingId:bookingId,
       };
-      
+
       // Ensure Razorpay is loaded before calling it
       const razorpayLoaded = await loadRazorpayScript();
       if (!razorpayLoaded) {
-        throw new Error("Failed to load Razorpay script.");
+       console.log("Failed to load Razorpay script.");
       }
       const response = await axios.post("/razorpay", paymentData);
       console.log("Backend response:", response.data);
