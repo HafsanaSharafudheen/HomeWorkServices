@@ -75,7 +75,19 @@ const navigate=useNavigate()
   };
 
 
-
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
   
   const handlePayment = async (bookingId: string, amount: number) => {
     console.log("Amount:", amount);
@@ -92,7 +104,12 @@ const navigate=useNavigate()
         currency: "INR",
         bookingId:bookingId,
       };
-  
+      
+      // Ensure Razorpay is loaded before calling it
+      const razorpayLoaded = await loadRazorpayScript();
+      if (!razorpayLoaded) {
+        throw new Error("Failed to load Razorpay script.");
+      }
       const response = await axios.post("/razorpay", paymentData);
       console.log("Backend response:", response.data);
       console.log("Order ID being sent to Razorpay:", response.data.order.id);
