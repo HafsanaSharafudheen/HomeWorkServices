@@ -15,10 +15,18 @@ const storage = multer_1.default.diskStorage({
         cb(null, name + '-' + Date.now() + ext); // Append the extension after timestamp
     }
 });
+const fileFilter = (req, file, cb) => {
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/avif'];
+    if (allowedMimeTypes.includes(file.mimetype)) {
+        cb(null, true); // Accept the file
+    }
+    else {
+        cb(new Error('Only .png, .jpg, and .avif formats are allowed!'), false); // Reject the file
+    }
+};
 console.log("multerReached");
-// Create the Multer instance with the specified storage configuration
 const upload = (0, multer_1.default)({
-    storage: storage
+    storage: storage, fileFilter: fileFilter
 });
 exports.default = upload;
 //# sourceMappingURL=multer.js.map
