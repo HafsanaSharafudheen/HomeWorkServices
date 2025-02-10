@@ -1,4 +1,5 @@
 import multer from 'multer';
+import path from 'path';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -6,11 +7,11 @@ const storage = multer.diskStorage({
   },
 
   filename: function (req, file, cb) {
-    var ext = file.originalname.substr(file.originalname.lastIndexOf('.'));
-    console.log(file.originalname, "-----------file.originalname-----------")
-    // cb(null,Date.now()+path.extname(file.originalname));
-    cb(null, file.originalname + '-' + Date.now() + ext);
-  },
+    var ext = path.extname(file.originalname); // Get the file extension
+    var name = file.originalname.replace(ext, ''); // Remove the existing extension
+
+    cb(null, name + '-' + Date.now() + ext); // Append the extension after timestamp
+}
 });
 console.log("multerReached")
 // Create the Multer instance with the specified storage configuration
