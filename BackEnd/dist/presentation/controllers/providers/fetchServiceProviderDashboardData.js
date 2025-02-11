@@ -28,12 +28,15 @@ const fetchServiceProviderDashboardData = (req, res) => __awaiter(void 0, void 0
 });
 exports.fetchServiceProviderDashboardData = fetchServiceProviderDashboardData;
 const fetchDashboardDataWithDate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { startDate, endDate } = req.query;
-    if (!startDate || !endDate) {
+    const providerId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    console.log(req.query, providerId, "1");
+    if (!startDate || !endDate || !providerId) {
         return res.status(400).json({ message: "Start date and end date are required" });
     }
     try {
-        const data = yield (0, provider_1.fetchDataWithDate)(new Date(startDate), new Date(endDate));
+        const data = yield (0, provider_1.fetchDataWithDate)(new Date(startDate), new Date(endDate), providerId);
         res.status(200).json(data);
     }
     catch (error) {

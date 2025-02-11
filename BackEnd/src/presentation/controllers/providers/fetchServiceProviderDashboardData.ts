@@ -20,13 +20,14 @@ export const fetchServiceProviderDashboardData = async (req: any, res: any): Pro
   export const fetchDashboardDataWithDate=async(req:any,res:any): Promise<void> => {
 
     const { startDate, endDate } = req.query;
-
-    if (!startDate || !endDate) {
+const providerId=req.user?.id
+console.log(req.query,providerId,"1")
+    if (!startDate || !endDate ||!providerId) {
       return res.status(400).json({ message: "Start date and end date are required" });
     }
   
     try {
-      const data = await fetchDataWithDate(new Date(startDate), new Date(endDate));
+      const data = await fetchDataWithDate(new Date(startDate), new Date(endDate),providerId);
       res.status(200).json(data);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);

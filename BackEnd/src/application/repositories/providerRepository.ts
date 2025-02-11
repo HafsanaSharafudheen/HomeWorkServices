@@ -11,11 +11,12 @@ const saveUser = async (providerData: any): Promise<any> => {
 };
 
 
-export const fetchBookingsByDateRange = async (startDate: Date, endDate: Date) => {
+export const fetchBookingsByDateRange = async (startDate: Date, endDate: Date, providerId: string) => {
   return await Booking.find({
+    providerId: providerId, 
     selectedDate: {
-      $gte: startDate,
-      $lte: endDate,
+      $gte: new Date(startDate), 
+      $lte: new Date(endDate),
     },
   });
 };
@@ -39,7 +40,9 @@ export const dataFetching = async (providerId: string) => {
                   foreignField: '_id',
                   as: 'userDetails'
               }
-          },
+          },  {
+            $sort: { selectedDate: -1 } // Sort by latest booking first
+        }
       ]);
 
       return bookings;

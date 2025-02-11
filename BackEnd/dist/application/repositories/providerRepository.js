@@ -21,11 +21,12 @@ const saveUser = (providerData) => __awaiter(void 0, void 0, void 0, function* (
     const provider = new serviceProvider_1.default(providerData);
     return provider.save();
 });
-const fetchBookingsByDateRange = (startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
+const fetchBookingsByDateRange = (startDate, endDate, providerId) => __awaiter(void 0, void 0, void 0, function* () {
     return yield booking_1.default.find({
+        providerId: providerId,
         selectedDate: {
-            $gte: startDate,
-            $lte: endDate,
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
         },
     });
 });

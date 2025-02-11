@@ -1,5 +1,4 @@
 /* Provider Sidebar CSS */
-
 .providerSidebar {
   background-color: var(--primary-color);
   color: #fff;
@@ -8,90 +7,115 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 80vh;
-  }
-  
-  .providerSidebar-collapsed {
+  height: 100vh; /* Make it full height */
+}
+
+/* Collapsed Sidebar */
+.providerSidebar-collapsed {
+  width: 80px;
+}
+
+/* Sidebar Header */
+.providerSidebar-header {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Sidebar Toggle Button */
+.providerSidebar-toggle {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Sidebar Navigation Links */
+.providerSidebar-navLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Sidebar Navigation Items (applies to both links and buttons) */
+.providerSidebar-navItem a,
+.providerSidebar-navItem button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 15px;
+  color: #ecf0f1;
+  background: none;
+  border: none;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  gap: 10px;
+  text-decoration: none; /* Ensure no underline for links */
+  transition: background-color 0.2s ease;
+}
+
+/* Hover Effect */
+.providerSidebar-navItem a:hover,
+.providerSidebar-navItem button:hover {
+  background-color: white;
+  color: black;
+}
+
+/* Active State */
+.providerSidebar-navItem a:active,
+.providerSidebar-navItem button:active {
+  color: #1ec041;
+}
+
+/* Sidebar Navigation Icon */
+.providerSidebar-navItem a svg,
+.providerSidebar-navItem button svg {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+/* Hide text when sidebar is collapsed */
+.providerSidebar-collapsed .providerSidebar-navItem a span,
+.providerSidebar-collapsed .providerSidebar-navItem button span {
+  display: none;
+}
+
+.providerSidebar-active {
+  color: #1ec041;
+  font-weight: bold;
+}
+
+/* Main Content Styling */
+.providerMainContent {
+  flex: 1;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+  background-color: #ecf0f1;
+}
+
+/* Adjust main content margin based on sidebar state */
+.providerMainContent-shrinked {
+  margin-left: 250px;
+}
+
+.providerMainContent-expanded {
+  margin-left: 80px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .providerSidebar {
     width: 80px;
   }
-  
-  .providerSidebar-header {
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-  }
-  
-  .providerSidebar-toggle {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .providerSidebar-navLinks {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .providerSidebar-navItem {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    color: #ecf0f1;
-    text-decoration: none;
-    transition: background-color 0.2s ease;
-    cursor: pointer;
-  }
-  
-  .providerSidebar-navItem:hover {
-    background-color:white;
-    text-decoration: none;
 
-  color: black; }
-  
-  .providerSidebar-navLink {
-    color: inherit;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .providerSidebar-expanded {
+    width: 250px;
   }
-  .providerSidebar-navLink:hover{
-    text-decoration: none;
-  }
-  .providerSidebar-navLink .providerSidebar-navIcon {
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  
-  .providerSidebar-navText {
-    font-size: 16px;
-  }
-  
-  .providerSidebar-collapsed .providerSidebar-navText {
-    display: none;
-  }
-  
-  .providerSidebar-active {
-   
-    color: #1ec041;
-   
-  }
-  
+
   .providerMainContent {
-    flex: 1;
-    padding: 20px;
-    transition: margin-left 0.3s ease;
-    background-color: #ecf0f1;
-  }
-  
-  .providerMainContent-shrinked {
-    margin-left: 250px;
-  }
-  
-  .providerMainContent-expanded {
     margin-left: 80px;
   }
-  
+}
+

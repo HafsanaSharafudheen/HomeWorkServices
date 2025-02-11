@@ -112,7 +112,7 @@ function ServiceProfile() {
       
        <ProviderSidebar />
        <div className="w-100 bg-white flex-1">
-<div className="row p-5">
+<div className="row p-4">
     <div className="col-md-6">
       {profile ? (
         <div className="profile-details">

@@ -152,9 +152,9 @@ const getDashboardData = (providerId) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getDashboardData = getDashboardData;
-const fetchDataWithDate = (startDate, endDate) => __awaiter(void 0, void 0, void 0, function* () {
-    // Fetch bookings within the date range
-    const bookings = yield (0, providerRepository_1.fetchBookingsByDateRange)(startDate, endDate);
+const fetchDataWithDate = (startDate, endDate, providerId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(providerId, "------------");
+    const bookings = yield (0, providerRepository_1.fetchBookingsByDateRange)(startDate, endDate, providerId);
     // Count total bookings-----To provide a quick summary of the total bookings
     const totalBookings = bookings.length;
     //Initializes an object to store the count of bookings for 

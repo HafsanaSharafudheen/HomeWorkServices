@@ -141,9 +141,9 @@ function ProviderBookings() {
             <div className="w-100 p-6 bg-white flex-1">
 <div className="row">
 
-                <div className="col-md-6 p-4">
+                <div className="col-md-4 p-4">
                 <button
-  className="btn btn-primary mb-3"
+  className="btn btn-warning mb-3"
   onClick={() => setShowCalendar(!showCalendar)}
 >
   Show Calendar
@@ -168,30 +168,30 @@ function ProviderBookings() {
       );
       return bookingsOnDate.length > 0 ? (
         <div className="badge-wrapper">
-          <span className="booking-count">{bookingsOnDate.length} Bookings</span>
+          <p className="booking-count">{bookingsOnDate.length}Bookings</p>
         </div>
       ) : null;
     }}
   />
 )}
 
+
 <div className="col-md-6">
 
 
-<div className="filter-dropdown-container">
-  <FaFilter className="filter-dropdown-icon" />
-  <select
-    className="filter-select"
-    value={filter}
-    onChange={(e) => setFilter(e.target.value)}
-  >
-    <option value="all">All</option>
-    <option value="pending">Pending</option>
-    <option value="accepted">Accepted</option>
-    <option value="rejected">Rejected</option>
-    <option value="completed">Completed</option>
-  </select>
-</div>
+<div className="filter-container">
+                            {["All", "Pending", "Accepted", "Rejected", "Completed"].map((status) => (
+                                <div
+                                    key={status}
+                                    className={`filter-card ${filter === status.toLowerCase() ? "active" : ""}`}
+                                    onClick={() => setFilter(status.toLowerCase())}
+                                >
+                                    
+                                    {status}
+                                </div>
+                            ))}
+                        </div>
+
 </div>
 </div>
 

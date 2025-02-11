@@ -66,6 +66,13 @@ function Chart() {
     setLoading(true);
     setError("");
 
+     // Reset previous data to prevent showing old results
+  setDashboardData({
+    totalBookings: 0,
+    bookingsByDate: { labels: [], data: [] },
+    paymentStatus: { labels: [], data: [] },
+  });
+  
     try {
       const response = await axios.get("/dashboardDataWithDate", {
         params: {
@@ -121,8 +128,9 @@ function Chart() {
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger text-center">{error}</p>}
 
-      {/* Search Date Filters */}
-      <div className="search-container">
+<div className="row">
+  <div className="col-md-5">
+  <div className="search-container">
         <input
           type="date"
           value={dateRange.startDate}
@@ -135,8 +143,10 @@ function Chart() {
         />
         <button className="DefaultButton" onClick={handleDateSearch}>Search</button>
       </div>
+  </div>
+  <div className="col-md-7">
 {/* Booking Cards */}
-<div className="row justify-content-center g-2 mt-4">
+<div className="row justify-content-center g-2 mt-3">
         <div className="col-12 col-md-4">
           <div className="providerCard">
             <h6 className="providerCard-title">Total Bookings: {dashboardData.totalBookings}</h6>
@@ -155,10 +165,17 @@ function Chart() {
           </div>
         </div>
       </div>
+  </div>
+  
+  </div>
+      
+
       {/* Chart */}
       <div className="ChartDiagram">
         <Card.Body>
-          <Bar data={chartData} options={chartOptions} />
+        <div className="chart-container">
+  <Bar data={chartData} options={chartOptions} />
+</div>
         </Card.Body>
       </div>
 

@@ -55,16 +55,11 @@ border-radius: 5px;
     border: 1px solid #ddd;
     margin-top: 10px;
 }
-.badge-wrapper {
-    position: relative;
-    text-align: center;
-    background-color: yellow;
-}
 
 .booking-count {
-    font-size: 10px;
-    color: #1fd512;
-    padding: 2px 5px;
+    font-size: 9px;
+    font-weight: 600;
+    color:red;
 }
 /* Modal Overlay */
 .modal-UpdateBooking {
@@ -193,41 +188,35 @@ border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
 }
-.filter-dropdown-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+
+
+
+
+
+
+
+.filter-container {
+    display: flex;
+    margin: 20px;
+    gap: 10px;
 }
 
-.filter-select {
-  padding: 10px 15px;
-  font-size: 14px;
-  color: #495057;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  background-color: #fff;
-  transition: border-color 0.3s ease;
-  font-family: 'Arial', sans-serif;
+.filter-card {
+    background-color: #ffffff;
+    color: black;
+    padding: 8px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
 }
 
-.filter-select:focus {
-  border-color: #007bff;
-  outline: none;
+.filter-card:hover,
+.filter-card.active {
+    background-color: var(--primary-color);
+    color: white;
 }
 
-.filter-select option {
-  font-size: 14px;
-  padding: 10px;
-  background-color: #fff;
-  color: #495057;
-}
-
-.filter-dropdown-icon {
-  font-size: 18px;
-  color: #007bff;
-  cursor: pointer;
-}
 
 
 

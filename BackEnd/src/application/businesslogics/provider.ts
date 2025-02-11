@@ -164,9 +164,9 @@ export const getDashboardData = async (providerId: string) => {
   }
 };
 
-export const fetchDataWithDate = async (startDate: Date, endDate: Date) => {
-  // Fetch bookings within the date range
-  const bookings = await fetchBookingsByDateRange(startDate, endDate);
+export const fetchDataWithDate = async (startDate: Date, endDate: Date,providerId:string) => {
+  console.log(providerId,"------------")
+  const bookings = await fetchBookingsByDateRange(startDate, endDate,providerId);
 
   // Count total bookings-----To provide a quick summary of the total bookings
   const totalBookings = bookings.length;
