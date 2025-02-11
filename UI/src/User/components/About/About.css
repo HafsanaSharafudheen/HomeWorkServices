@@ -2,13 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 70vh;
   background-color: #493518;
-  padding: 20px; /* Add padding for smaller screens */
+  padding: 20px; 
 }
 
 .about-us-background {
   width: 300px;
+
   height: 300px;
   background-color: #493518;
   border-radius: 50%;
@@ -21,7 +22,7 @@
 }
 
 .about-us-background.expanded {
-  width: 100%; /* Full width for responsiveness */
+  width: 100%; 
   height: auto;
   border-radius: 20px;
 }

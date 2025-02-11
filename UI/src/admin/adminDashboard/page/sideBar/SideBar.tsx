@@ -9,13 +9,31 @@ import {
   FaTags,
   FaBars,
   FaUser,
+  FaSignOutAlt,
 } from "react-icons/fa";
 import "./sideBar.css";
+import { logout } from "../../../../../Redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const SideBar: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const handleLogout = async () => {
+    dispatch(logout());
+    localStorage.clear(); 
+    sessionStorage.clear();
+  
+    // Prevent going back after logout
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", function () {
+      window.history.pushState(null, "", window.location.href);
+    });
+  
+    // Navigate to login & replace history
+    navigate("/login", { replace: true });
+  };
+  
   return (
     <div className="admin-dashboard">
       {/* Sidebar */}
@@ -95,6 +113,18 @@ const SideBar: React.FC = () => {
             <FaUser className="nav-icon" />
             {isExpanded && <span className="nav-text">Profile</span>}
           </li>
+          <li
+  onClick={() => handleLogout()} 
+  className="nav-item"
+  {...(!isExpanded && {
+    "data-tooltip-id": "sidebar-tooltip",
+    "data-tooltip-content": "Logout",
+  })}
+>
+  <FaSignOutAlt className="nav-icon" />
+  {isExpanded && <span className="nav-text">Logout</span>}
+</li>
+
         </ul>
         {!isExpanded && (
           <ReactTooltip id="sidebar-tooltip" place="right" delayShow={300} />

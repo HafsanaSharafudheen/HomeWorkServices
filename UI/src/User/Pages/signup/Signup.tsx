@@ -157,7 +157,7 @@ const Signup: React.FC = () => {
         const response = await axios.post("/signup", formData);
         if (response.status === 201) {
           localStorage.setItem("successMessage", response.data.message);
-            navigate("/login"); 
+            navigate("/registration-success"); 
         }
       }
     } catch (error: any) {

@@ -51,6 +51,7 @@ console.log('1')
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     console.log('3')
     await user.save();
+    
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${token}`;
     const transporter = nodemailer.createTransport({

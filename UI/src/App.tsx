@@ -29,6 +29,7 @@ import Testimonials from './Reviews/page/TestimonialsPage/Testimonials';
 import ServicesDetails from './User/Pages/servicesDetailedPage/page/servicesDetails';
 import Chat from './Chat/page/chat/Chat';
 import Dashboard from './ServiceProvider/ServiceProviderDashboard/Dashboard';
+import RegistrationSuccess from './User/components/SuccessPage/RegistrationSuccess';
 
 
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
         <Route path="/adminUsers" element={<AdminUsers />} />
         <Route path="/adminProfile" element={<AdminProfile />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/registration-success" element={<RegistrationSuccess />} />
 
         <Route path="/adminBookings" element={<AdminBookings />} />
         <Route path="/adminServiceProviders" element={<AdminServiceProviders />} />

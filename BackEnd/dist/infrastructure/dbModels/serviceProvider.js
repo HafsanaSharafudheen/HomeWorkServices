@@ -59,8 +59,6 @@ const providerSchema = new mongoose_1.Schema({
         institute: { type: String },
         year: { type: Number },
     },
-    accountNumber: { type: String, required: true },
-    IFSCCode: { type: String, required: true },
     profilePicture: { type: String },
     isBlocked: { type: Boolean, default: false },
     confirmPassword: { type: String },

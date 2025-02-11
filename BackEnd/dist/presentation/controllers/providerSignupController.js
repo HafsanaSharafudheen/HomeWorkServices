@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const createProvider_1 = __importDefault(require("../../application/businesslogics/createProvider"));
 const handleSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        console.log("Incoming request data:", req.body);
         const result = yield createProvider_1.default.execute(req.body);
         console.log(result, "reeeeeeeeeeeeeeeeeeeeeee");
         res.status(201).json(result);

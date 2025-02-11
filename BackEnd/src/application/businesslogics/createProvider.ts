@@ -32,8 +32,7 @@ const execute = async (userData: UserEntity): Promise<any> => {
     serviceCategory: userData.serviceCategory,
     yearsOfExperience: userData.yearsOfExperience,
     workingHours: userData.workingHours,
-       accountNumber: userData.accountNumber,
-       IFSCCode: userData.IFSCCode,
+      
     certifications: userData.certifications,
     languages: userData.languages,
     education: userData.education,

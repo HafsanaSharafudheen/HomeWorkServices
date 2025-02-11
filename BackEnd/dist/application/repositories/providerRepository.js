@@ -17,6 +17,7 @@ const serviceProvider_1 = __importDefault(require("../../infrastructure/dbModels
 const booking_1 = __importDefault(require("../../infrastructure/dbModels/booking"));
 const diy_1 = __importDefault(require("../../infrastructure/dbModels/diy"));
 const saveUser = (providerData) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("Incoming request data:", providerData);
     const provider = new serviceProvider_1.default(providerData);
     return provider.save();
 });

@@ -12,8 +12,7 @@ export interface UserEntity {
   workingHours?: { start: string; end: string };
   certifications?: string;
   languages?: string[];
-  accountNumber:string;
-  IFSCCode:string;
+  
   education?: {
     institute: string;
     year: number;

@@ -7,7 +7,7 @@ import "./Bookings.css";
 import useFetchBookings from "./hooks/useFetchBookings";
 
 function Bookings() {
-  const { bookings, fetchBookings } = useFetchBookings();
+  const { bookings, isLoading,fetchBookings } = useFetchBookings();
 
 
   return (
@@ -18,7 +18,15 @@ function Bookings() {
          
             
       <div className="bookingsPage">
-        {bookings.length === 0 ? (
+      {isLoading ? (
+            <div className="d-flex justify-content-center align-items-center vh-100">
+            <div className="text-center">
+              <h2 className="fw-bold">Loading your bookings...</h2>
+            </div>
+          </div>
+          
+          ):
+        bookings.length === 0 ? (
           <div className="no-bookings text-center">
             <h2>No Bookings Yet</h2>
             <p>It seems like you haven't made any bookings yet.</p>

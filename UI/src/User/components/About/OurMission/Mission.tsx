@@ -9,21 +9,26 @@ const services = [
     title: "Home Services",
     description: "Plumbing, electrical work, home repairs at your convenience.",
   },
+  
   {
-    title: "Cleaning & Maintenance",
-    description: "House cleaning, deep cleaning, and sanitization services.",
+    title: "Affordable Pricing & Service Charges",
+    description: "Transparent pricing with no hidden costs, ensuring affordability.",
+  },
+  
+  {
+    title: "Instant & Scheduled Services",
+    description: "Book services instantly or schedule them at your preferred time.",
+  }, {
+    title: "Verified Professionals",
+    description: "All service providers are background-verified and highly skilled.",
   },
   {
-    title: "Vehicle Services",
-    description: "Car wash, repairs, and vehicle maintenance.",
+    title: "Real-Time Tracking & Notifications",
+    description: "Track your booked service and get real-time updates and notifications.",
   },
   {
-    title: "Beauty & Wellness",
-    description: "Salon, spa, and grooming at your doorstep.",
-  },
-  {
-    title: "Delivery & Errands",
-    description: "Quick and efficient deliveries for daily needs.",
+    title: "24/7 Customer Support",
+    description: "Dedicated support available round-the-clock to assist with queries.",
   },
 ];
 
@@ -34,7 +39,7 @@ const Mission = () => {
 
 {/* What We Offer Section */}
 <div className="col-md-12 col-12">
-  <h2 className="text-success fw-bold text-center">What We Offer</h2>
+  <h2 className="headingStyle fw-bold text-center">What We Offer</h2>
   <div className="row justify-content-center">
     {services.map((service, index) => (
       <div key={index} className="col-md-4 col-sm-6 col-12 d-flex justify-content-center">
@@ -52,7 +57,7 @@ const Mission = () => {
 </div>
 </div>
 
-       <div className="container-fluid mission-wrapper">
+       <div className="container-fluid mission-wrapper mt-5">
       <div className="row g-0 align-items-center">
         {/* Mission Section */}
        

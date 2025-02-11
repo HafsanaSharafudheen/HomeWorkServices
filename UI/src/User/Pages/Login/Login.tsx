@@ -88,11 +88,9 @@ function Login() {
     } catch (err: any) {
       const errorMessage = err.response.data.error;
       ;
-      if (errorMessage === "User not found") {
-        setError("User not found. Please check your email.");
-      } else if (errorMessage === "Invalid credentials") {
-        setError("Invalid password. Please try again.");
-      } else {
+      if (errorMessage === "User not found" ||errorMessage === "Invalid credentials") {
+        setError("Invalid email or password. Please try again.");
+      }  else {
         setError(errorMessage);
       }
             dispatch(signupFailure(errorMessage));

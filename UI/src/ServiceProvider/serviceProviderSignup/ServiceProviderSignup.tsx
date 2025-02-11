@@ -32,10 +32,13 @@ function ServiceProviderSignup() {
     serviceCharge: 0,
     address: { city: "", district: "", pin: "" },
     whatsappNumber: "",
-    accountNumber:"",
-    IFSCCode:""
+    
   });
-
+  const workingHoursOptions = [
+    "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+    "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM",
+    "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"
+  ];
   const [formError, setFormError] = useState<string>("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
@@ -95,8 +98,7 @@ function ServiceProviderSignup() {
         case "serviceCharge":
         case "password":
         case "confirmPassword":
-          case "accountNumber":
-            case "IFSCCode":
+         
           return {
             ...prev,
             [name]: value,
@@ -274,25 +276,34 @@ function ServiceProviderSignup() {
     if (!formData.workingHours?.end) {
       errors.workingHoursEnd = "Working hours end time is required.";
     }
-    if (!formData.IFSCCode) {
-      errors.IFSCCode = "IFSC Code is required.";
-    } else if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(formData.IFSCCode)) {
-      errors.IFSCCode = "Enter a valid 11-character IFSC Code.";
-    }
+    
   
-    // Account Number
-    if (!formData.accountNumber) {
-      errors.accountNumber = "Account Number is required.";
-    } else if (!/^\d{9,18}$/.test(formData.accountNumber)) {
-      errors.accountNumber = "Enter a valid bank account number (9-18 digits).";
-    }
+   
+    const convertTimeToMinutes = (time: string) => {
+      if (!time) return 0;
+      const [hour, minutePart] = time.split(":");
+      const [minute, period] = minutePart.split(" ");
+    
+      let hourNumber = parseInt(hour);
+      const minuteNumber = parseInt(minute);
+    
+      if (period === "PM" && hourNumber !== 12) {
+        hourNumber += 12; // Convert PM hours
+      } else if (period === "AM" && hourNumber === 12) {
+        hourNumber = 0; // Convert 12 AM to 0
+      }
+    
+      return hourNumber * 60 + minuteNumber; // Convert time to total minutes
+    };
+    
     if (
       formData.workingHours?.start &&
       formData.workingHours.end &&
-      formData.workingHours.start >= formData.workingHours.end
+      convertTimeToMinutes(formData.workingHours.start) >= convertTimeToMinutes(formData.workingHours.end)
     ) {
       errors.workingHoursEnd = "End time must be later than start time.";
     }
+    
     
   
     // Password (Only for Signup Mode)
@@ -331,7 +342,7 @@ function ServiceProviderSignup() {
     setLoading(true)
 
     if (!handleValidation()) {
-     
+      setLoading(false); 
       return;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -344,7 +355,7 @@ function ServiceProviderSignup() {
       if (response.status === 201) {
         dispatch(signupSuccess(response.data));
         setLoading(false);
-        navigate("/login");
+        navigate("/registration-success");
       }
     } catch (error: any) {
       setLoading(false);
@@ -585,82 +596,86 @@ function ServiceProviderSignup() {
 
           {/* Working Hours */}
           <Form.Group>
-            <Form.Label>Working Hours</Form.Label>
-            <div className="row">
-              <div className="col-md-3 mb-3">
-                <div className="form-floating">
-                  <Form.Control
-                    type="time"
-                    name="workingHours.start"
-                    placeholder="Start Time"
-                    value={formData.workingHours.start}
-                    onChange={handleChange}
-                  />
-                  <Form.Label>Start Time</Form.Label>
-                  {formErrors.workingHoursStart && (
-          <p className="errorMessageText">{formErrors.workingHoursStart}</p>
-        )}
-                </div>
-              </div>
-              <div className="col-md-3 mb-3">
-                <div className="form-floating">
-                  <Form.Control
-                    type="time"
-                    name="workingHours.end"
-                    placeholder="End Time"
-                    value={formData.workingHours.end}
-                    onChange={handleChange}
-                  />
-                  <Form.Label>End Time</Form.Label>
-                  {formErrors.workingHoursEnd && (
-          <p className="errorMessageText">{formErrors.workingHoursEnd}</p>
-        )}
-                </div>
-              </div>
+  <Form.Label>Working Hours</Form.Label>
+  <div className="row">
+    {/* Start Time */}
+    <div className="col-md-3 mb-3">
+      <Form.Select
+        name="workingHours.start"
+        value={formData.workingHours.start}
+        onChange={handleChange}
+      >
+        <option value="">Select Start Time</option>
+        {workingHoursOptions.map((time) => (
+          <option key={time} value={time}>{time}</option>
+        ))}
+      </Form.Select>
+      {formErrors.workingHoursStart && (
+        <p className="errorMessageText">{formErrors.workingHoursStart}</p>
+      )}
+    </div>
+
+    {/* End Time */}
+    <div className="col-md-3 mb-3">
+      <Form.Select
+        name="workingHours.end"
+        value={formData.workingHours.end}
+        onChange={handleChange}
+      >
+        <option value="">Select End Time</option>
+        {workingHoursOptions.map((time) => (
+          <option key={time} value={time}>{time}</option>
+        ))}
+      </Form.Select>
+      {formErrors.workingHoursEnd && (
+        <p className="errorMessageText">{formErrors.workingHoursEnd}</p>
+      )}
+    </div>
+    
             
         
 
         
-              <div className="col-md-3 mb-3">
-                <div className="form-floating">
-                  <Form.Control
-                    type="number"
-                    name="serviceCharge"
-                    placeholder="Service Charge"
-                    value={formData.serviceCharge}
-                    onChange={handleChange}
-                  />
-                  <Form.Label>Service Charge</Form.Label>
-                  {formErrors.serviceCharge && (
-              <p className="errorMessageText">{formErrors.serviceCharge}</p>
-            )}
-                  
-                </div>
-              </div>
-              <div className="col-md-3 mb-3">
-                <Form.Select
-                  name="serviceCategory"
-                  value={formData.serviceCategory}
+            <div className="col-md-3 mb-3">
+              <div className="form-floating">
+                <Form.Control
+                  type="number"
+                  name="serviceCharge"
+                  placeholder="Service Charge"
+                  value={formData.serviceCharge}
                   onChange={handleChange}
-                >
-                  <option value="">Select Category</option>
-                  <option value="Cleaning">Cleaning</option>
-                  <option value="Plumbing">Plumbing</option>
-                  <option value="Electrician">Electrician</option>
-                  <option value="Carpentry">Carpentry</option>
-                </Form.Select>
-                {formErrors.serviceCategory && (
-    <p className="errorMessageText">{formErrors.serviceCategory}</p>
-  )}
+                />
+                <Form.Label>Service Charge</Form.Label>
+                {formErrors.serviceCharge && (
+            <p className="errorMessageText">{formErrors.serviceCharge}</p>
+          )}
+                
               </div>
-             
+            </div>
+            <div className="col-md-3 mb-3">
+              <Form.Select
+                name="serviceCategory"
+                value={formData.serviceCategory}
+                onChange={handleChange}
+              >
+                <option value="">Select Category</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Plumbing">Plumbing</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Carpentry">Carpentry</option>
+              </Form.Select>
+              {formErrors.serviceCategory && (
+  <p className="errorMessageText">{formErrors.serviceCategory}</p>
+)}
             </div>
            
-            </Form.Group>
+            </div>
+          </Form.Group>
 
-          {/* Password Fields */}
-          <Form.Group>
-            <div className="row">
+        {/* Password Fields */}
+        <Form.Group>
+          <div className="row">
+ 
               <div className="col-md-3 mb-3">
                 <div className="form-floating">
                   <Form.Control
@@ -711,40 +726,8 @@ function ServiceProviderSignup() {
                 )}
                 </div>
               </div>
-              <div className="col-md-3 mb-3">
-                <div className="form-floating">
-                  <Form.Control
-                    type="text"
-                    name="accountNumber"
-                    placeholder="Account Number"
-                    value={formData.accountNumber}
-                    onChange={handleChange}
-                   
-                    
-                  />
-                  <Form.Label>Account Number</Form.Label>
-                  {formErrors.accountNumber && (
-                  <p className="errorMessageText">{formErrors.accountNumber}</p>
-                )}
-                </div>
-              </div>
-              <div className="col-md-3 mb-3">
-                <div className="form-floating">
-                  <Form.Control
-                    type="text"
-                    name="IFSCCode"
-                    placeholder="IFSC Code"
-                    value={formData.IFSCCode}
-                    onChange={handleChange}
-                   
-                    
-                  />
-                  <Form.Label>IFSC Code</Form.Label>
-                  {formErrors.IFSCCode && (
-                  <p className="errorMessageText">{formErrors.IFSCCode}</p>
-                )}
-                </div>
-              </div>
+              
+             
             </div>
           </Form.Group>
 

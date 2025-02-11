@@ -18,8 +18,14 @@ const AdminProfile: React.FC = () => {
 
   const handleLogout = async () => {
     dispatch(logout());
-    localStorage.clear();
+    localStorage.clear(); 
     sessionStorage.clear();
+  
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", function () {
+      window.history.pushState(null, "", window.location.href);
+    });
+  
     navigate("/login", { replace: true });
   };
 

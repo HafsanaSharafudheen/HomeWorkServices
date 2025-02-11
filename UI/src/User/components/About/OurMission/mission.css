@@ -40,7 +40,7 @@
   /* Missioncard Header (Image Section) */
   .Missioncard-header {
     position: relative;
-    background: linear-gradient(to top, #4481eb 0%, #04befe 100%);
+    background: linear-gradient(to top, #4481eb 0%, #940E34 100%);
     border-radius: 8px 8px 50% 50%;
     padding: 20px;
     display: flex;
@@ -54,7 +54,7 @@
   }
   
   .Missioncard-body h3 {
-    color: #04befe;
+    color: #940E34;
     font-size: 18px;
     font-weight: bold;
   }
@@ -75,7 +75,6 @@
  /* Additional Features Section */
 .additional-features {
     padding: 50px 0;
-    background-color: #f9f9f9; /* Light gray background */
   }
   
   /* Feature Cards */

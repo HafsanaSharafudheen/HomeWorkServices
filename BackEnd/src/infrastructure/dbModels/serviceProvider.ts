@@ -30,8 +30,7 @@ export interface IProvider extends Document {
   updatedAt: Date;
   updatedBy?: string;
   profilePicture?:string
-  accountNumber:string;
-  IFSCCode:string
+
 
 }
 const providerSchema: Schema = new Schema({
@@ -60,8 +59,7 @@ const providerSchema: Schema = new Schema({
     institute: { type: String },
     year: { type: Number },
   },
-  accountNumber: { type: String, required: true }, 
-  IFSCCode: { type: String, required: true }, 
+  
   profilePicture:{type:String},
   isBlocked: { type: Boolean, default: false },
 

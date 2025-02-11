@@ -43,7 +43,7 @@ const Home: React.FC = () => {
             // Automatically close the alert after 2 seconds
             const timer = setTimeout(() => {
                 setSuccessMessage(null);
-            }, 2000);
+            }, 4000);
 
             // Cleanup the timer
             return () => clearTimeout(timer);
@@ -60,7 +60,7 @@ const Home: React.FC = () => {
                         variant="success"
                         className="text-center"
                         dismissible
-                        onClose={() => setSuccessMessage(null)} // Close button 
+                        onClose={() => setSuccessMessage(null)} 
                     >
                         {successMessage}
                     </Alert>

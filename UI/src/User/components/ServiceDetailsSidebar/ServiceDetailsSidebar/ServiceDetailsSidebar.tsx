@@ -81,6 +81,36 @@ const handleDateChange = (date: Date) => {
       setSelectedTimeSlot(timeSlot);
     }
   };
+  const isSlotDisabled = (slot) => {
+    if (!selectedDate) return false; // No date selected yet
+  
+    const currentDate = new Date();
+    const selectedDateString = selectedDate.toDateString();
+    const todayString = currentDate.toDateString();
+  
+    if (selectedDateString === todayString) {
+      // Get current hour and minute
+      const currentHour = currentDate.getHours();
+      const currentMinute = currentDate.getMinutes();
+  
+      // Convert slot start and end time to 24-hour format
+      const [startHour, startMinute] = slot.start.split(":").map(Number);
+      const [endHour, endMinute] = slot.end.split(":").map(Number);
+  
+      // Convert to 24-hour format if using AM/PM
+      const isPM = slot.start.includes("PM");
+      const adjustedStartHour = startHour + (isPM && startHour !== 12 ? 12 : 0);
+      const adjustedEndHour = endHour + (slot.end.includes("PM") && endHour !== 12 ? 12 : 0);
+  
+      // Check if slot end time is before the current time
+      if (adjustedEndHour < currentHour || (adjustedEndHour === currentHour && endMinute <= currentMinute)) {
+        return true; // Disable slot if it has passed
+      }
+    }
+  
+    return false; // Enable for future dates
+  };
+  
 
   const handleRequest = async() => {
     if (!provider.isAvailable) {
@@ -202,29 +232,30 @@ const handleDateChange = (date: Date) => {
           maxDate={maxDate}
           tileDisabled={({ date }) => date < today || date > maxDate}
         />            </div>
+
             {selectedDate && (
-             <div className="time-slots-container mt-3">
-             <div className="row">
-               {timeSlots.map((slot, index) => {
-                 const slotLabel = `${slot.start} - ${slot.end}`;
-                 const isBooked = bookedSlots.includes(slotLabel);
-                 const isSelected = selectedTimeSlot === slotLabel;
-           
-                 return (
-                   <div
-                     key={index}
-                     className={`col-md-6 time-slot ${
-                       isBooked ? "disabled" : isSelected ? "selected" : ""
-                     }`}
-                     onClick={() => !isBooked && handleTimeSlotSelect(slotLabel)}
-                   >
-                     {slot.start} - {slot.end}
-                   
-                   </div>
-                 );
-               })}
-             </div>
-           </div>
+           <div className="time-slots-container mt-3">
+  <div className="row">
+    {timeSlots.map((slot, index) => {
+      const slotLabel = `${slot.start} - ${slot.end}`;
+      const isBooked = bookedSlots.includes(slotLabel);
+      const isDisabled = isSlotDisabled(slot);
+      const isSelected = selectedTimeSlot === slotLabel;
+
+      return (
+        <div
+          key={index}
+          className={`col-md-6 time-slot ${
+            isBooked || isDisabled ? "disabled" : isSelected ? "selected" : ""
+          }`}
+          onClick={() => !isBooked && !isDisabled && handleTimeSlotSelect(slotLabel)}
+        >
+          {slotLabel}
+        </div>
+      );
+    })}
+  </div>
+</div>
            
             )}
             {selectedDate && selectedTimeSlot && (

@@ -4,6 +4,8 @@ import Diy from '../../infrastructure/dbModels/diy'
 import mongoose from 'mongoose';
 import { IDIY } from '../../infrastructure/dbModels/diy';
 const saveUser = async (providerData: any): Promise<any> => {
+  console.log("Incoming request data:", providerData);
+
   const provider = new Provider(providerData);
   return provider.save();
 };
