@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./About.css";
 import Header from "../Header";
 import Footer from "../Footer";
+import Mission from "./OurMission/Mission";
 
 const AboutUs = () => {
   const [showContent, setShowContent] = useState(false);
@@ -13,6 +14,7 @@ const AboutUs = () => {
   return (
     <>
       <Header />
+     
       <div className="about-us-container">
         <div
           className={`about-us-background row justify-content-center ${
@@ -44,6 +46,7 @@ const AboutUs = () => {
           )}
         </div>
       </div>
+      <Mission/>
       <Footer />
     </>
   );

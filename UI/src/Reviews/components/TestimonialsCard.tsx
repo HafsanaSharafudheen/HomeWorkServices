@@ -19,7 +19,7 @@ const TestimonialsCard: React.FC<{ testimonials: Review[] }> = ({ testimonials }
                             "{testimonial.message}"
                         </p>
                         <p className="testimonial-name">
-                            {testimonial?.userDetails?.[0]?.fullName || "Anonymous"}
+                            {testimonial?.userDetails?.[0]?.fullName || ""}
                         </p>
                     </div>
                 ))}
