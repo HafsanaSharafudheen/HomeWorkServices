@@ -37,7 +37,7 @@ import { markMessageAsRead } from "../controllers/user/chatsController";
 
 import path from "path";
 import { fetchAdminDetails } from "../controllers/admin/fetchProfile";
-import adminAddCategories from "../controllers/admin/adminAddCategories";
+import adminAddCategories, { deleteCategoriesFromAdmin } from "../controllers/admin/adminAddCategories";
 import { fetchAllServices } from "../controllers/services/fetchAllServices";
 dotenv.config();
 const app = express();
@@ -177,7 +177,8 @@ app.post('/deleteBooking',deleteFromUser)
 app.post('/razorpay',razorpayBooking )
 app.post('/updateBookingDetails',updateStatus)
 app.post('/transferDate',razorpayPaymentToBankAccount )
-
+app.post('/deleteCategories', deleteCategoriesFromAdmin);
+app.put("/editCategory/:id", upload.single("categoryImage"), adminAddCategories.editCategory);
 
 app.use(errorMiddleware);
 

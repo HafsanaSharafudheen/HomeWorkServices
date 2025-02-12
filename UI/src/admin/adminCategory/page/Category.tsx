@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Category.css";
-import { FaImage, FaTimes } from "react-icons/fa";
+import { FaImage, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 import { Form } from "react-bootstrap";
 import axios from "../../../utilities/axios";
 import SideBar from "../../adminDashboard/page/sideBar/SideBar";
@@ -10,16 +10,27 @@ import useCategories from "../hooks/useCategories";
 const Category = () => {
   const { categories, loading, error, fetchCategories } = useCategories();
   const [showPopup, setShowPopup] = useState(false);
-  const [newCategory, setNewCategory] = useState<{
-    categoryName: string;
-    categoryImage: File | null;
-  }>({
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [newCategory, setNewCategory] = useState({
     categoryName: "",
     categoryImage: null,
   });
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
-  const handleAddCategory = async () => {
+  useEffect(() => {
+    if (editingCategory) {
+      setNewCategory({
+        categoryName: editingCategory.categoryName,
+        categoryImage: null,
+      });
+      if (editingCategory.categoryImage) {
+        setImagePreview(`${import.meta.env.VITE_API_BASEURL}/${editingCategory.categoryImage}`);
+              }
+      setShowPopup(true);
+    }
+  }, [editingCategory]);
+
+  const handleAddOrEditCategory = async () => {
     if (!newCategory.categoryName || !newCategory.categoryImage) {
       alert("Please provide a category name and image.");
       return;
@@ -27,105 +38,88 @@ const Category = () => {
 
     const formData = new FormData();
     formData.append("categoryName", newCategory.categoryName);
-    formData.append("categoryImage", newCategory.categoryImage);
+    if (newCategory.categoryImage) {
+      formData.append("categoryImage", newCategory.categoryImage);
+    }
 
     try {
-      await axios.post("/addCategories", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      if (editingCategory) {
+        await axios.put(`/editCategory/${editingCategory._id}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        await axios.post("/addCategories", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
       setShowPopup(false);
       setNewCategory({ categoryName: "", categoryImage: null });
       setImagePreview(null);
-
-      // Refresh category list after adding
+      setEditingCategory(null);
       fetchCategories();
     } catch (error) {
-      console.error("Error adding category:", error);
+      console.error("Error saving category:", error);
     }
   };
 
-  const handleDeleteCategory = async (id: string) => {
+  const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`/deleteCategories/${id}`);
-      fetchCategories();
+      await axios.post("/deleteCategories", { categoryId: id }); 
+      fetchCategories(); 
     } catch (error) {
       console.error("Error deleting category:", error);
     }
   };
+  
 
-  const handleImageUpload = (file: File | null) => {
+  const handleImageUpload = (file) => {
     if (file) {
       setNewCategory({ ...newCategory, categoryImage: file });
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleImageRemove = () => {
-    setNewCategory({ ...newCategory, categoryImage: null });
-    setImagePreview(null);
-  };
-
   return (
     <div className="dashboardContainer">
-    <SideBar />
-    
-
-
-
-  <div className="mainContent">
-      <h2 className="headingStyle mt-4">
-        All Categories
-      </h2>
-
+      <SideBar />
+      <div className="mainContent">
+        <h2 className="headingStyle mt-4">All Categories</h2>
         <div className="header">
-
-          <button className="DefaultButton mb-5" onClick={() => setShowPopup(true)}>
-            Add New Category
-          </button>
+          <button className="DefaultButton mb-5" onClick={() => setShowPopup(true)}>Add New Category</button>
         </div>
-
         {loading && <p>Loading categories...</p>}
         {error && <p className="text-danger">{error}</p>}
-
         <div className="container">
           <div className="row">
             {categories.map((category) => (
               <CategoryCard
                 key={category._id}
                 category={category}
-                onDelete={handleDeleteCategory}
+                onDelete={() => handleDeleteCategory(category._id)}
+                onEdit={() => setEditingCategory(category)}
               />
             ))}
           </div>
         </div>
-
         {showPopup && (
           <div className="popup-overlay">
             <div className="popup-content">
-              <h2 className="headingStyle">Add New Category</h2>
+              <h2 className="headingStyle">{editingCategory ? "Edit Category" : "Add New Category"}</h2>
               <div className="form-floating mb-3">
                 <Form.Control
                   type="text"
-                  name="CategoryName"
                   placeholder="Category Name"
                   className="DefaultInput no-focus"
                   value={newCategory.categoryName}
-                  onChange={(e) =>
-                    setNewCategory({
-                      ...newCategory,
-                      categoryName: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setNewCategory({ ...newCategory, categoryName: e.target.value })}
                 />
                 <Form.Label>Category Name</Form.Label>
               </div>
-
               <div className="upload-container">
                 {!imagePreview ? (
                   <label className="upload-label">
@@ -133,39 +127,20 @@ const Category = () => {
                       <FaImage className="upload-icon" />
                       <p>Click to Upload Image</p>
                     </div>
-                    <input
-                      type="file"
-                      className="upload-input"
-                      onChange={(e) =>
-                        handleImageUpload(e.target.files ? e.target.files[0] : null)
-                      }
-                    />
+                    <input type="file" className="upload-input" onChange={(e) => handleImageUpload(e.target.files[0])} />
                   </label>
                 ) : (
                   <div className="image-preview-container">
                     <img src={imagePreview} alt="Preview" className="image-preview" />
-                    <div className="close-icon-container" onClick={handleImageRemove}>
-                      <span className="tooltip">Remove Image</span>
+                    <div className="close-icon-container" onClick={() => setImagePreview(null)}>
                       <FaTimes className="close-icon" />
                     </div>
                   </div>
                 )}
               </div>
-
               <div className="popup-buttons">
-                <button className="btn-primary" onClick={handleAddCategory}>
-                  Save
-                </button>
-                <button
-                  className="btn-danger"
-                  onClick={() => {
-                    setShowPopup(false);
-                    setNewCategory({ categoryName: "", categoryImage: null });
-                    setImagePreview(null);
-                  }}
-                >
-                  Cancel
-                </button>
+                <button className="btn-primary" onClick={handleAddOrEditCategory}>Save</button>
+                <button className="btn-danger" onClick={() => { setShowPopup(false); setEditingCategory(null); setNewCategory({ categoryName: "", categoryImage: null }); setImagePreview(null); }}>Cancel</button>
               </div>
             </div>
           </div>

@@ -191,6 +191,14 @@ console.log(objectId,"-------------objectId")
   return provider;
 };
 
+export const deleteFromAdmin = async (categoryId: string) => {
+  const objectId = new mongoose.Types.ObjectId(categoryId);
+console.log(objectId,"objectId")
+  const category = await Category.findByIdAndDelete(objectId);
+  if (!category) throw new Error("Category not found");
+  return category;
+};
+
 
 export const fetchAdminProfileDetails =async(adminId:string) => {
   const objectId = new mongoose.Types.ObjectId(adminId);
@@ -222,6 +230,6 @@ export const fetchAllAdminSideCategories = async () => {
 
 
 
-export default { findAllProviders,updateProviderBlockStatus,
+export default { findAllProviders,updateProviderBlockStatus,deleteFromAdmin,
   findAllUsers,findAllBookings,fetchAllAdminSideCategories,
   getDashboardDetails,updateUserBlockStatus,addNewCategory, };

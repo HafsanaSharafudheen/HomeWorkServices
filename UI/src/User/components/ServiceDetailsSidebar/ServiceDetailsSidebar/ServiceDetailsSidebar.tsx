@@ -153,9 +153,14 @@ const handleDateChange = (date: Date) => {
     
     
     if (!selectedDate || !selectedTimeSlot) {
-        Swal.fire("Error", "Please select a date and time slot before booking.", "error");
-        return;
-      }
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Selection",
+        text: "Please select a date and time slot before booking.",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
       try {
         const response = await axios.post("/booking",
         {   providerId: provider._id,
