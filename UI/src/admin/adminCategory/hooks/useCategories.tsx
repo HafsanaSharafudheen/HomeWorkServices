@@ -12,6 +12,9 @@ const useCategories = () => {
     setLoading(true);
     try {
       const response = await axios.get("/AdminCategories");
+      if (!response.data.categories) {
+        throw new Error("Categories data is missing");
+      }
       setCategories(response.data.categories);
       setError(null);
     } catch (error: any) {

@@ -135,6 +135,7 @@ app.post(
 );
 
 app.get('/fetchAllBookings',fetchBookings)
+
 app.get('/getReviewDetails',getReview)
 app.get('/adminDashboardData',fetchDashboardData)
 app.get('/ServiceProviderDashboardData',fetchServiceProviderDashboardData)

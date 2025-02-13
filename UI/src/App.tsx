@@ -30,10 +30,12 @@ import ServicesDetails from './User/Pages/servicesDetailedPage/page/servicesDeta
 import Chat from './Chat/page/chat/Chat';
 import Dashboard from './ServiceProvider/ServiceProviderDashboard/Dashboard';
 import RegistrationSuccess from './User/components/SuccessPage/RegistrationSuccess';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 
 const App = () => {
   return (
+    <ErrorBoundary>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -74,6 +76,7 @@ const App = () => {
 
       </Routes>
     </Router>
+    </ErrorBoundary>
   );
 };
 

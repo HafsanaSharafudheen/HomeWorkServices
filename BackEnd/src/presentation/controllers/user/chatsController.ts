@@ -1,117 +1,121 @@
+
 import { NextFunction, Request, Response } from 'express';
 import Chat from '../../../infrastructure/dbModels/chat';
+import {fetchChat,  fetchChatUser } from '../../../application/businesslogics/user/chatsHistory';
 
 
-export const fetchProvidersChatHistory = async (req: any, res: Response) => {
+export const fetchProvidersChatHistory = async (req: any, res: any) => {
   try {
     const providerId=req.user.id
     console.log("Provider ID:", providerId);
 
-    const chats = await Chat.aggregate([
-      {
-        $match: {
-          $or: [
-            { receiver: providerId },
-            { sender: providerId },
-          ],
-        },
-      },
-      {
-        $lookup: {
-          from: "users", // Replace with your users collection name
-          let: { senderId: "$sender" }, // Reference sender field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$senderId" }], // Convert sender to ObjectId
-                },
-              },
-            },
-          ],
-          as: "senderUserDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "providers", // Replace with your providers collection name
-          let: { senderId: "$sender" }, // Reference sender field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$senderId" }], // Convert sender to ObjectId
-                },
-              },
-            },
-          ],
-          as: "senderProviderDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "users", // Replace with your users collection name
-          let: { receiverId: "$receiver" }, // Reference receiver field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$receiverId" }], // Convert receiver to ObjectId
-                },
-              },
-            },
-          ],
-          as: "receiverUserDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "providers", // Replace with your providers collection name
-          let: { receiverId: "$receiver" }, // Reference receiver field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$receiverId" }], // Convert receiver to ObjectId
-                },
-              },
-            },
-          ],
-          as: "receiverProviderDetails",
-        },
-      },
-      {
-        $addFields: {
-          senderDetails: {
-            $cond: {
-              if: { $ne: [{ $size: "$senderUserDetails" }, 0] },
-              then: { $arrayElemAt: ["$senderUserDetails", 0] },
-              else: { $arrayElemAt: ["$senderProviderDetails", 0] },
-            },
-          },
-          receiverDetails: {
-            $cond: {
-              if: { $ne: [{ $size: "$receiverUserDetails" }, 0] },
-              then: { $arrayElemAt: ["$receiverUserDetails", 0] },
-              else: { $arrayElemAt: ["$receiverProviderDetails", 0] },
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          sender: 1,
-          receiver: 1,
-          message: 1,
-          createdAt: 1,
-          senderDetails: 1,
-          receiverDetails: 1,
-        },
-      },
-      {
-        $sort: { createdAt: 1 }, 
-      },
-    ]);
+    // const chats = await Chat.aggregate([
+    //   {
+    //     $match: {
+    //       $or: [
+    //         { receiver: providerId },
+    //         { sender: providerId },
+    //       ],
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "users", // Replace with your users collection name
+    //       let: { senderId: "$sender" }, // Reference sender field
+    //       pipeline: [
+    //         {
+    //           $match: {
+    //             $expr: {
+    //               $eq: ["$_id", { $toObjectId: "$$senderId" }], // Convert sender to ObjectId
+    //             },
+    //           },
+    //         },
+    //       ],
+    //       as: "senderUserDetails",
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "providers", // Replace with your providers collection name
+    //       let: { senderId: "$sender" }, // Reference sender field
+    //       pipeline: [
+    //         {
+    //           $match: {
+    //             $expr: {
+    //               $eq: ["$_id", { $toObjectId: "$$senderId" }], // Convert sender to ObjectId
+    //             },
+    //           },
+    //         },
+    //       ],
+    //       as: "senderProviderDetails",
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "users", // Replace with your users collection name
+    //       let: { receiverId: "$receiver" }, // Reference receiver field
+    //       pipeline: [
+    //         {
+    //           $match: {
+    //             $expr: {
+    //               $eq: ["$_id", { $toObjectId: "$$receiverId" }], // Convert receiver to ObjectId
+    //             },
+    //           },
+    //         },
+    //       ],
+    //       as: "receiverUserDetails",
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "providers", // Replace with your providers collection name
+    //       let: { receiverId: "$receiver" }, // Reference receiver field
+    //       pipeline: [
+    //         {
+    //           $match: {
+    //             $expr: {
+    //               $eq: ["$_id", { $toObjectId: "$$receiverId" }], // Convert receiver to ObjectId
+    //             },
+    //           },
+    //         },
+    //       ],
+    //       as: "receiverProviderDetails",
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       senderDetails: {
+    //         $cond: {
+    //           if: { $ne: [{ $size: "$senderUserDetails" }, 0] },
+    //           then: { $arrayElemAt: ["$senderUserDetails", 0] },
+    //           else: { $arrayElemAt: ["$senderProviderDetails", 0] },
+    //         },
+    //       },
+    //       receiverDetails: {
+    //         $cond: {
+    //           if: { $ne: [{ $size: "$receiverUserDetails" }, 0] },
+    //           then: { $arrayElemAt: ["$receiverUserDetails", 0] },
+    //           else: { $arrayElemAt: ["$receiverProviderDetails", 0] },
+    //         },
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $project: {
+    //       sender: 1,
+    //       receiver: 1,
+    //       message: 1,
+    //       createdAt: 1,
+    //       senderDetails: 1,
+    //       receiverDetails: 1,
+    //     },
+    //   },
+    //   {
+    //     $sort: { createdAt: 1 }, 
+    //   },
+    // ]);
+  
+    const chats = await fetchChat(providerId);
 
     res.status(200).json({ success: true, chats:chats,fromProvider:true });
   } catch (error) {
@@ -128,111 +132,10 @@ export const fetchUsersChatHistory = async (req: any, res: Response) => {
   console.log(req.user,"this is the request user")
   
 console.log(userId,'uuuuuuuuuuuuuuu')
-    const chats = await Chat.aggregate([
-      {
-        $match: {
-          $or: [
-            { sender: userId },
-            { receiver: userId },
-          ],
-        },
-      },
-      {
-        $lookup: {
-          from: "users", // Replace with your users collection name
-          let: { senderId: "$sender" }, // Reference sender field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$senderId" }], // Convert sender to ObjectId
-                },
-              },
-            },
-          ],
-          as: "senderUserDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "providers", // Replace with your providers collection name
-          let: { senderId: "$sender" }, // Reference sender field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$senderId" }], // Convert sender to ObjectId
-                },
-              },
-            },
-          ],
-          as: "senderProviderDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "users", // Replace with your users collection name
-          let: { receiverId: "$receiver" }, // Reference receiver field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$receiverId" }], // Convert receiver to ObjectId
-                },
-              },
-            },
-          ],
-          as: "receiverUserDetails",
-        },
-      },
-      {
-        $lookup: {
-          from: "providers", // Replace with your providers collection name
-          let: { receiverId: "$receiver" }, // Reference receiver field
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $eq: ["$_id", { $toObjectId: "$$receiverId" }], // Convert receiver to ObjectId
-                },
-              },
-            },
-          ],
-          as: "receiverProviderDetails",
-        },
-      },
-      {
-        $addFields: {
-          senderDetails: {
-            $cond: {
-              if: { $ne: [{ $size: "$senderUserDetails" }, 0] },
-              then: { $arrayElemAt: ["$senderUserDetails", 0] },
-              else: { $arrayElemAt: ["$senderProviderDetails", 0] },
-            },
-          },
-          receiverDetails: {
-            $cond: {
-              if: { $ne: [{ $size: "$receiverUserDetails" }, 0] },
-              then: { $arrayElemAt: ["$receiverUserDetails", 0] },
-              else: { $arrayElemAt: ["$receiverProviderDetails", 0] },
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          sender: 1,
-          receiver: 1,
-          message: 1,
-          createdAt: 1,
-          senderDetails: 1,
-          receiverDetails: 1,
-        },
-      },
-      {
-        $sort: { createdAt: 1 }, // Sort chats by creation time
-      },
-    ]);
+
+const chats = await fetchChatUser(userId);
+
+   
 console.log(chats,"cccccccccccc")
     res.status(200).json({ success: true, chats });
   } catch (error) {

@@ -60,7 +60,6 @@ const addCategory = async (req: Request, res: any): Promise<void> => {
 
 export const fetchAllCategories = async (req: Request, res: Response): Promise<void> => {
     try {
-      // Fetch all categories
       const categories = await fetchAllAdminSideCategories();
   
       // Return the categories as a response

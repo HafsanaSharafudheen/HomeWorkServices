@@ -6,6 +6,7 @@ import axios from "../../../utilities/axios";
 import SideBar from "../../adminDashboard/page/sideBar/SideBar";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import useCategories from "../hooks/useCategories";
+import ErrorBoundary from '../../../ErrorBoundary/ErrorBoundary';
 
 const Category = () => {
   const { categories, loading, error, fetchCategories } = useCategories();
@@ -29,7 +30,8 @@ const Category = () => {
       setShowPopup(true);
     }
   }, [editingCategory]);
-
+  if (loading) return <p>Loading categories...</p>;
+  if (error) throw new Error(error); 
   const handleAddOrEditCategory = async () => {
     if (!newCategory.categoryName || !newCategory.categoryImage) {
       alert("Please provide a category name and image.");
@@ -60,6 +62,7 @@ const Category = () => {
       fetchCategories();
     } catch (error) {
       console.error("Error saving category:", error);
+      throw new Error("Error saving category");
     }
   };
 
@@ -69,6 +72,7 @@ const Category = () => {
       fetchCategories(); 
     } catch (error) {
       console.error("Error deleting category:", error);
+      throw new Error("Error deleting category");
     }
   };
   
@@ -85,6 +89,7 @@ const Category = () => {
   };
 
   return (
+    <ErrorBoundary>
     <div className="dashboardContainer">
       <SideBar />
       <div className="mainContent">
@@ -147,6 +152,8 @@ const Category = () => {
         )}
       </div>
     </div>
+    </ErrorBoundary>
+
   );
 };
 

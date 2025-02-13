@@ -1,6 +1,7 @@
 import React from "react";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import './CatergoryCard.css'
+import ErrorBoundary from '../../../ErrorBoundary/ErrorBoundary';
 interface ICategoryCardProps {
   category: {
     _id: string;
@@ -19,7 +20,8 @@ const CategoryCard: React.FC<ICategoryCardProps> = ({
   const imageUrl = `${import.meta.env.VITE_API_BASEURL}/${category.categoryImage}`;
 
   return (
-    
+    <ErrorBoundary>
+
   <div className="col-md-3 mb-4 category-SingleCard">
       <div className="SingleCard" style={{ backgroundColor: "var(--background-color)" }}>
         <img
@@ -46,7 +48,8 @@ const CategoryCard: React.FC<ICategoryCardProps> = ({
         </div>
       </div>
     </div>
-   
+       </ErrorBoundary>
+
   
   );
 };
