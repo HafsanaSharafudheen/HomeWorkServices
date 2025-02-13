@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchAllAdminSideCategories = exports.addNewCategory = exports.fetchAdminProfileDetails = exports.updateProviderBlockStatus = exports.updateUserBlockStatus = exports.getDashboardDetails = void 0;
+exports.fetchAllAdminSideCategories = exports.addNewCategory = exports.fetchAdminProfileDetails = exports.deleteFromAdmin = exports.updateProviderBlockStatus = exports.updateUserBlockStatus = exports.getDashboardDetails = void 0;
 const serviceProvider_1 = __importDefault(require("../../infrastructure/dbModels/serviceProvider"));
 const user_1 = __importDefault(require("../../infrastructure/dbModels/user"));
 const category_1 = __importDefault(require("../../infrastructure/dbModels/category"));
@@ -175,6 +175,15 @@ const updateProviderBlockStatus = (providerId, isBlocked) => __awaiter(void 0, v
     return provider;
 });
 exports.updateProviderBlockStatus = updateProviderBlockStatus;
+const deleteFromAdmin = (categoryId) => __awaiter(void 0, void 0, void 0, function* () {
+    const objectId = new mongoose_1.default.Types.ObjectId(categoryId);
+    console.log(objectId, "objectId");
+    const category = yield category_1.default.findByIdAndDelete(objectId);
+    if (!category)
+        throw new Error("Category not found");
+    return category;
+});
+exports.deleteFromAdmin = deleteFromAdmin;
 const fetchAdminProfileDetails = (adminId) => __awaiter(void 0, void 0, void 0, function* () {
     const objectId = new mongoose_1.default.Types.ObjectId(adminId);
     const adminDetails = yield user_1.default.findOne({ _id: objectId });
@@ -200,7 +209,7 @@ const fetchAllAdminSideCategories = () => __awaiter(void 0, void 0, void 0, func
     return category_1.default.find();
 });
 exports.fetchAllAdminSideCategories = fetchAllAdminSideCategories;
-exports.default = { findAllProviders, updateProviderBlockStatus: exports.updateProviderBlockStatus,
+exports.default = { findAllProviders, updateProviderBlockStatus: exports.updateProviderBlockStatus, deleteFromAdmin: exports.deleteFromAdmin,
     findAllUsers, findAllBookings, fetchAllAdminSideCategories: exports.fetchAllAdminSideCategories,
     getDashboardDetails: exports.getDashboardDetails, updateUserBlockStatus: exports.updateUserBlockStatus, addNewCategory: exports.addNewCategory, };
 //# sourceMappingURL=admin.js.map

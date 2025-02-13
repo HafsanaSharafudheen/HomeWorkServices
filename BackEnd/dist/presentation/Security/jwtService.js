@@ -36,21 +36,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = void 0;
 const jwt = __importStar(require("jsonwebtoken"));
 const verifyToken = (req, res, next) => {
-    console.log("verifyToken 1");
-    console.log(req.cookies, "requestcokkies");
     const token = req.cookies && req.cookies.access_token;
-    console.log(token, "token");
     if (!token) {
         return res.status(401).json({ message: "You need to login" });
     }
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
         if (err) {
-            console.log('Token is not valid');
             return res.status(403).json({ message: "Token is not valid" });
         }
-        console.log('Token verified successfully');
         req.user = user;
-        console.log(req.user, "request user after the verifictaion ");
         next();
     });
 };

@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchAllCategories = void 0;
+exports.deleteCategoriesFromAdmin = exports.fetchAllCategories = void 0;
 const category_1 = __importDefault(require("../../../infrastructure/dbModels/category"));
 const admin_1 = require("../../../application/businesslogics/admin");
+const mongoose_1 = __importDefault(require("mongoose"));
 const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -38,9 +39,33 @@ const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({ message: "Failed to while add category." });
     }
 });
+const editCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { categoryName } = req.body;
+        let categoryImage = req.body.categoryImage;
+        if (!mongoose_1.default.Types.ObjectId.isValid(id)) {
+            res.status(400).json({ error: "Invalid category ID" });
+            return;
+        }
+        // If file is uploaded, update image
+        if (req.file) {
+            categoryImage = req.file.path; // Store image path from multer
+        }
+        const updatedCategory = yield category_1.default.findByIdAndUpdate(id, { categoryName, categoryImage }, { new: true });
+        if (!updatedCategory) {
+            res.status(404).json({ error: "Category not found" });
+            return;
+        }
+        res.status(200).json({ message: "Category updated successfully!", updatedCategory });
+    }
+    catch (error) {
+        console.error("Error updating category:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 const fetchAllCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // Fetch all categories
         const categories = yield (0, admin_1.fetchAllAdminSideCategories)();
         // Return the categories as a response
         res.status(200).json({ categories });
@@ -51,5 +76,18 @@ const fetchAllCategories = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.fetchAllCategories = fetchAllCategories;
-exports.default = { addCategory, fetchAllCategories: exports.fetchAllCategories };
+const deleteCategoriesFromAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const categoryId = req.body.categoryId;
+        console.log(categoryId, "Deleting category with ID");
+        const category = yield (0, admin_1.deleteFromAdmin)(categoryId);
+        res.status(200).json({ message: "Category deleted successfully!" });
+    }
+    catch (error) {
+        console.error("Error deleting category:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+exports.deleteCategoriesFromAdmin = deleteCategoriesFromAdmin;
+exports.default = { addCategory, fetchAllCategories: exports.fetchAllCategories, deleteCategoriesFromAdmin: exports.deleteCategoriesFromAdmin, editCategory };
 //# sourceMappingURL=adminAddCategories.js.map

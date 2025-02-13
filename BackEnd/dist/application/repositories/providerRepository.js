@@ -49,7 +49,9 @@ const dataFetching = (providerId) => __awaiter(void 0, void 0, void 0, function*
                     foreignField: '_id',
                     as: 'userDetails'
                 }
-            },
+            }, {
+                $sort: { selectedDate: -1 } // Sort by latest booking first
+            }
         ]);
         return bookings;
     }
