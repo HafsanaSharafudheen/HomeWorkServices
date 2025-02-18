@@ -61,25 +61,6 @@ border-radius: 5px;
     font-weight: 600;
     color:red;
 }
-/* Modal Overlay */
-.modal-UpdateBooking {
-  
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.modalUpdation-container {
-    background-color: #fff;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
 
 .file-upload-container {
     margin-top: 20px;
@@ -159,9 +140,8 @@ border-radius: 5px;
 }
 
 .update-time {
-    font-size: 14px;
+    font-size: 10px;
     color: #666;
-    margin-bottom: 10px;
 }
 
   
@@ -175,19 +155,11 @@ border-radius: 5px;
     flex-wrap: wrap;
 }
 
-.update-image {
+.update-image,.update-video  {
     width: 100px;
     height: auto;
-    border-radius: 5px;
-    border: 1px solid #ddd;
 }
 
-.update-video {
-    width: 200px;
-    height: auto;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
 
 
 
@@ -216,9 +188,38 @@ border-radius: 5px;
     background-color: var(--primary-color);
     color: white;
 }
+.update-modal-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px); /* Adds the blur effect */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed; /* Ensures it stays on top */
+    top: 0;
+    left: 0;
+    z-index: 9999;
+  }
+  
+  .update-modal-container {
+    background-color: #fff;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    position: relative;
+    max-height: 80vh; /* Limits the height of the modal */
+    overflow-y: auto; /* Adds a vertical scrollbar when content overflows */
+  }
+  
 
 
+ 
+  
 
+ 
 
 
 

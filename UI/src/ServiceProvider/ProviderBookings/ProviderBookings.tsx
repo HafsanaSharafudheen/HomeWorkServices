@@ -9,6 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import { FaFilter, FaTimes } from 'react-icons/fa';
 import './ProviderBookings.css';
 import ProviderSidebar from '../Sidebar/Sidebar';
+import UpdateWorkProgress from './UpdateWorkProgress';
 
 function ProviderBookings() {
     const [bookings, setBookings] = useState<Booking[]>([]);
@@ -17,7 +18,7 @@ function ProviderBookings() {
     const [filter, setFilter] = useState('all');
     const [showCalendar, setShowCalendar] = useState(false);
     const [showModal, setShowModal] = useState(false);
-  const [title,setTitle]=useState('');
+    const [selectedBookingId, setSelectedBookingId] = useState<string | null>(null);  const [title,setTitle]=useState('');
   const [description,setDescription]=useState('')
 
     const [photos, setPhotos] = useState<File[]>([]);
@@ -28,7 +29,16 @@ function ProviderBookings() {
 
     const Provider = useSelector((state: RootState) => state.user.user);
     const providerId = Provider?.id;
-
+    const handleOpenModal = (bookingId: string) => {
+        setSelectedBookingId(bookingId);
+        setShowModal(true);
+      };
+      
+      const handleCloseModal = () => {
+        setShowModal(false);
+        setSelectedBookingId(null);
+      };
+      
     const fetchBookings = async () => {
         try {
             const response = await axios.get(`/fetchProviderBookings`, {
@@ -70,8 +80,8 @@ function ProviderBookings() {
                 headers: { "Content-Type": "multipart/form-data" },
             });
     
-            await fetchBookings(); // Refresh bookings list
-            setShowModal(false); // Close the modal
+            await fetchBookings(); 
+            setShowModal(false); 
         } catch (error) {
             console.error('Error updating work details:', error);
         }
@@ -127,9 +137,16 @@ function ProviderBookings() {
     useEffect(() => {
         applyFilter();
     }, [bookings, filter]);
-    const [activeMenu, setActiveMenu] = useState<string>("Dashboard");
 
     return (
+        <div>
+         {showModal  &&  selectedBookingId!= null &&(
+            <UpdateWorkProgress
+                bookingId={selectedBookingId}
+                onClose={handleCloseModal}
+                fetchBookings={fetchBookings}
+            />
+        )}
         <div>
         <ServiceNavbar />
 
@@ -193,7 +210,9 @@ function ProviderBookings() {
                         </div>
 
 </div>
+
 </div>
+
 
                     {filteredBookings.length > 0 ? (
                         <ul className="list-group">
@@ -213,55 +232,58 @@ function ProviderBookings() {
                                         </p>
                                         <p>Time: {booking.selectedTime}</p>
 
-
                                         {booking.workingUpdates && booking.workingUpdates.length > 0 && (
-    <div className="working-updates">
-        {booking.workingUpdates.map((update, index) => (
-            <div key={index} className="working-update-card p-2">
-                {/* Title and Description */}
-                <h6>{update.title}</h6>
-                <p>{update.description}</p>
+  <div className="working-updates row">
+    {booking.workingUpdates.map((update, index) => (
+      <div key={index} className="col-md-4 mb-3">
+        <div className="working-update-card p-2">
+          {/* Title and Description */}
+          <h6>{update.title}</h6>
+          <p>{update.description}</p>
 
-                {/* Date */}
-                <p className="update-time">
-                    Updated on: {new Date(update.time).toLocaleString()}
-                </p>
+          {/* Date */}
+          <p className="update-time">
+           {new Date(update.time).toLocaleString()}
+          </p>
 
-                {/* Photos */}
-                {update.photos && update.photos.length > 0 && (
-                    <div className="update-photos">
-                        {update.photos.map((photo, idx) => (
-                            <img
-                                key={idx}
-                                src={`${import.meta.env.VITE_API_BASEURL}/${photo}`}
-                                alt={`Update Photo ${idx + 1}`}
-                                className="update-image"
-                            />
-                        ))}
-                    </div>
-                )}
-
-                {/* Videos */}
-                {update.videos && update.videos.length > 0 && (
-                    <div className="update-videos">
-                        {update.videos.map((video, idx) => (
-                            <video
-                                key={idx}
-                                src={video}
-                                controls autoPlay
-                                className="update-video"
-                            >
-                                Your browser does not support the video tag.
-                            </video>
-                        ))}
-                    </div>
-                )}
+          {/* Photos */}
+          {update.photos && update.photos.length > 0 && (
+            <div className="update-photos">
+              {update.photos.map((photo, idx) => (
+                <img
+                  key={idx}
+                  src={`${import.meta.env.VITE_API_BASEURL}/${photo}`}
+                  alt={`Update Photo ${idx + 1}`}
+                  className="update-image"
+                />
+              ))}
             </div>
-        ))}
-    </div>
+          )}
+
+          {/* Videos */}
+          {update.videos && update.videos.length > 0 && (
+            <div className="update-videos">
+              {update.videos.map((video, idx) => (
+                <video
+                  key={idx}
+                  src={video}
+                  controls autoPlay
+                  className="update-video"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
 )}
 
+
                                     </div>
+                                    
                                     <div>
                                         {booking.status === 'pending' && (
                                             <>
@@ -284,147 +306,25 @@ function ProviderBookings() {
                                             </>
                                         )}
                                         {booking.status === 'accepted' && (
-                                            <>
-                                                <button
-                                                    className="btn btn-primary me-2"
-                                                    onClick={() => setShowModal(true)}
-                                                >
-                                                    Update Work Progress
-                                                </button>
-                                                {showModal && (
-                                                    <div className="modal-UpdateBooking p-4">
-                                                        <div className="modalUpdation-container p-4">
-                                                            <div className="modal-header mb-3">
-                                                                <h5 className="modal-title">Update Work Progress</h5>
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn-close"
-                                                                    onClick={() => setShowModal(false)}
-                                                                ></button>
-                                                            </div>
-                                                            <div className="modal-body">
-                                                            <form
-    onSubmit={(e) => {
-        handleWorkUpdate(e, booking._id);
+    <>
+       
 
-        // Clear photos, videos, and previews after submission
-        setPhotos([]);
-        setVideos([]);
-        setPhotoPreviews([]);
-        setVideoPreviews([]);
-    }}
->
-    <div className="mb-3">
-        <label htmlFor="title" className="form-label">Work Title</label>
-        <input
-            type="text"
-            name="title"
-            className="form-control"
-            id="title"
-            onChange={(e) => setTitle(e.target.value)}  
-                       required
-        />
-    </div>
-    <div className="mb-3">
-        <label htmlFor="description" className="form-label">Description</label>
-        <textarea
-            name="description"
-            className="form-control"
-            id="description"
-            rows="3"
-            onChange={(e) => setDescription(e.target.value)} 
-            required
-        ></textarea>
-    </div>
-    <div className="file-upload-container">
-        <div className="row">
-            <div className="col-md-6">
-                <div className="mb-3">
-                    <label className="upload-label">
-                        <div className="upload-box">
-                            <p>Click to Upload Photos</p>
-                        </div>
-                        <input
-                            type="file"
-                            multiple
-                            className="upload-input"
-                            onChange={(e) => handleFileChange(e, 'photos')}
-                        />
-                    </label>
-                    <div className="file-preview-container">
-                        {photoPreviews.map((preview, index) => (
-                            <div key={`photo-${index}`} className="file-preview">
-                                <img
-                                    src={preview}
-                                    alt={`Photo Preview ${index + 1}`}
-                                    className="preview-image"
-                                />
-                                <button
-                                    type="button"
-                                    className="remove-button"
-                                    onClick={() => handleFileRemove(index, 'photos')}
-                                >
-                                    <FaTimes />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className="col-md-6">
-                <div className="mb-3">
-                    <label className="upload-label">
-                        <div className="upload-box">
-                            <p>Click to Upload Videos</p>
-                        </div>
-                        <input
-                            type="file"
-                            multiple
-                            className="upload-input"
-                            onChange={(e) => handleFileChange(e, 'videos')}
-                        />
-                    </label>
-                    <div className="file-preview-container">
-                        {videoPreviews.map((preview, index) => (
-                            <div key={`video-${index}`} className="file-preview">
-                                <video
-                                    src={preview}
-                                    controls
-                                    className="preview-image"
-                                >
-                                    Your browser does not support the video tag.
-                                </video>
-                                <button
-                                    type="button"
-                                    className="remove-button"
-                                    onClick={() => handleFileRemove(index, 'videos')}
-                                >
-                                    <FaTimes />
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <button type="submit" className="btn btn-primary">
-        Save Changes
-    </button>
-</form>
+        <button
+            className="btn btn-primary me-2"
+            onClick={() => handleOpenModal(booking._id)}
+        >
+            Update Work Progress
+        </button>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                <button
-                                                    className="btn btn-success"
-                                                    onClick={() => handleStatusUpdate(booking._id, 'completed')}
-                                                >
-                                                    Mark as Completed
-                                                </button>
-                                            </>
-                                        )}
+        <button
+            className="btn btn-success"
+            onClick={() => handleStatusUpdate(booking._id, 'completed')}
+        >
+            Mark as Completed
+        </button>
+    </>
+)}
+
  {booking.status === "completed" && (
             <div>
               <h6 className="text-success fw-bold">Completed</h6>
@@ -448,12 +348,15 @@ function ProviderBookings() {
                     Amount:₹{booking.payment?.amount}
                   </p>
                   <p className='text-warning'>
-                    <strong>Payment will be credited on:</strong>{" "}
-                    {new Date(
-                      new Date(booking?.payment?.time).getTime() +
-                        3 * 24 * 60 * 60 * 1000
-                    ).toLocaleDateString()}
-                  </p>
+  <strong>Payment will be credited on:</strong>{" "}
+  {booking.payment?.time
+    ? new Date(
+        new Date(booking.payment.time).getTime() + 
+        3 * 24 * 60 * 60 * 1000
+      ).toLocaleDateString()
+    : "Pending Release"}
+</p>
+
                 </div>
               )}
             </div>
@@ -474,6 +377,7 @@ function ProviderBookings() {
                     )}
                 </div>
             </div>
+        </div>
         </div>
     );
 }
