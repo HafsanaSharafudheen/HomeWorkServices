@@ -214,6 +214,7 @@ function ProviderBookings() {
 </div>
 
 
+
                     {filteredBookings.length > 0 ? (
                         <ul className="list-group">
                             {filteredBookings.map((booking) => (
@@ -284,7 +285,7 @@ function ProviderBookings() {
 
                                     </div>
                                     
-                                    <div>
+                                    <div className="row">
                                         {booking.status === 'pending' && (
                                             <>
                                                 <button

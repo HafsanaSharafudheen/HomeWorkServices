@@ -10,7 +10,11 @@ const TestimonialsCard: React.FC<{ testimonials: Review[] }> = ({ testimonials }
                 {testimonials.map((testimonial, index) => (
                     <div className="testimonial-card" key={index}>
                         <img
-                            src={testimonial.workImage || DefaultImage} // Use workImage or fallback to placeholder
+                         src={
+                            testimonial.workImage
+                                ? `${import.meta.env.VITE_API_BASEURL}${testimonial.workImage}`
+                                : DefaultImage
+                            }
                             alt={testimonial?.userDetails?.[0]?.fullName || "User"}
                             className="testimonial-image"
                         />
