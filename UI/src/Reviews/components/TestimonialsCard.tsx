@@ -12,7 +12,7 @@ const TestimonialsCard: React.FC<{ testimonials: Review[] }> = ({ testimonials }
                         <img
                          src={
                             testimonial.workImage
-                                ? `${import.meta.env.VITE_API_BASEURL}${testimonial.workImage}`
+                                ? `${import.meta.env.VITE_API_BASEURL}/${testimonial.workImage}`
                                 : DefaultImage
                             }
                             alt={testimonial?.userDetails?.[0]?.fullName || "User"}
